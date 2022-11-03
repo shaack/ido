@@ -70,8 +70,7 @@ class TimeTrackingsTable extends Table
             ->allowEmptyString('pause');
 
         $validator
-            ->numeric('duration')
-            ->allowEmptyString('duration');
+            ->numeric('duration');
 
         return $validator;
     }

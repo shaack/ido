@@ -68,7 +68,7 @@
                     <table>
                         <tr>
                             <th><?= __('Id') ?></th>
-                            <th><?= __('Desktop') ?></th>
+                            <th><?= __('Marked') ?></th>
                             <th><?= __('Prio') ?></th>
                             <th><?= __('Name') ?></th>
                             <th><?= __('Start Est') ?></th>
@@ -86,7 +86,7 @@
                         <?php foreach ($service->tasks as $tasks) : ?>
                         <tr>
                             <td><?= h($tasks->id) ?></td>
-                            <td><?= h($tasks->desktop) ?></td>
+                            <td><?= h($tasks->marked) ?></td>
                             <td><?= h($tasks->prio) ?></td>
                             <td><?= h($tasks->name) ?></td>
                             <td><?= h($tasks->start_est) ?></td>

@@ -3,6 +3,9 @@ declare(strict_types=1);
 
 namespace App\Controller;
 
+use Cake\Chronos\Date;
+use Cake\I18n\FrozenTime;
+
 /**
  * TimeTrackings Controller
  *
@@ -58,8 +61,11 @@ class TimeTrackingsController extends AppController
                 return $this->redirect(['action' => 'index']);
             }
             $this->Flash->error(__('The time tracking could not be saved. Please, try again.'));
+        } else {
+            $timeTracking->task_id = $this->request->getQuery("task_id"); // shaack patch
+            $timeTracking->start = new FrozenTime('now', 'CET'); // shaack patch
         }
-        $tasks = $this->TimeTrackings->Tasks->find('list', ['limit' => 200])->all();
+        $tasks = $this->TimeTrackings->Tasks->find('list', ['limit' => 1000, 'order' => ['id' => 'DESC']])->all();
         $this->set(compact('timeTracking', 'tasks'));
     }
 
@@ -84,7 +90,7 @@ class TimeTrackingsController extends AppController
             }
             $this->Flash->error(__('The time tracking could not be saved. Please, try again.'));
         }
-        $tasks = $this->TimeTrackings->Tasks->find('list', ['limit' => 200])->all();
+        $tasks = $this->TimeTrackings->Tasks->find('list', ['limit' => 1000, 'order' => ['id' => 'DESC']])->all();
         $this->set(compact('timeTracking', 'tasks'));
     }
 

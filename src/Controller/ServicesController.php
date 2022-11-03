@@ -59,7 +59,7 @@ class ServicesController extends AppController
             }
             $this->Flash->error(__('The service could not be saved. Please, try again.'));
         }
-        $projects = $this->Services->Projects->find('list', ['limit' => 200])->all();
+        $projects = $this->Services->Projects->find('list', ['limit' => 1000, 'order' => ['id' => 'DESC']])->all();
         $this->set(compact('service', 'projects'));
     }
 
@@ -84,7 +84,7 @@ class ServicesController extends AppController
             }
             $this->Flash->error(__('The service could not be saved. Please, try again.'));
         }
-        $projects = $this->Services->Projects->find('list', ['limit' => 200])->all();
+        $projects = $this->Services->Projects->find('list', ['limit' => 1000, 'order' => ['id' => 'DESC']])->all();
         $this->set(compact('service', 'projects'));
     }
 

@@ -65,9 +65,9 @@ class TasksTable extends Table
     public function validationDefault(Validator $validator): Validator
     {
         $validator
-            ->boolean('desktop')
-            ->requirePresence('desktop', 'create')
-            ->notEmptyString('desktop');
+            ->boolean('marked')
+            ->requirePresence('marked', 'create')
+            ->notEmptyString('marked');
 
         $validator
             ->integer('prio')

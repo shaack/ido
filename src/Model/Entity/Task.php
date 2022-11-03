@@ -9,7 +9,7 @@ use Cake\ORM\Entity;
  * Task Entity
  *
  * @property int $id
- * @property bool $desktop
+ * @property bool $marked
  * @property int|null $prio
  * @property string|null $name
  * @property \Cake\I18n\FrozenDate|null $start_est
@@ -38,7 +38,7 @@ class Task extends Entity
      * @var array<string, bool>
      */
     protected $_accessible = [
-        'desktop' => true,
+        'marked' => true,
         'prio' => true,
         'name' => true,
         'start_est' => true,

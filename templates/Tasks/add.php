@@ -18,7 +18,7 @@
             <fieldset>
                 <legend><?= __('Add Task') ?></legend>
                 <?php
-                    echo $this->Form->control('desktop');
+                    echo $this->Form->control('marked');
                     echo $this->Form->control('prio');
                     echo $this->Form->control('name');
                     echo $this->Form->control('start_est', ['empty' => true]);

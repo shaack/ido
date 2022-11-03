@@ -60,7 +60,7 @@ class TasksController extends AppController
             }
             $this->Flash->error(__('The task could not be saved. Please, try again.'));
         }
-        $services = $this->Tasks->Services->find('list', ['limit' => 200])->all();
+        $services = $this->Tasks->Services->find('list', ['limit' => 1000, 'order' => ['id' => 'DESC']])->all();
         $this->set(compact('task', 'services'));
     }
 
@@ -85,7 +85,7 @@ class TasksController extends AppController
             }
             $this->Flash->error(__('The task could not be saved. Please, try again.'));
         }
-        $services = $this->Tasks->Services->find('list', ['limit' => 200])->all();
+        $services = $this->Tasks->Services->find('list', ['limit' => 1000, 'order' => ['id' => 'DESC']])->all();
         $this->set(compact('task', 'services'));
     }
 

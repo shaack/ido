@@ -63,8 +63,8 @@
                     <td><?= h($task->done_at) ?></td>
                 </tr>
                 <tr>
-                    <th><?= __('Desktop') ?></th>
-                    <td><?= $task->desktop ? __('Yes') : __('No'); ?></td>
+                    <th><?= __('Marked') ?></th>
+                    <td><?= $task->marked ? __('Yes') : __('No'); ?></td>
                 </tr>
                 <tr>
                     <th><?= __('Done') ?></th>
@@ -79,6 +79,7 @@
             </div>
             <div class="related">
                 <h4><?= __('Related Time Trackings') ?></h4>
+                <a href="/timeTrackings/add?task_id=<?= $task->id ?>">Add Tracking</a>
                 <?php if (!empty($task->time_trackings)) : ?>
                 <div class="table-responsive">
                     <table>
