@@ -43,6 +43,10 @@ class TasksTable extends Table
         $this->setDisplayField('title');
         $this->setPrimaryKey('Id');
 
+        $this->belongsTo('Services')
+            ->setForeignKey('service')
+            ->setProperty('service');
+
         $this->addBehavior('Timestamp');
     }
 

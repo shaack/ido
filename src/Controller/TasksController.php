@@ -3,6 +3,8 @@ declare(strict_types=1);
 
 namespace App\Controller;
 
+use Cake\ORM\Query;
+
 /**
  * Tasks Controller
  *
@@ -18,6 +20,11 @@ class TasksController extends AppController
      */
     public function index()
     {
+        $this->paginate['contain'] = [
+            'Services' => function (Query $query) {
+                return $query->select(['Id', 'title']);
+            }
+        ];
         $tasks = $this->paginate($this->Tasks);
 
         $this->set(compact('tasks'));

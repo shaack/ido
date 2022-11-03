@@ -12,6 +12,7 @@
             <thead>
                 <tr>
                     <th><?= $this->Paginator->sort('Id') ?></th>
+                    <th><?= $this->Paginator->sort('title') ?></th>
                     <th><?= $this->Paginator->sort('start_est') ?></th>
                     <th><?= $this->Paginator->sort('deadline') ?></th>
                     <th><?= $this->Paginator->sort('duration_est') ?></th>
@@ -28,10 +29,15 @@
                 <?php foreach ($tasks as $task): ?>
                 <tr>
                     <td><?= $this->Number->format($task->Id) ?></td>
+                    <td><?= h($task->title) ?></td>
                     <td><?= h($task->start_est) ?></td>
                     <td><?= h($task->deadline) ?></td>
                     <td><?= $task->duration_est === null ? '' : $this->Number->format($task->duration_est) ?></td>
-                    <td><?= $task->service === null ? '' : $this->Number->format($task->service) ?></td>
+                    <td>
+                        <?php if($task->service) { ?>
+                            <a href="/services/view/<?= $task->service['Id'] ?>"><?= $task->service['title'] ?></a>
+                        <?php } ?>
+                    </td>
                     <td><?= $task->customer === null ? '' : $this->Number->format($task->customer) ?></td>
                     <td><?= h($task->created) ?></td>
                     <td><?= h($task->start) ?></td>

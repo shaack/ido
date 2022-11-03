@@ -16,7 +16,7 @@ use Cake\ORM\Entity;
  * @property \Cake\I18n\FrozenDate|null $deadline
  * @property int|null $duration_est
  * @property string|null $link
- * @property int|null $service
+ * @property Service|null $service
  * @property int|null $customer
  * @property \Cake\I18n\FrozenDate|null $created
  * @property string|null $notes
