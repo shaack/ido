@@ -1,0 +1,115 @@
+<?php
+/**
+ * @var \App\View\AppView $this
+ * @var \App\Model\Entity\Service $service
+ */
+?>
+<div class="row">
+    <aside class="column">
+        <div class="side-nav">
+            <h4 class="heading"><?= __('Actions') ?></h4>
+            <?= $this->Html->link(__('Edit Service'), ['action' => 'edit', $service->id], ['class' => 'side-nav-item']) ?>
+            <?= $this->Form->postLink(__('Delete Service'), ['action' => 'delete', $service->id], ['confirm' => __('Are you sure you want to delete # {0}?', $service->id), 'class' => 'side-nav-item']) ?>
+            <?= $this->Html->link(__('List Services'), ['action' => 'index'], ['class' => 'side-nav-item']) ?>
+            <?= $this->Html->link(__('New Service'), ['action' => 'add'], ['class' => 'side-nav-item']) ?>
+        </div>
+    </aside>
+    <div class="column-responsive column-80">
+        <div class="services view content">
+            <h3><?= h($service->name) ?></h3>
+            <table>
+                <tr>
+                    <th><?= __('Name') ?></th>
+                    <td><?= h($service->name) ?></td>
+                </tr>
+                <tr>
+                    <th><?= __('Project') ?></th>
+                    <td><?= $service->has('project') ? $this->Html->link($service->project->name, ['controller' => 'Projects', 'action' => 'view', $service->project->id]) : '' ?></td>
+                </tr>
+                <tr>
+                    <th><?= __('Id') ?></th>
+                    <td><?= $this->Number->format($service->id) ?></td>
+                </tr>
+                <tr>
+                    <th><?= __('Effort Est') ?></th>
+                    <td><?= $service->effort_est === null ? '' : $this->Number->format($service->effort_est) ?></td>
+                </tr>
+                <tr>
+                    <th><?= __('Estimation Or Fixed Price') ?></th>
+                    <td><?= $service->estimation_or_fixed_price === null ? '' : $this->Number->format($service->estimation_or_fixed_price) ?></td>
+                </tr>
+                <tr>
+                    <th><?= __('Effort') ?></th>
+                    <td><?= $service->effort === null ? '' : $this->Number->format($service->effort) ?></td>
+                </tr>
+                <tr>
+                    <th><?= __('Costs') ?></th>
+                    <td><?= $service->costs === null ? '' : $this->Number->format($service->costs) ?></td>
+                </tr>
+                <tr>
+                    <th><?= __('Sort') ?></th>
+                    <td><?= $service->sort === null ? '' : $this->Number->format($service->sort) ?></td>
+                </tr>
+                <tr>
+                    <th><?= __('Created') ?></th>
+                    <td><?= h($service->created) ?></td>
+                </tr>
+            </table>
+            <div class="text">
+                <strong><?= __('Notes') ?></strong>
+                <blockquote>
+                    <?= $this->Text->autoParagraph(h($service->notes)); ?>
+                </blockquote>
+            </div>
+            <div class="related">
+                <h4><?= __('Related Tasks') ?></h4>
+                <?php if (!empty($service->tasks)) : ?>
+                <div class="table-responsive">
+                    <table>
+                        <tr>
+                            <th><?= __('Id') ?></th>
+                            <th><?= __('Desktop') ?></th>
+                            <th><?= __('Prio') ?></th>
+                            <th><?= __('Name') ?></th>
+                            <th><?= __('Start Est') ?></th>
+                            <th><?= __('Deadline') ?></th>
+                            <th><?= __('Duration Est') ?></th>
+                            <th><?= __('Link') ?></th>
+                            <th><?= __('Service Id') ?></th>
+                            <th><?= __('Created') ?></th>
+                            <th><?= __('Notes') ?></th>
+                            <th><?= __('Done') ?></th>
+                            <th><?= __('Done At') ?></th>
+                            <th><?= __('Duration') ?></th>
+                            <th class="actions"><?= __('Actions') ?></th>
+                        </tr>
+                        <?php foreach ($service->tasks as $tasks) : ?>
+                        <tr>
+                            <td><?= h($tasks->id) ?></td>
+                            <td><?= h($tasks->desktop) ?></td>
+                            <td><?= h($tasks->prio) ?></td>
+                            <td><?= h($tasks->name) ?></td>
+                            <td><?= h($tasks->start_est) ?></td>
+                            <td><?= h($tasks->deadline) ?></td>
+                            <td><?= h($tasks->duration_est) ?></td>
+                            <td><?= h($tasks->link) ?></td>
+                            <td><?= h($tasks->service_id) ?></td>
+                            <td><?= h($tasks->created) ?></td>
+                            <td><?= h($tasks->notes) ?></td>
+                            <td><?= h($tasks->done) ?></td>
+                            <td><?= h($tasks->done_at) ?></td>
+                            <td><?= h($tasks->duration) ?></td>
+                            <td class="actions">
+                                <?= $this->Html->link(__('View'), ['controller' => 'Tasks', 'action' => 'view', $tasks->id]) ?>
+                                <?= $this->Html->link(__('Edit'), ['controller' => 'Tasks', 'action' => 'edit', $tasks->id]) ?>
+                                <?= $this->Form->postLink(__('Delete'), ['controller' => 'Tasks', 'action' => 'delete', $tasks->id], ['confirm' => __('Are you sure you want to delete # {0}?', $tasks->id)]) ?>
+                            </td>
+                        </tr>
+                        <?php endforeach; ?>
+                    </table>
+                </div>
+                <?php endif; ?>
+            </div>
+        </div>
+    </div>
+</div>
