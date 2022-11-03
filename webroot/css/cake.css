@@ -4,6 +4,10 @@ body {
     font-weight: 400;
 }
 
+.container {
+    max-width: none;
+}
+
 .top-nav-links,
 .side-nav,
 h1, h2, h3, h4, h5, h6 {
@@ -76,7 +80,7 @@ th {
     display: flex;
     align-items: center;
     justify-content: space-between;
-    max-width: 112rem;
+    /* max-width: 112rem; */
     padding: 2rem;
     margin: 0 auto 2rem;
 }
