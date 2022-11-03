@@ -57,7 +57,10 @@ th a,
 
 /* Main */
 body {
-    background: #f5f7fa;
+    background: #eee;
+}
+.main {
+    padding-bottom: 30rem;
 }
 .content {
     padding: 2rem;
