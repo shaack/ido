@@ -114,42 +114,42 @@
                 <div class="table-responsive">
                     <table>
                         <tr>
-                            <th><?= __('Id') ?></th>
+                            <!-- <th><?= __('Id') ?></th> -->
                             <th><?= __('Name') ?></th>
-                            <th><?= __('Customer Id') ?></th>
+                            <!-- <th><?= __('Customer Id') ?></th> -->
                             <th><?= __('Start') ?></th>
-                            <th><?= __('End Est') ?></th>
-                            <th><?= __('End') ?></th>
+                            <!-- <th><?= __('End Est') ?></th> -->
+                            <!-- <th><?= __('End') ?></th>
                             <th><?= __('Fixed Price') ?></th>
                             <th><?= __('Hourly Rate') ?></th>
                             <th><?= __('Notes') ?></th>
-                            <th><?= __('Description') ?></th>
+                            <th><?= __('Description') ?></th> -->
                             <th><?= __('Invoice Number') ?></th>
-                            <th><?= __('Invoice Date') ?></th>
+                            <!-- <th><?= __('Invoice Date') ?></th>
                             <th><?= __('Paid At') ?></th>
-                            <th><?= __('Parent Id') ?></th>
+                            <th><?= __('Parent Id') ?></th> -->
                             <th><?= __('Project Status Id') ?></th>
-                            <th><?= __('Created') ?></th>
+                            <!-- <th><?= __('Created') ?></th> -->
                             <th class="actions"><?= __('Actions') ?></th>
                         </tr>
                         <?php foreach ($customer->projects as $projects) : ?>
                         <tr>
-                            <td><?= h($projects->id) ?></td>
+                            <!-- <td><?= h($projects->id) ?></td> -->
                             <td><?= h($projects->name) ?></td>
-                            <td><?= h($projects->customer_id) ?></td>
+                            <!-- <td><?= h($projects->customer_id) ?></td> -->
                             <td><?= h($projects->start) ?></td>
-                            <td><?= h($projects->end_est) ?></td>
-                            <td><?= h($projects->end) ?></td>
+                            <!-- <td><?= h($projects->end_est) ?></td> -->
+                            <!-- <td><?= h($projects->end) ?></td>
                             <td><?= h($projects->fixed_price) ?></td>
                             <td><?= h($projects->hourly_rate) ?></td>
                             <td><?= h($projects->notes) ?></td>
-                            <td><?= h($projects->description) ?></td>
+                            <td><?= h($projects->description) ?></td> -->
                             <td><?= h($projects->invoice_number) ?></td>
-                            <td><?= h($projects->invoice_date) ?></td>
+                            <!-- <td><?= h($projects->invoice_date) ?></td>
                             <td><?= h($projects->paid_at) ?></td>
-                            <td><?= h($projects->parent_id) ?></td>
+                            <td><?= h($projects->parent_id) ?></td> -->
                             <td><?= h($projects->project_status_id) ?></td>
-                            <td><?= h($projects->created) ?></td>
+                            <!-- <td><?= h($projects->created) ?></td> -->
                             <td class="actions">
                                 <?= $this->Html->link(__('View'), ['controller' => 'Projects', 'action' => 'view', $projects->id]) ?>
                                 <?= $this->Html->link(__('Edit'), ['controller' => 'Projects', 'action' => 'edit', $projects->id]) ?>

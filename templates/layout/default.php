@@ -17,7 +17,7 @@
 $cakeDescription = 'CakePHP: the rapid development php framework';
 ?>
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
     <?= $this->Html->charset() ?>
     <meta name="viewport" content="width=device-width, initial-scale=1">
@@ -45,7 +45,7 @@ $cakeDescription = 'CakePHP: the rapid development php framework';
             <a target="_blank" rel="noopener" href="https://book.cakephp.org/4/">Documentation</a>
             <a target="_blank" rel="noopener" href="https://api.cakephp.org/">API</a>
             -->
-            <a href="/customers">Customers</a>
+            <a href="/customers?sort=name&direction=asc">Customers</a>
             <!-- <a href="/contacts">Contacts</a> -->
             <a href="/projects">Projects</a>
             <!-- <a href="/services?sort=id&direction=asc">Services</a> -->
