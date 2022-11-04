@@ -90,10 +90,9 @@ class ProjectsController extends AppController
             $project = $this->Projects->patchEntity($project, $this->request->getData());
             if ($this->Projects->save($project)) {
                 $this->Flash->success(__('The project has been saved.'));
-
-                return $this->redirect(['action' => 'index']);
+            } else {
+                $this->Flash->error(__('The project could not be saved. Please, try again.'));
             }
-            $this->Flash->error(__('The project could not be saved. Please, try again.'));
         }
         $customers = $this->Projects->Customers->find('list', ['limit' => 1000])->all();
         $parentProjects = $this->Projects->ParentProjects->find('list', ['limit' => 1000, 'order' => ['id' => 'DESC']])->all();

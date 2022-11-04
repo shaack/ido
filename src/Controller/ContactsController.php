@@ -79,10 +79,9 @@ class ContactsController extends AppController
             $contact = $this->Contacts->patchEntity($contact, $this->request->getData());
             if ($this->Contacts->save($contact)) {
                 $this->Flash->success(__('The contact has been saved.'));
-
-                return $this->redirect(['action' => 'index']);
+            } else {
+                $this->Flash->error(__('The contact could not be saved. Please, try again.'));
             }
-            $this->Flash->error(__('The contact could not be saved. Please, try again.'));
         }
         $customers = $this->Contacts->Customers->find('list', ['limit' => 200])->all();
         $this->set(compact('contact', 'customers'));

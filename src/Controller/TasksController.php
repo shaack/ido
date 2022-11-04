@@ -82,10 +82,10 @@ class TasksController extends AppController
             $task = $this->Tasks->patchEntity($task, $this->request->getData());
             if ($this->Tasks->save($task)) {
                 $this->Flash->success(__('The task has been saved.'));
-
-                return $this->redirect(['action' => 'index']);
+                // return $this->redirect(['action' => 'index']); // remove this
+            } else {
+                $this->Flash->error(__('The task could not be saved. Please, try again.'));
             }
-            $this->Flash->error(__('The task could not be saved. Please, try again.'));
         }
         $services = $this->Tasks->Services->find('list', ['limit' => 1000, 'order' => ['id' => 'DESC']])->all();
         $this->set(compact('task', 'services'));

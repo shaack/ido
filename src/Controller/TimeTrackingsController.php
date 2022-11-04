@@ -85,10 +85,9 @@ class TimeTrackingsController extends AppController
             $timeTracking = $this->TimeTrackings->patchEntity($timeTracking, $this->request->getData());
             if ($this->TimeTrackings->save($timeTracking)) {
                 $this->Flash->success(__('The time tracking has been saved.'));
-
-                return $this->redirect(['action' => 'index']);
+            } else {
+                $this->Flash->error(__('The time tracking could not be saved. Please, try again.'));
             }
-            $this->Flash->error(__('The time tracking could not be saved. Please, try again.'));
         }
         $tasks = $this->TimeTrackings->Tasks->find('list', ['limit' => 1000, 'order' => ['id' => 'DESC']])->all();
         $this->set(compact('timeTracking', 'tasks'));

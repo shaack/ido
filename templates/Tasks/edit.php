@@ -31,7 +31,7 @@
                     echo $this->Form->control('duration_est');
                     echo $this->Form->control('link');
                     echo $this->Form->control('service_id', ['options' => $services, 'empty' => true]);
-                    echo $this->Form->control('notes');
+                    echo $this->Form->control('notes', ['rows' => '10']);
                     echo $this->Form->control('done');
                     echo $this->Form->control('done_at', ['empty' => true]);
                     echo $this->Form->control('duration');
