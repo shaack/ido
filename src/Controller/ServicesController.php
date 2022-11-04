@@ -3,6 +3,8 @@ declare(strict_types=1);
 
 namespace App\Controller;
 
+use Cake\I18n\FrozenTime;
+
 /**
  * Services Controller
  *
@@ -58,6 +60,8 @@ class ServicesController extends AppController
                 return $this->redirect(['action' => 'index']);
             }
             $this->Flash->error(__('The service could not be saved. Please, try again.'));
+        } else {
+            $service->project_id = $this->request->getQuery("project_id"); // shaack patch
         }
         $projects = $this->Services->Projects->find('list', ['limit' => 1000, 'order' => ['id' => 'DESC']])->all();
         $this->set(compact('service', 'projects'));

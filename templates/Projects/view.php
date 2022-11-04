@@ -142,34 +142,35 @@
             </div>
             <div class="related">
                 <h4><?= __('Related Services') ?></h4>
+                <a class="button-clear" href="/services/add?project_id=<?= $project->id ?>">Add Service</a>
                 <?php if (!empty($project->services)) : ?>
                 <div class="table-responsive">
                     <table>
                         <tr>
-                            <th><?= __('Id') ?></th>
+                            <!-- <th><?= __('Id') ?></th> -->
                             <th><?= __('Name') ?></th>
-                            <th><?= __('Project Id') ?></th>
+                            <!-- <th><?= __('Project Id') ?></th> -->
                             <th><?= __('Effort Est') ?></th>
-                            <th><?= __('Estimation Or Fixed Price') ?></th>
+                            <!-- <th><?= __('Estimation Or Fixed Price') ?></th> -->
                             <th><?= __('Effort') ?></th>
                             <th><?= __('Costs') ?></th>
-                            <th><?= __('Notes') ?></th>
-                            <th><?= __('Sort') ?></th>
-                            <th><?= __('Created') ?></th>
+                            <!-- <th><?= __('Notes') ?></th> -->
+                            <!-- <th><?= __('Sort') ?></th> -->
+                            <!-- <th><?= __('Created') ?></th> -->
                             <th class="actions"><?= __('Actions') ?></th>
                         </tr>
                         <?php foreach ($project->services as $services) : ?>
                         <tr>
-                            <td><?= h($services->id) ?></td>
-                            <td><?= h($services->name) ?></td>
-                            <td><?= h($services->project_id) ?></td>
+                            <!-- <td><?= h($services->id) ?></td> -->
+                            <td><?= $this->Html->link($services->name, ['controller' => 'Services', 'action' => 'view', $services->id]) ?></td>
+                            <!-- <td><?= h($services->project_id) ?></td> -->
                             <td><?= h($services->effort_est) ?></td>
-                            <td><?= h($services->estimation_or_fixed_price) ?></td>
+                            <!-- <td><?= h($services->estimation_or_fixed_price) ?></td> -->
                             <td><?= h($services->effort) ?></td>
                             <td><?= h($services->costs) ?></td>
-                            <td><?= h($services->notes) ?></td>
+                            <!-- <td><?= h($services->notes) ?></td>
                             <td><?= h($services->sort) ?></td>
-                            <td><?= h($services->created) ?></td>
+                            <td><?= h($services->created) ?></td> -->
                             <td class="actions">
                                 <?= $this->Html->link(__('View'), ['controller' => 'Services', 'action' => 'view', $services->id]) ?>
                                 <?= $this->Html->link(__('Edit'), ['controller' => 'Services', 'action' => 'edit', $services->id]) ?>

@@ -63,41 +63,42 @@
             </div>
             <div class="related">
                 <h4><?= __('Related Tasks') ?></h4>
+                <a class="button-clear" href="/tasks/add?service_id=<?= $service->id ?>">Add Task</a>
                 <?php if (!empty($service->tasks)) : ?>
                 <div class="table-responsive">
                     <table>
                         <tr>
-                            <th><?= __('Id') ?></th>
-                            <th><?= __('Marked') ?></th>
-                            <th><?= __('Prio') ?></th>
-                            <th><?= __('Name') ?></th>
-                            <th><?= __('Start Est') ?></th>
-                            <th><?= __('Deadline') ?></th>
-                            <th><?= __('Duration Est') ?></th>
-                            <th><?= __('Link') ?></th>
-                            <th><?= __('Service Id') ?></th>
-                            <th><?= __('Created') ?></th>
-                            <th><?= __('Notes') ?></th>
+                            <!-- <th><?= __('Id') ?></th> -->
                             <th><?= __('Done') ?></th>
-                            <th><?= __('Done At') ?></th>
+                            <th><?= __('Marked') ?></th>
+                            <th><?= __('Name') ?></th>
+                            <th><?= __('Prio') ?></th>
+                            <!-- <th><?= __('Start Est') ?></th>
+                            <th><?= __('Deadline') ?></th>
+                            <th><?= __('Duration Est') ?></th> -->
+                            <!-- <th><?= __('Link') ?></th> -->
+                            <!-- <th><?= __('Service Id') ?></th> -->
+                            <!-- <th><?= __('Created') ?></th> -->
+                            <!-- <th><?= __('Notes') ?></th> -->
+                            <!-- <th><?= __('Done At') ?></th> -->
                             <th><?= __('Duration') ?></th>
                             <th class="actions"><?= __('Actions') ?></th>
                         </tr>
                         <?php foreach ($service->tasks as $tasks) : ?>
                         <tr>
-                            <td><?= h($tasks->id) ?></td>
+                            <!-- <td><?= h($tasks->id) ?></td> -->
+                            <td><?= h($tasks->done) ?></td>
                             <td><?= h($tasks->marked) ?></td>
+                            <td><?= $this->Html->link($tasks->name, ['controller' => 'Tasks', 'action' => 'view', $tasks->id]) ?></td>
                             <td><?= h($tasks->prio) ?></td>
-                            <td><?= h($tasks->name) ?></td>
-                            <td><?= h($tasks->start_est) ?></td>
+                            <!-- <td><?= h($tasks->start_est) ?></td>
                             <td><?= h($tasks->deadline) ?></td>
-                            <td><?= h($tasks->duration_est) ?></td>
-                            <td><?= h($tasks->link) ?></td>
+                            <td><?= h($tasks->duration_est) ?></td> -->
+                            <!-- <td><?= h($tasks->link) ?></td>
                             <td><?= h($tasks->service_id) ?></td>
                             <td><?= h($tasks->created) ?></td>
-                            <td><?= h($tasks->notes) ?></td>
-                            <td><?= h($tasks->done) ?></td>
-                            <td><?= h($tasks->done_at) ?></td>
+                            <td><?= h($tasks->notes) ?></td> -->
+                            <!-- <td><?= h($tasks->done_at) ?></td> -->
                             <td><?= h($tasks->duration) ?></td>
                             <td class="actions">
                                 <?= $this->Html->link(__('View'), ['controller' => 'Tasks', 'action' => 'view', $tasks->id]) ?>

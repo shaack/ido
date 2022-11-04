@@ -47,7 +47,7 @@ $cakeDescription = 'CakePHP: the rapid development php framework';
             -->
             <a href="/customers?sort=name&direction=asc">Customers</a>
             <!-- <a href="/contacts">Contacts</a> -->
-            <a href="/projects">Projects</a>
+            <a href="/projects?sort=name&direction=asc">Projects</a>
             <!-- <a href="/services?sort=id&direction=asc">Services</a> -->
             <a href="/tasks">Tasks</a>
             <a href="/time-trackings?sort=id&direction=desc">Time Trackings</a>
