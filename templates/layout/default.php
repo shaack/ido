@@ -26,8 +26,8 @@ $cakeDescription = 'CakePHP: the rapid development php framework';
     </title>
     <?= $this->Html->meta('icon') ?>
 
-    <link href="https://fonts.googleapis.com/css?family=Raleway:400,700" rel="stylesheet">
-
+    <!-- <link href="https://fonts.googleapis.com/css?family=Raleway:400,700" rel="stylesheet"> -->
+    <!-- <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.2/dist/css/bootstrap.min.css" rel="stylesheet"> -->
     <?= $this->Html->css(['normalize.min', 'milligram.min', 'cake']) ?>
 
     <?= $this->fetch('meta') ?>

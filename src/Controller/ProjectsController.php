@@ -67,6 +67,8 @@ class ProjectsController extends AppController
                 return $this->redirect(['action' => 'index']);
             }
             $this->Flash->error(__('The project could not be saved. Please, try again.'));
+        } else {
+            $project->customer_id = $this->request->getQuery("customer_id");
         }
         $customers = $this->Projects->Customers->find('list', ['limit' => 1000])->all();
         $parentProjects = $this->Projects->ParentProjects->find('list', ['limit' => 1000, 'order' => ['id' => 'DESC']])->all();

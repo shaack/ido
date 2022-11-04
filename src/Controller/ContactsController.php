@@ -58,6 +58,8 @@ class ContactsController extends AppController
                 return $this->redirect(['action' => 'index']);
             }
             $this->Flash->error(__('The contact could not be saved. Please, try again.'));
+        } else {
+            $contact->customer_id = $this->request->getQuery("customer_id");
         }
         $customers = $this->Contacts->Customers->find('list', ['limit' => 200])->all();
         $this->set(compact('contact', 'customers'));

@@ -75,32 +75,31 @@
             </div>
             <div class="related">
                 <h4><?= __('Related Contacts') ?></h4>
+                <a class="button-clear" href="/contacts/add?customer_id=<?= $customer->id ?>">Add Contact</a>
                 <?php if (!empty($customer->contacts)) : ?>
                 <div class="table-responsive">
                     <table>
                         <tr>
-                            <th><?= __('Id') ?></th>
+                            <!-- <th><?= __('Id') ?></th> -->
                             <th><?= __('Name') ?></th>
                             <th><?= __('Role') ?></th>
                             <th><?= __('Telephone') ?></th>
                             <th><?= __('Email') ?></th>
-                            <th><?= __('Notes') ?></th>
-                            <th><?= __('Customer Id') ?></th>
+                            <!-- <th><?= __('Notes') ?></th>
+                            <th><?= __('Customer Id') ?></th> -->
                             <th class="actions"><?= __('Actions') ?></th>
                         </tr>
                         <?php foreach ($customer->contacts as $contacts) : ?>
                         <tr>
-                            <td><?= h($contacts->id) ?></td>
-                            <td><?= h($contacts->name) ?></td>
+                            <!-- <td><?= h($contacts->id) ?></td> -->
+                            <td><?= $this->Html->link($contacts->name, ['controller' => 'Contacts', 'action' => 'view', $contacts->id]) ?></td>
                             <td><?= h($contacts->role) ?></td>
-                            <td><?= h($contacts->telephone) ?></td>
-                            <td><?= h($contacts->email) ?></td>
-                            <td><?= h($contacts->notes) ?></td>
-                            <td><?= h($contacts->customer_id) ?></td>
+                            <td><a href="tel:<?= h($contacts->telephone) ?>"><?= h($contacts->telephone) ?></a></td>
+                            <td><a href="mailto:<?= h($contacts->email) ?>"><?= h($contacts->email) ?></a></td>
+                            <!-- <td><?= h($contacts->notes) ?></td>
+                            <td><?= h($contacts->customer_id) ?></td> -->
                             <td class="actions">
-                                <?= $this->Html->link(__('View'), ['controller' => 'Contacts', 'action' => 'view', $contacts->id]) ?>
                                 <?= $this->Html->link(__('Edit'), ['controller' => 'Contacts', 'action' => 'edit', $contacts->id]) ?>
-                                <?= $this->Form->postLink(__('Delete'), ['controller' => 'Contacts', 'action' => 'delete', $contacts->id], ['confirm' => __('Are you sure you want to delete # {0}?', $contacts->id)]) ?>
                             </td>
                         </tr>
                         <?php endforeach; ?>
@@ -110,6 +109,7 @@
             </div>
             <div class="related">
                 <h4><?= __('Related Projects') ?></h4>
+                <a class="button-clear" href="/projects/add?customer_id=<?= $customer->id ?>">Add Project</a>
                 <?php if (!empty($customer->projects)) : ?>
                 <div class="table-responsive">
                     <table>
