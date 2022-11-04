@@ -38,7 +38,7 @@ $cakeDescription = 'CakePHP: the rapid development php framework';
 <body>
     <nav class="top-nav">
         <div class="top-nav-title">
-            <a href="<?= $this->Url->build('/') ?>"><span>Cake</span>PHP</a>
+            <a href="<?= $this->Url->build('/projects') ?>"><span class="char-1">i</span><span class="char-2">d</span><span class="char-3">o</span></a>
         </div>
         <div class="top-nav-links">
             <!--
@@ -46,8 +46,9 @@ $cakeDescription = 'CakePHP: the rapid development php framework';
             <a target="_blank" rel="noopener" href="https://api.cakephp.org/">API</a>
             -->
             <a href="/customers">Customers</a>
+            <!-- <a href="/contacts">Contacts</a> -->
             <a href="/projects">Projects</a>
-            <a href="/services?sort=id&direction=asc">Services</a>
+            <!-- <a href="/services?sort=id&direction=asc">Services</a> -->
             <a href="/tasks">Tasks</a>
             <a href="/time-trackings?sort=id&direction=desc">Time Trackings</a>
         </div>

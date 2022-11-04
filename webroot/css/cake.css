@@ -85,14 +85,19 @@ th {
     justify-content: space-between;
     /* max-width: 112rem; */
     padding: 2rem;
-    margin: 0 auto 2rem;
+    /* margin: 0 auto 2rem; */
 }
 .top-nav-title a {
-    font-size: 2.4rem;
-    color: #d33c43;
+    font-size: 3rem;
 }
-.top-nav-title span {
-    color: #404041;
+.top-nav-title span.char-1 {
+    color: #305673;
+}
+.top-nav-title span.char-2 {
+    color: #5497C9;
+}
+.top-nav-title span.char-3 {
+    color: #C8513D;
 }
 .top-nav-links a {
     margin: 0 0.5rem;
