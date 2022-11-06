@@ -23,12 +23,11 @@
                 <?php foreach ($timeTrackings as $timeTracking): ?>
                 <tr>
                     <!-- <td><?= $this->Number->format($timeTracking->id) ?></td> -->
-                    <td><?= h($timeTracking->start) ?></td>
+                    <td><?= $this->Html->link($timeTracking->start, ['action' => 'edit', $timeTracking->id]) ?></td>
                     <td><?= $timeTracking->has('task') ? $this->Html->link($timeTracking->task->name, ['controller' => 'Tasks', 'action' => 'view', $timeTracking->task->id]) : '' ?></td>
                     <td><?= $timeTracking->pause === null ? '' : $this->Number->format($timeTracking->pause) ?></td>
                     <td><?= $timeTracking->duration === null ? '' : $this->Number->format($timeTracking->duration) ?></td>
                     <td class="actions">
-                        <?= $this->Html->link(__('View'), ['action' => 'view', $timeTracking->id]) ?>
                         <?= $this->Html->link(__('Edit'), ['action' => 'edit', $timeTracking->id]) ?>
                         <?= $this->Form->postLink(__('Delete'), ['action' => 'delete', $timeTracking->id], ['confirm' => __('Are you sure you want to delete # {0}?', $timeTracking->id)]) ?>
                     </td>

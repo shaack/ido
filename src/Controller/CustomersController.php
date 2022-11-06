@@ -18,7 +18,8 @@ class CustomersController extends AppController
      */
     public function index()
     {
-        $options = array('conditions' => array('current' => true));
+        $options = array('conditions' => array('current' => true),
+            'order' => ['name' => "asc"]);
         $customers = $this->paginate($this->Customers, $options);
 
         $this->set(compact('customers'));
@@ -34,7 +35,7 @@ class CustomersController extends AppController
     public function view($id = null)
     {
         $customer = $this->Customers->get($id, [
-            'contain' => ['Contacts', 'Projects'],
+            'contain' => ['Contacts', 'Projects']
         ]);
 
         $this->set(compact('customer'));

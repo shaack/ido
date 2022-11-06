@@ -13,8 +13,6 @@
  * @license       https://opensource.org/licenses/mit-license.php MIT License
  * @var \App\View\AppView $this
  */
-
-$cakeDescription = 'CakePHP: the rapid development php framework';
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -26,39 +24,50 @@ $cakeDescription = 'CakePHP: the rapid development php framework';
     </title>
     <?= $this->Html->meta('icon') ?>
 
-    <!-- <link href="https://fonts.googleapis.com/css?family=Raleway:400,700" rel="stylesheet"> -->
-    <!-- <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.2/dist/css/bootstrap.min.css" rel="stylesheet"> -->
-    <?= $this->Html->css(['normalize.min', 'milligram.min', 'cake']) ?>
+    <link href="/assets/styles/screen.css" rel="stylesheet">
 
     <?= $this->fetch('meta') ?>
     <?= $this->fetch('css') ?>
     <?= $this->fetch('script') ?>
 </head>
 <body>
-    <nav class="top-nav">
-        <div class="top-nav-title">
-            <a href="<?= $this->Url->build('/projects') ?>"><span class="char-1">I</span><span class="char-2">d</span><span class="char-3">o</span></a>
-        </div>
-        <div class="top-nav-links">
-            <!--
-            <a target="_blank" rel="noopener" href="https://book.cakephp.org/4/">Documentation</a>
-            <a target="_blank" rel="noopener" href="https://api.cakephp.org/">API</a>
-            -->
-            <a href="/customers?sort=name&direction=asc">Customers</a>
-            <!-- <a href="/contacts">Contacts</a> -->
-            <a href="/projects?sort=name&direction=asc">Projects</a>
-            <!-- <a href="/services?sort=id&direction=asc">Services</a> -->
-            <a href="/tasks">Tasks</a>
-            <a href="/time-trackings">Time Trackings</a>
+<header>
+    <nav class="navbar navbar-expand-lg navbar-light bg-light">
+        <div class="container-fluid">
+            <a class="navbar-brand" href="<?= $this->Url->build('/projects') ?>"><span class="char-1">I</span><span
+                    class="char-2">d</span><span class="char-3">o</span></a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse"
+                    data-bs-target="#navbarSupportedContent"
+                    aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarSupportedContent">
+                <ul class="navbar-nav ms-auto mb-2 mb-lg-0">
+                    <li class="nav-item">
+                        <a class="nav-link" href="/customers">Customers</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="/projects">Projects</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="/tasks">Tasks</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="/time-trackings">Time Trackings</a>
+                    </li>
+                </ul>
+            </div>
         </div>
     </nav>
-    <main class="main">
-        <div class="container">
-            <?= $this->Flash->render() ?>
-            <?= $this->fetch('content') ?>
-        </div>
-    </main>
-    <footer>
-    </footer>
+</header>
+<main class="main">
+    <div class="container">
+        <?= $this->Flash->render() ?>
+        <?= $this->fetch('content') ?>
+    </div>
+</main>
+<footer>
+</footer>
+<script src="/node_modules/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
 </body>
 </html>
