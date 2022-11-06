@@ -37,7 +37,7 @@ $cakeDescription = 'CakePHP: the rapid development php framework';
 <body>
     <nav class="top-nav">
         <div class="top-nav-title">
-            <a href="<?= $this->Url->build('/projects') ?>"><span class="char-1">i</span><span class="char-2">d</span><span class="char-3">o</span></a>
+            <a href="<?= $this->Url->build('/projects') ?>"><span class="char-1">I</span><span class="char-2">d</span><span class="char-3">o</span></a>
         </div>
         <div class="top-nav-links">
             <!--
@@ -49,7 +49,7 @@ $cakeDescription = 'CakePHP: the rapid development php framework';
             <a href="/projects?sort=name&direction=asc">Projects</a>
             <!-- <a href="/services?sort=id&direction=asc">Services</a> -->
             <a href="/tasks">Tasks</a>
-            <a href="/time-trackings?sort=id&direction=desc">Time Trackings</a>
+            <a href="/time-trackings">Time Trackings</a>
         </div>
     </nav>
     <main class="main">

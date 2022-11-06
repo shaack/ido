@@ -23,6 +23,7 @@ class TimeTrackingsController extends AppController
     {
         $this->paginate = [
             'contain' => ['Tasks'],
+            'order' => ['id' => 'desc']
         ];
         $timeTrackings = $this->paginate($this->TimeTrackings);
 
@@ -53,6 +54,7 @@ class TimeTrackingsController extends AppController
     public function add()
     {
         $timeTracking = $this->TimeTrackings->newEmptyEntity();
+        /*
         if ($this->request->is('post')) {
             $timeTracking = $this->TimeTrackings->patchEntity($timeTracking, $this->request->getData());
             if ($this->TimeTrackings->save($timeTracking)) {
@@ -65,8 +67,17 @@ class TimeTrackingsController extends AppController
             $timeTracking->task_id = $this->request->getQuery("task_id"); // shaack patch
             $timeTracking->start = new FrozenTime('now', 'CET'); // shaack patch
         }
-        $tasks = $this->TimeTrackings->Tasks->find('list', ['limit' => 1000, 'order' => ['id' => 'DESC']])->all();
-        $this->set(compact('timeTracking', 'tasks'));
+        */
+        $timeTracking->task_id = $this->request->getQuery("task_id"); // shaack patch
+        $timeTracking->start = new FrozenTime('now', 'CET'); // shaack patch
+        if ($this->TimeTrackings->save($timeTracking)) {
+            $this->Flash->success(__('The time tracking has been saved.'));
+        } else {
+            $this->Flash->error(__('Error saving time tracking.'));
+        }
+        // $tasks = $this->TimeTrackings->Tasks->find('list', ['limit' => 1000, 'order' => ['id' => 'DESC']])->all();
+        // $this->set(compact('timeTracking', 'tasks'));
+        return $this->redirect(['action' => 'edit', $timeTracking->id]);
     }
 
     /**

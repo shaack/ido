@@ -79,7 +79,7 @@
             </div>
             <div class="related">
                 <h4><?= __('Related Time Trackings') ?></h4>
-                <a href="/timeTrackings/add?task_id=<?= $task->id ?>">Add Tracking</a>
+                <a href="/timeTrackings/add?task_id=<?= $task->id ?>">Start Tracking</a>
                 <?php if (!empty($task->time_trackings)) : ?>
                 <div class="table-responsive">
                     <table>

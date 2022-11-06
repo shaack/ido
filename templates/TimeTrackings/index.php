@@ -11,9 +11,9 @@
         <table>
             <thead>
                 <tr>
-                    <th><?= $this->Paginator->sort('id') ?></th>
-                    <th><?= $this->Paginator->sort('task_id') ?></th>
+                    <!-- <th><?= $this->Paginator->sort('id') ?></th> -->
                     <th><?= $this->Paginator->sort('start') ?></th>
+                    <th><?= $this->Paginator->sort('task_id') ?></th>
                     <th><?= $this->Paginator->sort('pause') ?></th>
                     <th><?= $this->Paginator->sort('duration') ?></th>
                     <th class="actions"><?= __('Actions') ?></th>
@@ -22,9 +22,9 @@
             <tbody>
                 <?php foreach ($timeTrackings as $timeTracking): ?>
                 <tr>
-                    <td><?= $this->Number->format($timeTracking->id) ?></td>
-                    <td><?= $timeTracking->has('task') ? $this->Html->link($timeTracking->task->name, ['controller' => 'Tasks', 'action' => 'view', $timeTracking->task->id]) : '' ?></td>
+                    <!-- <td><?= $this->Number->format($timeTracking->id) ?></td> -->
                     <td><?= h($timeTracking->start) ?></td>
+                    <td><?= $timeTracking->has('task') ? $this->Html->link($timeTracking->task->name, ['controller' => 'Tasks', 'action' => 'view', $timeTracking->task->id]) : '' ?></td>
                     <td><?= $timeTracking->pause === null ? '' : $this->Number->format($timeTracking->pause) ?></td>
                     <td><?= $timeTracking->duration === null ? '' : $this->Number->format($timeTracking->duration) ?></td>
                     <td class="actions">

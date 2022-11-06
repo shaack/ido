@@ -32,9 +32,9 @@
                 <?php foreach ($tasks as $task): ?>
                 <tr>
                     <!-- <td><?= $this->Number->format($task->id) ?></td> -->
-                    <td style="text-align: right"><?= $task->marked ? "🟡️" : "" ?></td>
+                    <td style="text-align: right"><?= $task->marked ? "#" : "" ?></td>
                     <!-- <td><?= $task->prio === null ? '' : $this->Number->format($task->prio) ?></td> -->
-                    <td><?= h($task->name) ?></td>
+                    <td><?= $this->Html->link($task->name, ['action' => 'view', $task->id]) ?></td>
                     <td><?= h($task->start_est) ?></td>
                     <td><?= h($task->deadline) ?></td>
                     <!-- <td><?= $task->duration_est === null ? '' : $this->Number->format($task->duration_est) ?></td> -->
@@ -56,9 +56,9 @@
                         ?>
                     </td>
                     <td class="actions">
-                        <?= $this->Html->link(__('View'), ['action' => 'view', $task->id]) ?>
+                        <!-- <?= $this->Html->link(__('View'), ['action' => 'view', $task->id]) ?> -->
                         <?= $this->Html->link(__('Edit'), ['action' => 'edit', $task->id]) ?>
-                        <?= $this->Form->postLink(__('Delete'), ['action' => 'delete', $task->id], ['confirm' => __('Are you sure you want to delete # {0}?', $task->id)]) ?>
+                        <!-- <?= $this->Form->postLink(__('Delete'), ['action' => 'delete', $task->id], ['confirm' => __('Are you sure you want to delete # {0}?', $task->id)]) ?> -->
                     </td>
                 </tr>
                 <?php endforeach; ?>
