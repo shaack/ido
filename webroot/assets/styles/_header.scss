@@ -3,13 +3,13 @@ header {
     .navbar-brand {
         font-size: 200%;
         .char-1 {
-            color: $black;
+            color: $success;
         }
         .char-2 {
-            color: $green-600;
+            color: $warning;
         }
         .char-3 {
-            color: $green-600;
+            color: $primary;
         }
     }
 }
