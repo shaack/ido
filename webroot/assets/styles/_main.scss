@@ -1,0 +1,42 @@
+main {
+    table {
+        @extend .table;
+        thead {
+            background-color: $gray-400;
+            tr {
+                th {
+                    color: $gray-600;
+                    a {
+                        color: $gray-800;
+                    }
+                }
+            }
+        }
+        tbody {
+            tr {
+                &.task-marked {
+                    background-color: $yellow-100;
+                }
+            }
+        }
+    }
+
+    .button {
+        @extend .btn;
+        @extend .btn-primary;
+    }
+    .pagination {
+        li {
+            @extend .page-item;
+            a {
+                @extend .page-link;
+            }
+        }
+        li.active {
+            a {
+                background-color: $gray-200;
+            }
+        }
+    }
+}
+

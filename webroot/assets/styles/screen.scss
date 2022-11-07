@@ -5,11 +5,12 @@
 
 // 2. Include any default variable overrides here
 @import "config/colors"; // set values for the colors
-@import "config/variables"; // set values for further bootstrap variables
 
 // 3. Include remainder of required Bootstrap stylesheets
 @import "../../node_modules/bootstrap/scss/variables";
 @import "../../node_modules/bootstrap/scss/mixins";
+
+@import "config/variables"; // set values for further bootstrap variables
 
 // 4. Include any optional Bootstrap components as you like
 @import "../../node_modules/bootstrap/scss/bootstrap.scss";
@@ -17,7 +18,7 @@
 // 5. Add additional custom code here
 // @import "fonts"; // load additional web fonts
 @import "utils"; // my own utils, small helper classes, mixins
-@import "milligram_compat"; // globals and bootstrap things, that can not be handled via configuration
+@import "main"; // globals and bootstrap things, that can not be handled via configuration
 @import "header"; // css for the navigation and header
 @import "footer"; // css for the page footer
 @import "blocks"; // one scss file for every "block" (aka section or module) in your layout or CMS
