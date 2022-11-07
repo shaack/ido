@@ -38,7 +38,9 @@ class TasksController extends AppController
     public function view($id = null)
     {
         $task = $this->Tasks->get($id, [
-            'contain' => ['Services', 'TimeTrackings'],
+            'contain' => ['Services', 'TimeTrackings' => [
+                'sort' => ['id' => 'DESC']
+            ]],
         ]);
 
         $this->set(compact('task'));
