@@ -22,6 +22,13 @@
             <?= $this->Form->create($timeTracking) ?>
             <fieldset>
                 <legend><?= __('Edit Time Tracking') ?></legend>
+                <div class="stopwatch">
+                    <?= $this->Form->control('stopwatch'); ?>
+                    <button class="btn btn-success btn-start" onclick="window.stopwatch.start(); return false;">start</button>
+                    <button class="btn btn-warning btn-stop" onclick="window.stopwatch.stop(); return false;">pause</button>
+                    <button class="btn btn-danger btn-reset" onclick="window.stopwatch.reset(); return false;">reset</button>
+                    <button class="btn btn-primary btn-stop" onclick="window.stopAndAdd(); return false;">stop and add</button>
+                </div>
                 <?php
                     echo $this->Form->control('task_id', ['options' => $tasks]);
                     echo $this->Form->control('start', ['empty' => true]);
@@ -34,3 +41,25 @@
         </div>
     </div>
 </div>
+<script type="module">
+    import {Stopwatch} from "/lib/cm-web-modules/stopwatch/Stopwatch.js";
+
+    const stopwatchOutput = document.getElementById("stopwatch")
+    const durationInput = document.getElementById("duration")
+    window.stopwatch = new Stopwatch({
+        onTimeChanged: () => {
+            const minutesExpired = stopwatch.secondsExpired() / 60
+            stopwatchOutput.value = Math.round(minutesExpired * 100) / 100
+        }
+    })
+    window.stopAndAdd = () => {
+        if(!durationInput.value) {
+            durationInput.value = 0
+        }
+        durationInput.value = "" + (parseFloat(durationInput.value.replace(",", ".")) + parseFloat(stopwatchOutput.value))
+        stopwatchOutput.value = 0
+        window.stopwatch.stop()
+        window.stopwatch.reset()
+    }
+    stopwatch.start()
+</script>

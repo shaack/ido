@@ -135,8 +135,8 @@ class ProjectsTable extends Table
             ->allowEmptyString('parent_id');
 
         $validator
-            ->integer('project_status_id')
-            ->allowEmptyString('project_status_id');
+            ->integer('project_status_id');
+            // ->allowEmptyString('project_status_id');
 
         return $validator;
     }

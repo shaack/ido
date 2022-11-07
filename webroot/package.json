@@ -1,5 +1,18 @@
 {
-  "dependencies": {
-    "bootstrap": "^5.2.2"
-  }
+    "name": "ido",
+    "version": "1.0.0",
+    "private": true,
+    "main": "",
+    "devDependencies": {},
+    "scripts": {
+        "postinstall": "node postinstall.js"
+    },
+    "author": "",
+    "license": "MIT",
+    "description": "",
+    "dependencies": {
+        "bootstrap": "^5.2.2",
+        "cm-web-modules": "^1.18.8",
+        "modlib": "^1.2.10"
+    }
 }
