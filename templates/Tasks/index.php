@@ -34,7 +34,7 @@
                     <!-- <td><?= $this->Number->format($task->id) ?></td> -->
                     <td style="text-align: right"><?= $task->marked ? "#" : "" ?></td>
                     <!-- <td><?= $task->prio === null ? '' : $this->Number->format($task->prio) ?></td> -->
-                    <td><?= $this->Html->link($task->name, ['action' => 'view', $task->id]) ?></td>
+                    <td><?= $this->Html->link($task->name ? $task->name : "[" . $task->service->name . "]", ['action' => 'view', $task->id]) ?></td>
                     <td><?= h($task->start_est) ?></td>
                     <td><?= h($task->deadline) ?></td>
                     <!-- <td><?= $task->duration_est === null ? '' : $this->Number->format($task->duration_est) ?></td> -->

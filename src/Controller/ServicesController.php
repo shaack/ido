@@ -22,6 +22,7 @@ class ServicesController extends AppController
     {
         $this->paginate = [
             'contain' => ['Projects'],
+            'order' => ['marked' => 'desc', 'id' => 'desc']
         ];
         $services = $this->paginate($this->Services);
 
