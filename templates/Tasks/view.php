@@ -3,6 +3,8 @@
  * @var \App\View\AppView $this
  * @var \App\Model\Entity\Task $task
  */
+
+$this->assign('title', $task->name);
 ?>
 <div class="row">
     <aside class="column">
