@@ -18,18 +18,18 @@ class ProjectsController extends AppController
      */
     public function index()
     {
-        $options = array('conditions' => array('OR' => array(
-            array('Projects.project_status_id' => 1),
-            array('Projects.project_status_id' => 2),
-            array('Projects.project_status_id' => 4),
-            array('Projects.project_status_id' => 5),
-            array('Projects.project_status_id' => 10),
-            array('Projects.project_status_id' => 13),
-            array('Projects.project_status_id' => 14),
-        )));
+        $options = ['conditions' => ['OR' => [
+            ['Projects.project_status_id' => 5],
+            ['Projects.project_status_id' => 10],
+            ['Projects.project_status_id' => 15],
+            ['Projects.project_status_id' => 20],
+            ['Projects.project_status_id' => 25],
+            ['Projects.project_status_id' => 30],
+            ['Projects.project_status_id' => 35]
+        ]]];
         $this->paginate = [
             'contain' => ['Customers', 'ParentProjects', 'ProjectStatuses'],
-            'order' => ['invoice_number' => 'asc', 'id' => 'desc']
+            'order' => ['invoice_number' => 'asc', 'project_status_id' => 'asc', 'id' => 'desc']
         ];
         $projects = $this->paginate($this->Projects, $options);
 

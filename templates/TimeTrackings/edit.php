@@ -54,5 +54,5 @@
         stopwatchOutput.value = 0
         form.submit()
     }
-    stopwatch.start()
+    // stopwatch.start()
 </script>

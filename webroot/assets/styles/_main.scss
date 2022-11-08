@@ -20,23 +20,23 @@ main {
                     background-color: $yellow-100;
                 }
                 td {
-                    &.project-status-2 a {
+                    &.project-status-15 a {
                         color: $success;
                     }
-                    &.project-status-3 a, &.project-status-16 a, &.project-status-18 a, &.project-status-20 a {
-                        color: $gray-500;
+                    &.project-status-20 a {
+                        color: $teal;
                     }
-                    &.project-status-4 a {
-                        color: $gray-600;
+                    &.project-status-25 a {
+                        color: $cyan;
                     }
-                    &.project-status-10 a {
-                        color: $blue;
-                    }
-                    &.project-status-13 a {
+                    &.project-status-30 a {
                         color: $danger;
                     }
-                    &.project-status-14 a {
-                        color: $teal;
+                    &.project-status-35 a {
+                        color: $gray-600;
+                    }
+                    &.project-status-40 a, &.project-status-45 a, &.project-status-50 a, &.project-status-55 a {
+                        color: $gray-500;
                     }
                 }
             }
