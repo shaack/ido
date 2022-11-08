@@ -18,11 +18,11 @@
                     <th><?= $this->Paginator->sort('end') ?></th>
                     <th><?= $this->Paginator->sort('fixed_price') ?></th>
                     <th><?= $this->Paginator->sort('hourly_rate') ?></th> -->
-                    <th><?= $this->Paginator->sort('invoice_number') ?></th>
-                    <th><?= $this->Paginator->sort('invoice_date') ?></th>
+                    <th><?= $this->Paginator->sort('invoice_number', 'Inv. #') ?></th>
+                    <th><?= $this->Paginator->sort('invoice_date', 'Inv. date') ?></th>
                     <!-- <th><?= $this->Paginator->sort('paid_at') ?></th>
                     <th><?= $this->Paginator->sort('parent_id') ?></th> -->
-                    <th><?= $this->Paginator->sort('project_status_id') ?></th>
+                    <th><?= $this->Paginator->sort('project_status_id', 'Status') ?></th>
                     <!-- <th><?= $this->Paginator->sort('created') ?></th> -->
                     <th class="actions"><?= __('Actions') ?></th>
                 </tr>

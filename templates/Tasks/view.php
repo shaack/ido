@@ -7,34 +7,25 @@
 $this->assign('title', $task->name);
 ?>
 <div class="row">
-    <aside class="column">
-        <div class="side-nav">
-            <h4 class="heading"><?= __('Actions') ?></h4>
-            <?= $this->Html->link(__('Edit Task'), ['action' => 'edit', $task->id], ['class' => 'side-nav-item']) ?>
-            <?= $this->Form->postLink(__('Delete Task'), ['action' => 'delete', $task->id], ['confirm' => __('Are you sure you want to delete # {0}?', $task->id), 'class' => 'side-nav-item']) ?>
-            <?= $this->Html->link(__('List Tasks'), ['action' => 'index'], ['class' => 'side-nav-item']) ?>
-            <?= $this->Html->link(__('New Task'), ['action' => 'add'], ['class' => 'side-nav-item']) ?>
-        </div>
-    </aside>
     <div class="column-responsive column-80">
         <div class="tasks view content">
             <h3><?= h($task->name) ?></h3>
+            <div class="side-nav">
+                <?= $this->Html->link(__('Edit Task'), ['action' => 'edit', $task->id], ['class' => 'side-nav-item']) ?>
+                <?= $this->Form->postLink(__('Delete Task'), ['action' => 'delete', $task->id], ['confirm' => __('Are you sure you want to delete # {0}?', $task->id), 'class' => 'side-nav-item']) ?>
+                <?= $this->Html->link(__('List Tasks'), ['action' => 'index'], ['class' => 'side-nav-item']) ?>
+                <?= $this->Html->link(__('New Task'), ['action' => 'add'], ['class' => 'side-nav-item']) ?>
+            </div>
+            <div class="row">
+                <div class="col-md-8">
             <table>
                 <tr>
                     <th><?= __('Name') ?></th>
                     <td><?= h($task->name) ?></td>
                 </tr>
                 <tr>
-                    <th><?= __('Link') ?></th>
-                    <td><?= h($task->link) ?></td>
-                </tr>
-                <tr>
                     <th><?= __('Service') ?></th>
                     <td><?= $task->has('service') ? $this->Html->link($task->service->name, ['controller' => 'Services', 'action' => 'view', $task->service->id]) : '' ?></td>
-                </tr>
-                <tr>
-                    <th><?= __('Id') ?></th>
-                    <td><?= $this->Number->format($task->id) ?></td>
                 </tr>
                 <tr>
                     <th><?= __('Prio') ?></th>
@@ -61,10 +52,6 @@ $this->assign('title', $task->name);
                     <td><?= h($task->created) ?></td>
                 </tr>
                 <tr>
-                    <th><?= __('Done At') ?></th>
-                    <td><?= h($task->done_at) ?></td>
-                </tr>
-                <tr>
                     <th><?= __('Marked') ?></th>
                     <td><?= $task->marked ? __('Yes') : __('No'); ?></td>
                 </tr>
@@ -73,11 +60,20 @@ $this->assign('title', $task->name);
                     <td><?= $task->done ? __('Yes') : __('No'); ?></td>
                 </tr>
             </table>
-            <div class="text">
-                <strong><?= __('Notes') ?></strong>
-                <blockquote>
-                    <?= $this->Text->autoParagraph(h($task->notes)); ?>
-                </blockquote>
+                </div>
+                <div class="col">
+                    <div class="text">
+                        <strong><?= __('Notes') ?></strong>
+                        <blockquote>
+                            <?php
+                            $text = $this->Text->autoLink(h($task->notes));
+                            $text = $this->Text->autoParagraph($text);
+                            echo $text;
+                            ?>
+                        </blockquote>
+                    </div>
+
+                </div>
             </div>
             <div class="related">
                 <h4><?= __('Related Time Trackings') ?></h4>

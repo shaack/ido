@@ -1,4 +1,5 @@
 main {
+    margin-bottom: 10rem;
     table {
         @extend .table;
         thead {
@@ -16,6 +17,26 @@ main {
             tr {
                 &.task-marked {
                     background-color: $yellow-100;
+                }
+                td {
+                    &.project-status-2 {
+                        color: $success;
+                    }
+                    &.project-status-3, &.project-status-16, &.project-status-18, &.project-status-20 {
+                        color: $gray-500;
+                    }
+                    &.project-status-4 {
+                        color: $gray-700;
+                    }
+                    &.project-status-10 {
+                        color: $blue;
+                    }
+                    &.project-status-13 {
+                        color: $danger;
+                    }
+                    &.project-status-14 {
+                        color: $teal;
+                    }
                 }
             }
         }
@@ -39,13 +60,24 @@ main {
         }
     }
     form {
-        input[type='text'], select, input[type='number'], input[type='datetime-local'] {
+        margin-bottom: 4rem;
+        input[type='text'], select, input[type='number'], input[type='datetime-local'], input[type='date'],
+        textarea {
             @extend .form-control;
-            margin-bottom: 1rem;
+            margin-bottom: 0.5rem;
         }
         button[type='submit'] {
             @extend .btn;
             @extend .btn-primary;
+        }
+        div.checkbox {
+            @extend .form-check;
+            input {
+                @extend .form-check-input;
+            }
+            label {
+                @extend .form-check-label;
+            }
         }
     }
     .message {

@@ -70,7 +70,13 @@
             <div class="text">
                 <strong><?= __('Notes') ?></strong>
                 <blockquote>
-                    <?= $this->Text->autoParagraph(h($customer->notes)); ?>
+                    <?php
+                        if($customer->notes) {
+                            $text = $this->Text->autoLink(h($customer->notes));
+                            $text = $this->Text->autoParagraph($text);
+                            echo $text;
+                        }
+                    ?>
                 </blockquote>
             </div>
             <div class="related">
@@ -135,7 +141,7 @@
                         <?php foreach ($customer->projects as $projects) : ?>
                         <tr>
                             <!-- <td><?= h($projects->id) ?></td> -->
-                            <td><?= h($projects->name) ?></td>
+                            <td><?= $this->Text->truncate(h($projects->name), 64) ?></td>
                             <!-- <td><?= h($projects->customer_id) ?></td> -->
                             <td><?= h($projects->start) ?></td>
                             <!-- <td><?= h($projects->end_est) ?></td> -->
@@ -148,7 +154,12 @@
                             <!-- <td><?= h($projects->invoice_date) ?></td>
                             <td><?= h($projects->paid_at) ?></td>
                             <td><?= h($projects->parent_id) ?></td> -->
-                            <td><?= h($projects->project_status_id) ?></td>
+                            <td class="project-status-<?= $projects->project_status->id ?>">
+                                <?php
+                                    echo h($projects->project_status->name);
+                                    // echo h($projects->project_status->id);
+                                ?>
+                            </td>
                             <!-- <td><?= h($projects->created) ?></td> -->
                             <td class="actions">
                                 <?= $this->Html->link(__('View'), ['controller' => 'Projects', 'action' => 'view', $projects->id]) ?>

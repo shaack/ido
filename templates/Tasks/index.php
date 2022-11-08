@@ -17,7 +17,7 @@
                     <!-- <th><?= $this->Paginator->sort('marked') ?></th> -->
                     <!-- <th><?= $this->Paginator->sort('prio') ?></th> -->
                     <th><?= $this->Paginator->sort('name') ?></th>
-                    <th><?= $this->Paginator->sort('start_est') ?></th>
+                    <th><?= $this->Paginator->sort('start') ?></th>
                     <th><?= $this->Paginator->sort('deadline') ?></th>
                     <!-- <th><?= $this->Paginator->sort('duration_est') ?></th> -->
                     <!-- <th><?= $this->Paginator->sort('link') ?></th> -->
@@ -37,7 +37,7 @@
                     <!-- <td><?= $this->Number->format($task->id) ?></td> -->
                     <!-- <td style="text-align: right"><?= $task->marked ? "=>" : "" ?></td> -->
                     <!-- <td><?= $task->prio === null ? '' : $this->Number->format($task->prio) ?></td> -->
-                    <td><?= $this->Html->link($task->name ? $task->name : "[" . $task->service->name . "]",
+                    <td><?= $this->Html->link($task->name ? $task->name : "- - - - -",
                             ['action' => 'view', $task->id]) ?></td>
                     <td><?= h($task->start_est) ?></td>
                     <td><?= h($task->deadline) ?></td>
