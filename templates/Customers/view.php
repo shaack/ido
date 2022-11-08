@@ -70,11 +70,11 @@
                 <strong><?= __('Notes') ?></strong>
                 <blockquote>
                     <?php
-                        if($customer->notes) {
-                            $text = $this->Text->autoLink(h($customer->notes));
-                            $text = $this->Text->autoParagraph($text);
-                            echo $text;
-                        }
+                    if ($customer->notes) {
+                        $text = $this->Text->autoLink(h($customer->notes));
+                        $text = $this->Text->autoParagraph($text);
+                        echo $text;
+                    }
                     ?>
                 </blockquote>
             </div>
@@ -82,93 +82,95 @@
                 <h4><?= __('Related Contacts') ?></h4>
                 <a class="button-clear" href="/contacts/add?customer_id=<?= $customer->id ?>">Add Contact</a>
                 <?php if (!empty($customer->contacts)) : ?>
-                <div class="table-responsive">
-                    <table>
-                        <tr>
-                            <!-- <th><?= __('Id') ?></th> -->
-                            <th><?= __('Name') ?></th>
-                            <th><?= __('Role') ?></th>
-                            <th><?= __('Telephone') ?></th>
-                            <th><?= __('Email') ?></th>
-                            <!-- <th><?= __('Notes') ?></th>
+                    <div class="table-responsive">
+                        <table>
+                            <thead>
+                            <tr>
+                                <!-- <th><?= __('Id') ?></th> -->
+                                <th><?= __('Name') ?></th>
+                                <th><?= __('Role') ?></th>
+                                <th><?= __('Telephone') ?></th>
+                                <th><?= __('Email') ?></th>
+                                <!-- <th><?= __('Notes') ?></th>
                             <th><?= __('Customer Id') ?></th> -->
-                            <th class="actions"><?= __('Actions') ?></th>
-                        </tr>
-                        <?php foreach ($customer->contacts as $contacts) : ?>
-                        <tr>
-                            <!-- <td><?= h($contacts->id) ?></td> -->
-                            <td><?= $this->Html->link($contacts->name, ['controller' => 'Contacts', 'action' => 'view', $contacts->id]) ?></td>
-                            <td><?= h($contacts->role) ?></td>
-                            <td><a href="tel:<?= h($contacts->telephone) ?>"><?= h($contacts->telephone) ?></a></td>
-                            <td><a href="mailto:<?= h($contacts->email) ?>"><?= h($contacts->email) ?></a></td>
-                            <!-- <td><?= h($contacts->notes) ?></td>
+                                <th class="actions"><?= __('Actions') ?></th>
+                            </tr>
+                            </thead>
+                            <?php foreach ($customer->contacts as $contacts) : ?>
+                                <tr>
+                                    <!-- <td><?= h($contacts->id) ?></td> -->
+                                    <td><?= $this->Html->link($contacts->name, ['controller' => 'Contacts', 'action' => 'view', $contacts->id]) ?></td>
+                                    <td><?= h($contacts->role) ?></td>
+                                    <td><a href="tel:<?= h($contacts->telephone) ?>"><?= h($contacts->telephone) ?></a>
+                                    </td>
+                                    <td><a href="mailto:<?= h($contacts->email) ?>"><?= h($contacts->email) ?></a></td>
+                                    <!-- <td><?= h($contacts->notes) ?></td>
                             <td><?= h($contacts->customer_id) ?></td> -->
-                            <td class="actions">
-                                <?= $this->Html->link(__('Edit'), ['controller' => 'Contacts', 'action' => 'edit', $contacts->id]) ?>
-                            </td>
-                        </tr>
-                        <?php endforeach; ?>
-                    </table>
-                </div>
+                                    <td class="actions">
+                                        <?= $this->Html->link(__('Edit'), ['controller' => 'Contacts', 'action' => 'edit', $contacts->id]) ?>
+                                    </td>
+                                </tr>
+                            <?php endforeach; ?>
+                        </table>
+                    </div>
                 <?php endif; ?>
             </div>
             <div class="related">
                 <h4><?= __('Related Projects') ?></h4>
                 <a class="button-clear" href="/projects/add?customer_id=<?= $customer->id ?>">Add Project</a>
                 <?php if (!empty($customer->projects)) : ?>
-                <div class="table-responsive">
-                    <table>
-                        <tr>
-                            <!-- <th><?= __('Id') ?></th> -->
-                            <th><?= __('Name') ?></th>
-                            <!-- <th><?= __('Customer Id') ?></th> -->
-                            <th><?= __('Start') ?></th>
-                            <!-- <th><?= __('End Est') ?></th> -->
-                            <!-- <th><?= __('End') ?></th>
+                    <div class="table-responsive">
+                        <table>
+                            <thead>
+                            <tr>
+                                <!-- <th><?= __('Id') ?></th> -->
+                                <th><?= __('Name') ?></th>
+                                <!-- <th><?= __('Customer Id') ?></th> -->
+                                <th><?= __('Start') ?></th>
+                                <!-- <th><?= __('End Est') ?></th> -->
+                                <!-- <th><?= __('End') ?></th>
                             <th><?= __('Fixed Price') ?></th>
                             <th><?= __('Hourly Rate') ?></th>
                             <th><?= __('Notes') ?></th>
                             <th><?= __('Description') ?></th> -->
-                            <th><?= __('Invoice Number') ?></th>
-                            <!-- <th><?= __('Invoice Date') ?></th>
+                                <th><?= __('Invoice Number') ?></th>
+                                <!-- <th><?= __('Invoice Date') ?></th>
                             <th><?= __('Paid At') ?></th>
                             <th><?= __('Parent Id') ?></th> -->
-                            <th><?= __('Project Status Id') ?></th>
-                            <!-- <th><?= __('Created') ?></th> -->
-                            <th class="actions"><?= __('Actions') ?></th>
-                        </tr>
-                        <?php foreach ($customer->projects as $projects) : ?>
-                        <tr>
-                            <!-- <td><?= h($projects->id) ?></td> -->
-                            <td><?= $this->Text->truncate(h($projects->name), 64) ?></td>
-                            <!-- <td><?= h($projects->customer_id) ?></td> -->
-                            <td><?= h($projects->start) ?></td>
-                            <!-- <td><?= h($projects->end_est) ?></td> -->
-                            <!-- <td><?= h($projects->end) ?></td>
+                                <th><?= __('Project Status Id') ?></th>
+                                <!-- <th><?= __('Created') ?></th> -->
+                                <th class="actions"><?= __('Actions') ?></th>
+                            </tr>
+                            </thead>
+                            <?php foreach ($customer->projects as $projects) : ?>
+                                <tr>
+                                    <!-- <td><?= h($projects->id) ?></td> -->
+                                    <td><?= $this->Html->link($projects->name, ['controller' => 'Projects', 'action' => 'view', $projects->id]) ?></td>
+                                    <!-- <td><?= h($projects->customer_id) ?></td> -->
+                                    <td><?= h($projects->start) ?></td>
+                                    <!-- <td><?= h($projects->end_est) ?></td> -->
+                                    <!-- <td><?= h($projects->end) ?></td>
                             <td><?= h($projects->fixed_price) ?></td>
                             <td><?= h($projects->hourly_rate) ?></td>
                             <td><?= h($projects->notes) ?></td>
                             <td><?= h($projects->description) ?></td> -->
-                            <td><?= h($projects->invoice_number) ?></td>
-                            <!-- <td><?= h($projects->invoice_date) ?></td>
+                                    <td><?= h($projects->invoice_number) ?></td>
+                                    <!-- <td><?= h($projects->invoice_date) ?></td>
                             <td><?= h($projects->paid_at) ?></td>
                             <td><?= h($projects->parent_id) ?></td> -->
-                            <td class="project-status-<?= $projects->project_status->id ?>">
-                                <?php
-                                    echo h($projects->project_status->name);
-                                    // echo h($projects->project_status->id);
-                                ?>
-                            </td>
-                            <!-- <td><?= h($projects->created) ?></td> -->
-                            <td class="actions">
-                                <?= $this->Html->link(__('View'), ['controller' => 'Projects', 'action' => 'view', $projects->id]) ?>
-                                <?= $this->Html->link(__('Edit'), ['controller' => 'Projects', 'action' => 'edit', $projects->id]) ?>
-                                <?= $this->Form->postLink(__('Delete'), ['controller' => 'Projects', 'action' => 'delete', $projects->id], ['confirm' => __('Are you sure you want to delete # {0}?', $projects->id)]) ?>
-                            </td>
-                        </tr>
-                        <?php endforeach; ?>
-                    </table>
-                </div>
+                                    <td class="project-status-<?= $projects->project_status->id ?>">
+                                        <?= $this->Html->link($projects->project_status->name, ['controller' => 'ProjectStatuses', 'action' => 'view', $projects->project_status->id]) ?>
+                                    </td>
+                                    <!-- <td><?= h($projects->created) ?></td> -->
+                                    <td class="actions">
+                                        <?= $this->Html->link(__('View'), ['controller' => 'Projects', 'action' => 'view', $projects->id]) ?>
+                                        <?= $this->Html->link(__('Edit'), ['controller' => 'Projects', 'action' => 'edit', $projects->id]) ?>
+                                        <?= $this->Form->postLink(__('Delete'), ['controller' => 'Projects', 'action' => 'delete', $projects->id], ['confirm' => __('Are you sure you want to delete # {0}?', $projects->id)]) ?>
+                                    </td>
+                                </tr>
+                            <?php endforeach; ?>
+                        </table>
+                    </div>
                 <?php endif; ?>
             </div>
         </div>

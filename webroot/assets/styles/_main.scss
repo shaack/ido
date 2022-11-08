@@ -2,8 +2,9 @@ main {
     margin-bottom: 10rem;
     table {
         @extend .table;
+        border-bottom: 4px solid $gray-200;
         thead {
-            background-color: $gray-400;
+            background-color: $gray-200;
             tr {
                 th {
                     color: $gray-600;
@@ -19,22 +20,22 @@ main {
                     background-color: $yellow-100;
                 }
                 td {
-                    &.project-status-2 * {
+                    &.project-status-2 a {
                         color: $success;
                     }
-                    &.project-status-3 *, &.project-status-16 *, &.project-status-18 *, &.project-status-20 * {
+                    &.project-status-3 a, &.project-status-16 a, &.project-status-18 a, &.project-status-20 a {
                         color: $gray-500;
                     }
-                    &.project-status-4 * {
+                    &.project-status-4 a {
                         color: $gray-600;
                     }
-                    &.project-status-10 * {
+                    &.project-status-10 a {
                         color: $blue;
                     }
-                    &.project-status-13 * {
+                    &.project-status-13 a {
                         color: $danger;
                     }
-                    &.project-status-14 * {
+                    &.project-status-14 a {
                         color: $teal;
                     }
                 }

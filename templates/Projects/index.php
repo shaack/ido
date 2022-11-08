@@ -43,7 +43,9 @@
                     <td><?= h($project->invoice_date) ?></td>
                     <!-- <td><?= h($project->paid_at) ?></td>
                     <td><?= $project->has('parent_project') ? $this->Html->link($project->parent_project->name, ['controller' => 'Projects', 'action' => 'view', $project->parent_project->id]) : '' ?></td> -->
-                    <td class="project-status-<?= $project->project_status->id ?>"><?= $project->has('project_status') ? $this->Html->link($project->project_status->name, ['controller' => 'ProjectStatuses', 'action' => 'view', $project->project_status->id]) : '' ?></td>
+                    <td class="project-status-<?= $project->project_status->id ?>">
+                        <?= $this->Html->link($project->project_status->name, ['controller' => 'ProjectStatuses', 'action' => 'view', $project->project_status->id]) ?>
+                    </td>
                     <!-- <td><?= h($project->created) ?></td> -->
                     <td class="actions">
                         <?= $this->Html->link(__('View'), ['action' => 'view', $project->id]) ?>
