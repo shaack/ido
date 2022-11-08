@@ -14,7 +14,7 @@
                     <button class="btn btn-success btn-sm btn-start" onclick="window.stopwatch.start(); return false;">start</button>
                     <button class="btn btn-warning btn-sm btn-stop" onclick="window.stopwatch.stop(); return false;">pause</button>
                     <button class="btn btn-danger btn-sm btn-reset" onclick="window.stopwatch.reset(); return false;">reset</button>
-                    <button class="btn btn-outline-primary btn-sm btn-stop" onclick="window.stopAndAdd(); return false;">stop and add</button>
+                    <button class="btn btn-outline-primary btn-sm btn-stop" onclick="window.stopAndAdd(); return false;">add and save</button>
                 </div>
                 <?php
                     echo $this->Form->control('task_id', ['options' => $tasks]);
@@ -39,6 +39,7 @@
 
     const stopwatchOutput = document.getElementById("stopwatch")
     const durationInput = document.getElementById("duration")
+    const form = document.getElementsByTagName("form")
     window.stopwatch = new Stopwatch({
         onTimeChanged: () => {
             const minutesExpired = stopwatch.secondsExpired() / 60
@@ -51,8 +52,7 @@
         }
         durationInput.value = "" + (parseFloat(durationInput.value.replace(",", ".")) + parseFloat(stopwatchOutput.value) / 60)
         stopwatchOutput.value = 0
-        window.stopwatch.stop()
-        window.stopwatch.reset()
+        form.submit()
     }
     stopwatch.start()
 </script>
