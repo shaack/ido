@@ -6,39 +6,36 @@
  */
 ?>
 <div class="row">
-    <aside class="column">
-        <div class="side-nav">
-            <h4 class="heading"><?= __('Actions') ?></h4>
-            <?= $this->Form->postLink(
-                __('Delete'),
-                ['action' => 'delete', $timeTracking->id],
-                ['confirm' => __('Are you sure you want to delete # {0}?', $timeTracking->id), 'class' => 'side-nav-item']
-            ) ?>
-            <?= $this->Html->link(__('List Time Trackings'), ['action' => 'index'], ['class' => 'side-nav-item']) ?>
-        </div>
-    </aside>
-    <div class="column-responsive column-80">
+    <div class="col-8">
         <div class="timeTrackings form content">
             <?= $this->Form->create($timeTracking) ?>
             <fieldset>
                 <legend><?= __('Edit Time Tracking') ?></legend>
-                <div class="stopwatch">
+                <div class="stopwatch mb-3">
                     <?= $this->Form->control('stopwatch'); ?>
-                    <button class="btn btn-success btn-start" onclick="window.stopwatch.start(); return false;">start</button>
-                    <button class="btn btn-warning btn-stop" onclick="window.stopwatch.stop(); return false;">pause</button>
-                    <button class="btn btn-danger btn-reset" onclick="window.stopwatch.reset(); return false;">reset</button>
-                    <button class="btn btn-primary btn-stop" onclick="window.stopAndAdd(); return false;">stop and add</button>
+                    <button class="btn btn-success btn-sm btn-start" onclick="window.stopwatch.start(); return false;">start</button>
+                    <button class="btn btn-warning btn-sm btn-stop" onclick="window.stopwatch.stop(); return false;">pause</button>
+                    <button class="btn btn-danger btn-sm btn-reset" onclick="window.stopwatch.reset(); return false;">reset</button>
+                    <button class="btn btn-outline-primary btn-sm btn-stop" onclick="window.stopAndAdd(); return false;">stop and add</button>
                 </div>
                 <?php
                     echo $this->Form->control('task_id', ['options' => $tasks]);
                     echo $this->Form->control('start', ['empty' => true]);
-                    echo $this->Form->control('pause');
+                    // echo $this->Form->control('pause');
                     echo $this->Form->control('duration');
                 ?>
             </fieldset>
             <?= $this->Form->button(__('Submit')) ?>
             <?= $this->Form->end() ?>
         </div>
+    </div>
+    <div class="col">
+        <?= $this->Form->postLink(
+            __('Delete'),
+            ['action' => 'delete', $timeTracking->id],
+            ['confirm' => __('Are you sure you want to delete # {0}?', $timeTracking->id), 'class' => 'side-nav-item']
+        ) ?>
+        <?= $this->Html->link(__('List Time Trackings'), ['action' => 'index'], ['class' => 'side-nav-item']) ?>
     </div>
 </div>
 <script type="module">

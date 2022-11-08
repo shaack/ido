@@ -22,7 +22,7 @@ class TimeTrackingsController extends AppController
     public function index()
     {
         $this->paginate = [
-            'contain' => ['Tasks'],
+            'contain' => ['Tasks', 'Tasks.Services', 'Tasks.Services.Projects.Customers'],
             'order' => ['id' => 'desc']
         ];
         $timeTrackings = $this->paginate($this->TimeTrackings);

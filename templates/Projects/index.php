@@ -5,7 +5,6 @@
  */
 ?>
 <div class="projects index content">
-    <?= $this->Html->link(__('New Project'), ['action' => 'add'], ['class' => 'button float-right']) ?>
     <h3><?= __('Projects') ?></h3>
     <div class="table-responsive">
         <table>
@@ -33,7 +32,8 @@
                 <tr>
                     <!-- <td><?= $this->Number->format($project->id) ?></td> -->
                     <td><?= $this->Html->link($project->name, ['action' => 'view', $project->id]) ?></td>
-                    <td><?= $project->has('customer') ? $this->Html->link($project->customer->name, ['controller' => 'Customers', 'action' => 'view', $project->customer->id]) : '' ?></td>
+                    <?php $customer = $project->customer ?>
+                    <td><?= $this->Html->link($customer->shortcut, ['controller' => 'Customers', 'action' => 'view', $customer->id], ['style' => 'color: ' . $customer->color]) ?></td>
                     <!-- <td><?= h($project->start) ?></td>
                     <td><?= h($project->end_est) ?></td>
                     <td><?= h($project->end) ?></td>
@@ -56,13 +56,15 @@
         </table>
     </div>
     <div class="paginator">
-        <ul class="pagination">
-            <?= $this->Paginator->first('<< ' . __('first')) ?>
-            <?= $this->Paginator->prev('< ' . __('previous')) ?>
-            <?= $this->Paginator->numbers() ?>
-            <?= $this->Paginator->next(__('next') . ' >') ?>
-            <?= $this->Paginator->last(__('last') . ' >>') ?>
-        </ul>
+        <?php if ($this->Paginator->hasPage(2)) { ?>
+            <ul class="pagination">
+                <?= $this->Paginator->first('<< ' . __('first')) ?>
+                <?= $this->Paginator->prev('< ' . __('previous')) ?>
+                <?= $this->Paginator->numbers() ?>
+                <?= $this->Paginator->next(__('next') . ' >') ?>
+                <?= $this->Paginator->last(__('last') . ' >>') ?>
+            </ul>
+        <?php } ?>
         <p><?= $this->Paginator->counter(__('Page {{page}} of {{pages}}, showing {{current}} record(s) out of {{count}} total')) ?></p>
     </div>
 </div>

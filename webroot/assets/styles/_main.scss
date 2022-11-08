@@ -38,5 +38,25 @@ main {
             }
         }
     }
+    form {
+        input[type='text'], select, input[type='number'], input[type='datetime-local'] {
+            @extend .form-control;
+            margin-bottom: 1rem;
+        }
+        button[type='submit'] {
+            @extend .btn;
+            @extend .btn-primary;
+        }
+    }
+    .message {
+        @extend .alert;
+        cursor: pointer;
+        &.success {
+            @extend .alert-success;
+        }
+        &.hidden {
+            display: none;
+        }
+    }
 }
 
