@@ -29,6 +29,7 @@ class ProjectsController extends AppController
         )));
         $this->paginate = [
             'contain' => ['Customers', 'ParentProjects', 'ProjectStatuses'],
+            'order' => ['invoice_number' => 'asc', 'id' => 'desc']
         ];
         $projects = $this->paginate($this->Projects, $options);
 

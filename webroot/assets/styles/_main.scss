@@ -19,22 +19,22 @@ main {
                     background-color: $yellow-100;
                 }
                 td {
-                    &.project-status-2 {
+                    &.project-status-2 * {
                         color: $success;
                     }
-                    &.project-status-3, &.project-status-16, &.project-status-18, &.project-status-20 {
+                    &.project-status-3 *, &.project-status-16 *, &.project-status-18 *, &.project-status-20 * {
                         color: $gray-500;
                     }
-                    &.project-status-4 {
-                        color: $gray-700;
+                    &.project-status-4 * {
+                        color: $gray-600;
                     }
-                    &.project-status-10 {
+                    &.project-status-10 * {
                         color: $blue;
                     }
-                    &.project-status-13 {
+                    &.project-status-13 * {
                         color: $danger;
                     }
-                    &.project-status-14 {
+                    &.project-status-14 * {
                         color: $teal;
                     }
                 }
@@ -88,6 +88,13 @@ main {
         }
         &.hidden {
             display: none;
+        }
+    }
+    .actions {
+        margin-bottom: 2rem;
+        a {
+            margin-right: 2rem;
+            text-decoration: none;
         }
     }
 }

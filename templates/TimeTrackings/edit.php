@@ -5,8 +5,6 @@
  * @var string[]|\Cake\Collection\CollectionInterface $tasks
  */
 ?>
-<div class="row">
-    <div class="col-8">
         <div class="timeTrackings form content">
             <?= $this->Form->create($timeTracking) ?>
             <fieldset>
@@ -28,16 +26,14 @@
             <?= $this->Form->button(__('Submit')) ?>
             <?= $this->Form->end() ?>
         </div>
-    </div>
-    <div class="col">
-        <?= $this->Form->postLink(
-            __('Delete'),
-            ['action' => 'delete', $timeTracking->id],
-            ['confirm' => __('Are you sure you want to delete # {0}?', $timeTracking->id), 'class' => 'side-nav-item']
-        ) ?>
-        <?= $this->Html->link(__('List Time Trackings'), ['action' => 'index'], ['class' => 'side-nav-item']) ?>
-    </div>
-</div>
+        <div class="actions">
+            <?= $this->Form->postLink(
+                __('Delete'),
+                ['action' => 'delete', $timeTracking->id],
+                ['confirm' => __('Are you sure you want to delete # {0}?', $timeTracking->id), 'class' => 'side-nav-item']
+            ) ?>
+            <?= $this->Html->link(__('List Time Trackings'), ['action' => 'index'], ['class' => 'side-nav-item']) ?>
+        </div>
 <script type="module">
     import {Stopwatch} from "/lib/cm-web-modules/stopwatch/Stopwatch.js";
 

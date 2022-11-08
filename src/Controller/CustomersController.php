@@ -36,7 +36,7 @@ class CustomersController extends AppController
     {
         $customer = $this->Customers->get($id, [
             'contain' => ['Contacts', 'Projects' => [
-                'sort' => ['Projects.id' => "desc"]
+                'sort' => ['Projects.start' => "desc"]
             ], 'Projects.ProjectStatuses']
         ]);
 
