@@ -18,57 +18,59 @@ $this->assign('title', $task->name);
             <h3><?= h($task->name) ?></h3>
             <div class="row">
                 <div class="col-md-8">
-            <table>
-                <tr>
-                    <th><?= __('Name') ?></th>
-                    <td><?= h($task->name) ?></td>
-                </tr>
-                <tr>
-                    <th><?= __('Service') ?></th>
-                    <td><?= $task->has('service') ? $this->Html->link($task->service->name, ['controller' => 'Services', 'action' => 'view', $task->service->id]) : '' ?></td>
-                </tr>
-                <tr>
-                    <th><?= __('Prio') ?></th>
-                    <td><?= $task->prio === null ? '' : $this->Number->format($task->prio) ?></td>
-                </tr>
-                <tr>
-                    <th><?= __('Duration Est') ?></th>
-                    <td><?= $task->duration_est === null ? '' : $this->Number->format($task->duration_est) ?></td>
-                </tr>
-                <tr>
-                    <th><?= __('Duration') ?></th>
-                    <td><?= $task->duration === null ? '' : $this->Number->format($task->duration) ?></td>
-                </tr>
-                <tr>
-                    <th><?= __('Start Est') ?></th>
-                    <td><?= h($task->start_est) ?></td>
-                </tr>
-                <tr>
-                    <th><?= __('Deadline') ?></th>
-                    <td><?= h($task->deadline) ?></td>
-                </tr>
-                <tr>
-                    <th><?= __('Created') ?></th>
-                    <td><?= h($task->created) ?></td>
-                </tr>
-                <tr>
-                    <th><?= __('Marked') ?></th>
-                    <td><?= $task->marked ? __('Yes') : __('No'); ?></td>
-                </tr>
-                <tr>
-                    <th><?= __('Done') ?></th>
-                    <td><?= $task->done ? __('Yes') : __('No'); ?></td>
-                </tr>
-            </table>
+                    <table>
+                        <tr>
+                            <th><?= __('Name') ?></th>
+                            <td><?= h($task->name) ?></td>
+                        </tr>
+                        <tr>
+                            <th><?= __('Service') ?></th>
+                            <td><?= $task->has('service') ? $this->Html->link($task->service->name, ['controller' => 'Services', 'action' => 'view', $task->service->id]) : '' ?></td>
+                        </tr>
+                        <tr>
+                            <th><?= __('Prio') ?></th>
+                            <td><?= $task->prio === null ? '' : $this->Number->format($task->prio) ?></td>
+                        </tr>
+                        <tr>
+                            <th><?= __('Duration Est') ?></th>
+                            <td><?= $task->duration_est === null ? '' : $this->Number->format($task->duration_est) ?></td>
+                        </tr>
+                        <tr>
+                            <th><?= __('Duration') ?></th>
+                            <td><?= $task->duration === null ? '' : $this->Number->format($task->duration) ?></td>
+                        </tr>
+                        <tr>
+                            <th><?= __('Start Est') ?></th>
+                            <td><?= h($task->start_est) ?></td>
+                        </tr>
+                        <tr>
+                            <th><?= __('Deadline') ?></th>
+                            <td><?= h($task->deadline) ?></td>
+                        </tr>
+                        <tr>
+                            <th><?= __('Created') ?></th>
+                            <td><?= h($task->created) ?></td>
+                        </tr>
+                        <tr>
+                            <th><?= __('Marked') ?></th>
+                            <td><?= $task->marked ? __('Yes') : __('No'); ?></td>
+                        </tr>
+                        <tr>
+                            <th><?= __('Done') ?></th>
+                            <td><?= $task->done ? __('Yes') : __('No'); ?></td>
+                        </tr>
+                    </table>
                 </div>
                 <div class="col">
                     <div class="text">
                         <strong><?= __('Notes') ?></strong>
                         <blockquote>
                             <?php
-                            $text = $this->Text->autoLink(h($task->notes));
-                            $text = $this->Text->autoParagraph($text);
-                            echo $text;
+                            if ($task->notes) {
+                                $text = $this->Text->autoLink(h($task->notes));
+                                $text = $this->Text->autoParagraph($text);
+                                echo $text;
+                            }
                             ?>
                         </blockquote>
                     </div>
@@ -79,32 +81,32 @@ $this->assign('title', $task->name);
                 <h4><?= __('Related Time Trackings') ?></h4>
                 <a href="/timeTrackings/add?task_id=<?= $task->id ?>">Start Tracking</a>
                 <?php if (!empty($task->time_trackings)) : ?>
-                <div class="table-responsive">
-                    <table>
-                        <tr>
-                            <th><?= __('Id') ?></th>
-                            <th><?= __('Task Id') ?></th>
-                            <th><?= __('Start') ?></th>
-                            <th><?= __('Pause') ?></th>
-                            <th><?= __('Duration') ?></th>
-                            <th class="actions"><?= __('Actions') ?></th>
-                        </tr>
-                        <?php foreach ($task->time_trackings as $timeTrackings) : ?>
-                        <tr>
-                            <td><?= h($timeTrackings->id) ?></td>
-                            <td><?= h($timeTrackings->task_id) ?></td>
-                            <td><?= h($timeTrackings->start) ?></td>
-                            <td><?= h($timeTrackings->pause) ?></td>
-                            <td><?= h($timeTrackings->duration) ?></td>
-                            <td class="actions">
-                                <?= $this->Html->link(__('View'), ['controller' => 'TimeTrackings', 'action' => 'view', $timeTrackings->id]) ?>
-                                <?= $this->Html->link(__('Edit'), ['controller' => 'TimeTrackings', 'action' => 'edit', $timeTrackings->id]) ?>
-                                <?= $this->Form->postLink(__('Delete'), ['controller' => 'TimeTrackings', 'action' => 'delete', $timeTrackings->id], ['confirm' => __('Are you sure you want to delete # {0}?', $timeTrackings->id)]) ?>
-                            </td>
-                        </tr>
-                        <?php endforeach; ?>
-                    </table>
-                </div>
+                    <div class="table-responsive">
+                        <table>
+                            <tr>
+                                <th><?= __('Id') ?></th>
+                                <th><?= __('Task Id') ?></th>
+                                <th><?= __('Start') ?></th>
+                                <th><?= __('Pause') ?></th>
+                                <th><?= __('Duration') ?></th>
+                                <th class="actions"><?= __('Actions') ?></th>
+                            </tr>
+                            <?php foreach ($task->time_trackings as $timeTrackings) : ?>
+                                <tr>
+                                    <td><?= h($timeTrackings->id) ?></td>
+                                    <td><?= h($timeTrackings->task_id) ?></td>
+                                    <td><?= h($timeTrackings->start) ?></td>
+                                    <td><?= h($timeTrackings->pause) ?></td>
+                                    <td><?= h($timeTrackings->duration) ?></td>
+                                    <td class="actions">
+                                        <?= $this->Html->link(__('View'), ['controller' => 'TimeTrackings', 'action' => 'view', $timeTrackings->id]) ?>
+                                        <?= $this->Html->link(__('Edit'), ['controller' => 'TimeTrackings', 'action' => 'edit', $timeTrackings->id]) ?>
+                                        <?= $this->Form->postLink(__('Delete'), ['controller' => 'TimeTrackings', 'action' => 'delete', $timeTrackings->id], ['confirm' => __('Are you sure you want to delete # {0}?', $timeTrackings->id)]) ?>
+                                    </td>
+                                </tr>
+                            <?php endforeach; ?>
+                        </table>
+                    </div>
                 <?php endif; ?>
             </div>
         </div>

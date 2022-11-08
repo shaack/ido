@@ -97,7 +97,7 @@ class ProjectsController extends AppController
                 $this->Flash->error(__('The project could not be saved. Please, try again.'));
             }
         }
-        $customers = $this->Projects->Customers->find('list', ['limit' => 1000])->all();
+        $customers = $this->Projects->Customers->find('list', ['limit' => 1000])->where(['Customers.current =' => true]);
         $parentProjects = $this->Projects->ParentProjects->find('list', ['limit' => 1000, 'order' => ['id' => 'DESC']])->all();
         $projectStatuses = $this->Projects->ProjectStatuses->find('list', ['limit' => 200])->all();
         $this->set(compact('project', 'customers', 'parentProjects', 'projectStatuses'));

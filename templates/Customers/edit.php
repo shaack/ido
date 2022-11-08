@@ -21,19 +21,27 @@
             <?= $this->Form->create($customer) ?>
             <fieldset>
                 <legend><?= __('Edit Customer') ?></legend>
-                <?php
-                    echo $this->Form->control('shortcut');
-                    echo $this->Form->control('hourly_rate');
-                    echo $this->Form->control('website');
-                    echo $this->Form->control('notes');
-                    echo $this->Form->control('color');
-                    echo $this->Form->control('current');
-                    echo $this->Form->control('name');
-                    echo $this->Form->control('street');
-                    echo $this->Form->control('zip_city');
-                    echo $this->Form->control('country');
-                    echo $this->Form->control('invoice_email');
-                ?>
+                <div class="row">
+                    <div class="col-md-6">
+                        <?php
+                        echo $this->Form->control('shortcut');
+                        echo $this->Form->control('hourly_rate');
+                        echo $this->Form->control('website');
+                        echo $this->Form->control('color');
+                        echo $this->Form->control('current');
+                        echo $this->Form->control('name');
+                        echo $this->Form->control('street');
+                        echo $this->Form->control('zip_city');
+                        echo $this->Form->control('country');
+                        echo $this->Form->control('invoice_email');
+                        ?>
+                    </div>
+                    <div class="col">
+                        <?php
+                            echo $this->Form->control('notes');
+                        ?>
+                    </div>
+                </div>
             </fieldset>
             <?= $this->Form->button(__('Submit')) ?>
             <?= $this->Form->end() ?>

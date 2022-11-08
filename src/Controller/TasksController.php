@@ -20,7 +20,7 @@ class TasksController extends AppController
     {
         $this->paginate = [
             'contain' => ['Services', 'Services.Projects', 'Services.Projects.Customers', 'TimeTrackings'],
-            'order' => ['marked' => 'desc', 'id' => 'desc']
+            'order' => ['marked' => 'desc', 'prio' => 'desc', 'id' => 'desc']
         ];
         $options = array('conditions' => array('done' => false));
         $tasks = $this->paginate($this->Tasks, $options);

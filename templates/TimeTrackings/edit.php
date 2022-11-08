@@ -50,6 +50,9 @@
         if(!durationInput.value) {
             durationInput.value = 0
         }
+        if(!stopwatchOutput.value) {
+            stopwatchOutput.value = 0
+        }
         durationInput.value = "" + (parseFloat(durationInput.value.replace(",", ".")) + parseFloat(stopwatchOutput.value) / 60)
         stopwatchOutput.value = 0
         form.submit()

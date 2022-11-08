@@ -1,41 +1,60 @@
 main {
     margin-bottom: 10rem;
+
+    a {
+        text-decoration: none;
+    }
+
     table {
         @extend .table;
         border-bottom: 4px solid $gray-200;
+
         thead {
             background-color: $gray-200;
+
             tr {
                 th {
                     color: $gray-600;
+
                     a {
                         color: $gray-800;
                     }
                 }
             }
         }
+
         tbody {
             tr {
                 &.task-marked {
-                    background-color: $yellow-100;
+                    background-color: lighten($yellow-100, 6%);
+                    font-weight: bolder;
                 }
+
                 td {
                     &.project-status-15 a {
                         color: $success;
                     }
+
                     &.project-status-20 a {
                         color: $teal;
                     }
+
                     &.project-status-25 a {
                         color: $cyan;
                     }
+
                     &.project-status-30 a {
                         color: $danger;
                     }
+
                     &.project-status-35 a {
                         color: $gray-600;
                     }
+
                     &.project-status-40 a, &.project-status-45 a, &.project-status-50 a, &.project-status-55 a {
+                        color: $gray-500;
+                    }
+                    &.actions a {
                         color: $gray-500;
                     }
                 }
@@ -47,55 +66,105 @@ main {
         @extend .btn;
         @extend .btn-primary;
     }
+
     .pagination {
         li {
             @extend .page-item;
+
             a {
                 @extend .page-link;
             }
         }
+
         li.active {
             a {
                 background-color: $gray-200;
             }
         }
     }
+
     form {
         margin-bottom: 4rem;
-        input[type='text'], select, input[type='number'], input[type='datetime-local'], input[type='date'],
-        textarea {
-            @extend .form-control;
+
+        .input {
             margin-bottom: 0.5rem;
         }
+        input[type='text'], input[type='number'], input[type='datetime-local'], input[type='date'],
+        textarea {
+            @extend .form-control;
+        }
+
+        select {
+            @extend .form-select;
+        }
+
         button[type='submit'] {
             @extend .btn;
             @extend .btn-primary;
+            padding-left: 3rem;
+            padding-right: 3rem;
         }
+
         div.checkbox {
             @extend .form-check;
+            margin-bottom: 0.5rem;
+
             input {
                 @extend .form-check-input;
             }
+
             label {
                 @extend .form-check-label;
             }
         }
+
+        fieldset {
+            margin-bottom: 1rem;
+        }
     }
+
     .message {
         @extend .alert;
         cursor: pointer;
+
         &.success {
             @extend .alert-success;
         }
+
         &.hidden {
             display: none;
         }
     }
+
     .actions {
         margin-bottom: 2rem;
+
         a {
             margin-right: 2rem;
             text-decoration: none;
+
+            &:last-child {
+                margin-right: 0;
+            }
+        }
+    }
+
+    .view.content {
+        .row {
+            margin-bottom: 1rem;
+        }
+        .actions {
+            margin-bottom: 1rem;
+        }
+        .text {
+            padding: 0.5rem;
+            strong {
+                display: block;
+                margin-bottom: 0.5rem;
+            }
+            blockquote {
+                margin-bottom: 1rem;
+            }
         }
     }
 }

@@ -3,6 +3,8 @@
  * @var \App\View\AppView $this
  * @var \App\Model\Entity\Customer $customer
  */
+
+$parsedown = new Parsedown();
 ?>
 <div class="row">
     <aside class="column">
@@ -16,71 +18,75 @@
     <div class="column-responsive column-80">
         <div class="customers view content">
             <h3><?= h($customer->name) ?></h3>
-            <table>
-                <tr>
-                    <th><?= __('Shortcut') ?></th>
-                    <td><?= h($customer->shortcut) ?></td>
-                </tr>
-                <tr>
-                    <th><?= __('Website') ?></th>
-                    <td><?= h($customer->website) ?></td>
-                </tr>
-                <tr>
-                    <th><?= __('Color') ?></th>
-                    <td><?= h($customer->color) ?></td>
-                </tr>
-                <tr>
-                    <th><?= __('Name') ?></th>
-                    <td><?= h($customer->name) ?></td>
-                </tr>
-                <tr>
-                    <th><?= __('Street') ?></th>
-                    <td><?= h($customer->street) ?></td>
-                </tr>
-                <tr>
-                    <th><?= __('Zip City') ?></th>
-                    <td><?= h($customer->zip_city) ?></td>
-                </tr>
-                <tr>
-                    <th><?= __('Country') ?></th>
-                    <td><?= h($customer->country) ?></td>
-                </tr>
-                <tr>
-                    <th><?= __('Invoice Email') ?></th>
-                    <td><?= h($customer->invoice_email) ?></td>
-                </tr>
-                <tr>
-                    <th><?= __('Id') ?></th>
-                    <td><?= $this->Number->format($customer->id) ?></td>
-                </tr>
-                <tr>
-                    <th><?= __('Hourly Rate') ?></th>
-                    <td><?= $customer->hourly_rate === null ? '' : $this->Number->format($customer->hourly_rate) ?></td>
-                </tr>
-                <tr>
-                    <th><?= __('Created') ?></th>
-                    <td><?= h($customer->created) ?></td>
-                </tr>
-                <tr>
-                    <th><?= __('Current') ?></th>
-                    <td><?= $customer->current ? __('Yes') : __('No'); ?></td>
-                </tr>
-            </table>
-            <div class="text">
-                <strong><?= __('Notes') ?></strong>
-                <blockquote>
-                    <?php
-                    if ($customer->notes) {
-                        $text = $this->Text->autoLink(h($customer->notes));
-                        $text = $this->Text->autoParagraph($text);
-                        echo $text;
-                    }
-                    ?>
-                </blockquote>
+            <div class="row">
+                <div class="col-md-6">
+                    <table>
+                        <tr>
+                            <th><?= __('Shortcut') ?></th>
+                            <td><?= h($customer->shortcut) ?></td>
+                        </tr>
+                        <tr>
+                            <th><?= __('Website') ?></th>
+                            <td><?= h($customer->website) ?></td>
+                        </tr>
+                        <tr>
+                            <th><?= __('Color') ?></th>
+                            <td><?= h($customer->color) ?></td>
+                        </tr>
+                        <tr>
+                            <th><?= __('Name') ?></th>
+                            <td><?= h($customer->name) ?></td>
+                        </tr>
+                        <tr>
+                            <th><?= __('Street') ?></th>
+                            <td><?= h($customer->street) ?></td>
+                        </tr>
+                        <tr>
+                            <th><?= __('Zip City') ?></th>
+                            <td><?= h($customer->zip_city) ?></td>
+                        </tr>
+                        <tr>
+                            <th><?= __('Country') ?></th>
+                            <td><?= h($customer->country) ?></td>
+                        </tr>
+                        <tr>
+                            <th><?= __('Invoice Email') ?></th>
+                            <td><?= h($customer->invoice_email) ?></td>
+                        </tr>
+                        <tr>
+                            <th><?= __('Id') ?></th>
+                            <td><?= $this->Number->format($customer->id) ?></td>
+                        </tr>
+                        <tr>
+                            <th><?= __('Hourly Rate') ?></th>
+                            <td><?= $customer->hourly_rate === null ? '' : $this->Number->format($customer->hourly_rate) ?></td>
+                        </tr>
+                        <tr>
+                            <th><?= __('Created') ?></th>
+                            <td><?= h($customer->created) ?></td>
+                        </tr>
+                        <tr>
+                            <th><?= __('Current') ?></th>
+                            <td><?= $customer->current ? __('Yes') : __('No'); ?></td>
+                        </tr>
+                    </table>
+                </div>
+                <div class="col">
+                    <?php if ($customer->notes) { ?>
+                    <div class="text">
+                        <strong><?= __('Notes') ?></strong>
+                        <blockquote>
+                            <?= $parsedown->parse(h($customer->notes)); ?>
+                        </blockquote>
+                    </div>
+                    <?php } ?>
+                </div>
             </div>
             <div class="related">
                 <h4><?= __('Related Contacts') ?></h4>
-                <a class="button-clear" href="/contacts/add?customer_id=<?= $customer->id ?>">Add Contact</a>
+                <div class="actions">
+                    <a class="button-clear" href="/contacts/add?customer_id=<?= $customer->id ?>">Add Contact</a>
+                </div>
                 <?php if (!empty($customer->contacts)) : ?>
                     <div class="table-responsive">
                         <table>
@@ -117,7 +123,9 @@
             </div>
             <div class="related">
                 <h4><?= __('Related Projects') ?></h4>
-                <a class="button-clear" href="/projects/add?customer_id=<?= $customer->id ?>">Add Project</a>
+                <div class="actions">
+                    <a class="button-clear" href="/projects/add?customer_id=<?= $customer->id ?>">Add Project</a>
+                </div>
                 <?php if (!empty($customer->projects)) : ?>
                     <div class="table-responsive">
                         <table>

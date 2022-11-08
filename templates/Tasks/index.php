@@ -50,7 +50,7 @@
                     <!-- <td><?= h($task->created) ?></td> -->
                     <!-- <td><?= h($task->done) ?></td> -->
                     <!-- <td><?= h($task->done_at) ?></td> -->
-                    <td style="text-align: right">
+                    <td class="text-end">
                         <!-- <?= $task->duration === null ? '' : $this->Number->format($task->duration) ?> // -->
                         <?php
                         $timeTrackings = $task->time_trackings;
