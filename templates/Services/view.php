@@ -26,10 +26,6 @@
                     <td><?= $service->has('project') ? $this->Html->link($service->project->name, ['controller' => 'Projects', 'action' => 'view', $service->project->id]) : '' ?></td>
                 </tr>
                 <tr>
-                    <th><?= __('Id') ?></th>
-                    <td><?= $this->Number->format($service->id) ?></td>
-                </tr>
-                <tr>
                     <th><?= __('Effort Est') ?></th>
                     <td><?= $service->effort_est === null ? '' : $this->Number->format($service->effort_est) ?></td>
                 </tr>
@@ -83,26 +79,26 @@
                             <th><?= __('Duration') ?></th>
                             <th class="actions"><?= __('Actions') ?></th>
                         </tr>
-                        <?php foreach ($service->tasks as $tasks) : ?>
+                        <?php foreach ($service->tasks as $task) : ?>
                         <tr>
-                            <!-- <td><?= h($tasks->id) ?></td> -->
-                            <td><?= h($tasks->done) ?></td>
-                            <td><?= h($tasks->marked) ?></td>
-                            <td><?= $this->Html->link($tasks->name, ['controller' => 'Tasks', 'action' => 'view', $tasks->id]) ?></td>
-                            <td><?= h($tasks->prio) ?></td>
-                            <!-- <td><?= h($tasks->start_est) ?></td>
-                            <td><?= h($tasks->deadline) ?></td>
-                            <td><?= h($tasks->duration_est) ?></td> -->
-                            <!-- <td><?= h($tasks->link) ?></td>
-                            <td><?= h($tasks->service_id) ?></td>
-                            <td><?= h($tasks->created) ?></td>
-                            <td><?= h($tasks->notes) ?></td> -->
-                            <!-- <td><?= h($tasks->done_at) ?></td> -->
-                            <td><?= h($tasks->duration) ?></td>
+                            <!-- <td><?= h($task->id) ?></td> -->
+                            <td><?= h($task->done) ?></td>
+                            <td><?= h($task->marked) ?></td>
+                            <td><?= $this->Html->link($task->name, ['controller' => 'Tasks', 'action' => 'view', $task->id]) ?></td>
+                            <td><?= h($task->prio) ?></td>
+                            <!-- <td><?= h($task->start_est) ?></td>
+                            <td><?= h($task->deadline) ?></td>
+                            <td><?= h($task->duration_est) ?></td> -->
+                            <!-- <td><?= h($task->link) ?></td>
+                            <td><?= h($task->service_id) ?></td>
+                            <td><?= h($task->created) ?></td>
+                            <td><?= h($task->notes) ?></td> -->
+                            <!-- <td><?= h($task->done_at) ?></td> -->
+                            <td><?= h($task->duration) ?></td>
                             <td class="actions">
-                                <?= $this->Html->link(__('View'), ['controller' => 'Tasks', 'action' => 'view', $tasks->id]) ?>
-                                <?= $this->Html->link(__('Edit'), ['controller' => 'Tasks', 'action' => 'edit', $tasks->id]) ?>
-                                <?= $this->Form->postLink(__('Delete'), ['controller' => 'Tasks', 'action' => 'delete', $tasks->id], ['confirm' => __('Are you sure you want to delete # {0}?', $tasks->id)]) ?>
+                                <?= $this->Html->link(__('View'), ['controller' => 'Tasks', 'action' => 'view', $task->id]) ?>
+                                <?= $this->Html->link(__('Edit'), ['controller' => 'Tasks', 'action' => 'edit', $task->id]) ?>
+                                <?= $this->Form->postLink(__('Delete'), ['controller' => 'Tasks', 'action' => 'delete', $task->id], ['confirm' => __('Are you sure you want to delete # {0}?', $task->id)]) ?>
                             </td>
                         </tr>
                         <?php endforeach; ?>

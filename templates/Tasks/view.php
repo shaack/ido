@@ -84,19 +84,16 @@ $this->assign('title', $task->name);
                     <div class="table-responsive">
                         <table>
                             <tr>
-                                <th><?= __('Id') ?></th>
-                                <th><?= __('Task Id') ?></th>
                                 <th><?= __('Start') ?></th>
-                                <th><?= __('Pause') ?></th>
                                 <th><?= __('Duration') ?></th>
                                 <th class="actions"><?= __('Actions') ?></th>
                             </tr>
-                            <?php foreach ($task->time_trackings as $timeTrackings) : ?>
+                            <?php $durationSum = 0 ?>
+                            <?php foreach ($task->time_trackings as $timeTrackings) :
+                                $durationSum += $timeTrackings->duration;
+                                ?>
                                 <tr>
-                                    <td><?= h($timeTrackings->id) ?></td>
-                                    <td><?= h($timeTrackings->task_id) ?></td>
                                     <td><?= h($timeTrackings->start) ?></td>
-                                    <td><?= h($timeTrackings->pause) ?></td>
                                     <td><?= h($timeTrackings->duration) ?></td>
                                     <td class="actions">
                                         <?= $this->Html->link(__('View'), ['controller' => 'TimeTrackings', 'action' => 'view', $timeTrackings->id]) ?>
@@ -105,6 +102,10 @@ $this->assign('title', $task->name);
                                     </td>
                                 </tr>
                             <?php endforeach; ?>
+                            <tr>
+                                <td></td>
+                                <td><b><?= $durationSum ?></b></td>
+                            </tr>
                         </table>
                     </div>
                 <?php endif; ?>
