@@ -85,7 +85,11 @@ $parsedown = new Parsedown();
                         <div class="text">
                             <strong><?= __('Notes') ?></strong>
                             <blockquote>
-                                <?= $parsedown->parse(h($project->notes)); ?>
+                                <?php
+                                $text = h($project->notes);
+                                $text = preg_replace('/(?:^|\s)#(\w+)/', ' <span class="text-info">#$1</span>', $text);
+                                ?>
+                                <?= $parsedown->parse($text); ?>
                             </blockquote>
                         </div>
                     <?php } ?>
@@ -164,24 +168,27 @@ $parsedown = new Parsedown();
                                 <!-- <th><?= __('Id') ?></th> -->
                                 <th><?= __('Name') ?></th>
                                 <!-- <th><?= __('Project Id') ?></th> -->
-                                <th><?= __('Effort Est') ?></th>
+                                <th  class="text-end"><?= __('Effort Est') ?></th>
                                 <!-- <th><?= __('Estimation Or Fixed Price') ?></th> -->
-                                <th><?= __('Effort') ?></th>
-                                <th><?= __('Costs') ?></th>
+                                <th  class="text-end"><?= __('Effort') ?></th>
+                                <th  class="text-end"><?= __('Costs') ?></th>
                                 <!-- <th><?= __('Notes') ?></th> -->
                                 <!-- <th><?= __('Sort') ?></th> -->
                                 <!-- <th><?= __('Created') ?></th> -->
                                 <th class="actions"><?= __('Actions') ?></th>
                             </tr>
-                            <?php foreach ($project->services as $services) : ?>
+                            <?php $effortSum = 0;
+                            foreach ($project->services as $services) :
+                                $effortSum += $services->effort();
+                                ?>
                                 <tr>
                                     <!-- <td><?= h($services->id) ?></td> -->
                                     <td><?= $this->Html->link($services->name, ['controller' => 'Services', 'action' => 'view', $services->id]) ?></td>
                                     <!-- <td><?= h($services->project_id) ?></td> -->
-                                    <td><?= h($services->effort_est) ?></td>
+                                    <td  class="text-end"><?= h($services->effort_est) ?></td>
                                     <!-- <td><?= h($services->estimation_or_fixed_price) ?></td> -->
-                                    <td><?= h($services->effort) ?></td>
-                                    <td><?= h($services->costs) ?></td>
+                                    <td class="text-end"><?= h($services->effort()) ?></td>
+                                    <td class="text-end"><?= $this->Number->currency($services->costs()) ?></td>
                                     <!-- <td><?= h($services->notes) ?></td>
                             <td><?= h($services->sort) ?></td>
                             <td><?= h($services->created) ?></td> -->
@@ -192,6 +199,12 @@ $parsedown = new Parsedown();
                                     </td>
                                 </tr>
                             <?php endforeach; ?>
+                            <tr>
+                                <td></td>
+                                <td></td>
+                                <td class="text-end"><b><?= $effortSum ?></b></td>
+                                <td class="text-end"><b><?= $this->Number->currency($effortSum * $project->hourly_rate) ?></b></td>
+                            </tr>
                         </table>
                     </div>
                 <?php endif; ?>

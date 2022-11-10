@@ -46,4 +46,17 @@ class Service extends Entity
         'project' => true,
         'tasks' => true,
     ];
+
+    function effort() {
+        $tasks = $this->tasks;
+        $sum = 0.0;
+        foreach ($tasks as $task) {
+            $sum += $task->duration();
+        }
+        return round($sum * 4) / 4;
+    }
+
+    function costs() {
+        return $this->effort() * $this->project->customer->hourly_rate;
+    }
 }

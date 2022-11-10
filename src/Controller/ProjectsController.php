@@ -46,7 +46,8 @@ class ProjectsController extends AppController
     public function view($id = null)
     {
         $project = $this->Projects->get($id, [
-            'contain' => ['Customers', 'ParentProjects', 'ProjectStatuses', 'ChildProjects', 'Services'],
+            'contain' => ['Customers', 'ParentProjects', 'ProjectStatuses', 'ChildProjects',
+                'Services', 'Services.Projects.Customers', 'Services.Tasks', 'Services.Tasks.TimeTrackings'],
         ]);
 
         $this->set(compact('project'));

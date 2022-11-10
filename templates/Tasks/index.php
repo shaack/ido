@@ -53,11 +53,11 @@
                     <td class="text-end">
                         <!-- <?= $task->duration === null ? '' : $this->Number->format($task->duration) ?> // -->
                         <?php
-                        $timeTrackings = $task->time_trackings;
-                        $sum = 0.0;
-                        foreach ($timeTrackings as $timeTracking) {
-                            $sum += $timeTracking->duration;
-                        }
+                            $timeTrackings = $task->time_trackings;
+                            $sum = 0.0;
+                            foreach ($timeTrackings as $timeTracking) {
+                                $sum += $timeTracking->duration;
+                            }
                             echo(round($sum * 4) / 4);
                         ?>
                     </td>

@@ -54,4 +54,13 @@ class Task extends Entity
         'service' => true,
         'time_trackings' => true,
     ];
+
+    function duration() {
+        $timeTrackings = $this->time_trackings;
+        $sum = 0.0;
+        foreach ($timeTrackings as $timeTracking) {
+            $sum += $timeTracking->duration;
+        }
+        return round($sum * 4) / 4;
+    }
 }

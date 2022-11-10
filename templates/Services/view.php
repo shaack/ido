@@ -35,7 +35,7 @@
                 </tr>
                 <tr>
                     <th><?= __('Effort') ?></th>
-                    <td><?= $service->effort === null ? '' : $this->Number->format($service->effort) ?></td>
+                    <td><?= $service->effort() ?></td>
                 </tr>
                 <tr>
                     <th><?= __('Costs') ?></th>
@@ -94,7 +94,10 @@
                             <td><?= h($task->created) ?></td>
                             <td><?= h($task->notes) ?></td> -->
                             <!-- <td><?= h($task->done_at) ?></td> -->
-                            <td><?= h($task->duration) ?></td>
+                            <td>
+                                <?php
+                                print_r($task->duration());
+                                ?></td>
                             <td class="actions">
                                 <?= $this->Html->link(__('View'), ['controller' => 'Tasks', 'action' => 'view', $task->id]) ?>
                                 <?= $this->Html->link(__('Edit'), ['controller' => 'Tasks', 'action' => 'edit', $task->id]) ?>
