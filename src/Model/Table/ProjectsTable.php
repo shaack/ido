@@ -50,6 +50,7 @@ class ProjectsTable extends Table
         $this->setPrimaryKey('id');
 
         $this->addBehavior('Timestamp');
+        $this->addBehavior('PreserveNull');
 
         $this->belongsTo('Customers', [
             'foreignKey' => 'customer_id',

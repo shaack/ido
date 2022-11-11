@@ -4,6 +4,7 @@
  * @var \App\Model\Entity\Task $task
  */
 
+$parsedown = new Parsedown();
 $this->assign('title', $task->name);
 ?>
 <div class="actions">
@@ -62,19 +63,18 @@ $this->assign('title', $task->name);
                     </table>
                 </div>
                 <div class="col">
-                    <div class="text">
-                        <strong><?= __('Notes') ?></strong>
-                        <blockquote>
-                            <?php
-                            if ($task->notes) {
-                                $text = $this->Text->autoLink(h($task->notes));
-                                $text = $this->Text->autoParagraph($text);
-                                echo $text;
-                            }
-                            ?>
-                        </blockquote>
-                    </div>
-
+                    <?php if($task->notes) { ?>
+                        <div class="text">
+                            <strong><?= __('Notes') ?></strong>
+                            <blockquote>
+                                <?php
+                                $text = h($task->notes);
+                                $text = preg_replace('/(?:^|\s)#(\w+)/', ' <span class="text-info">#$1</span>', $text);
+                                ?>
+                                <?= $parsedown->parse($text); ?>
+                            </blockquote>
+                        </div>
+                    <?php } ?>
                 </div>
             </div>
             <div class="related">
