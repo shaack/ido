@@ -12,28 +12,34 @@
             <?= $this->Html->link(__('List Tasks'), ['action' => 'index'], ['class' => 'side-nav-item']) ?>
         </div>
     </aside>
-    <div class="column-responsive column-80">
-        <div class="tasks form content">
-            <?= $this->Form->create($task) ?>
-            <fieldset>
-                <legend><?= __('Add Task') ?></legend>
-                <?php
+    <div class="tasks form content">
+        <?= $this->Form->create($task) ?>
+        <fieldset>
+            <legend><?= __('Edit Task') ?></legend>
+            <div class="row">
+                <div class="col-md-8">
+                    <?php
+                    echo $this->Form->control('done');
                     echo $this->Form->control('marked');
-                    echo $this->Form->control('prio');
                     echo $this->Form->control('name');
+                    echo $this->Form->control('prio');
                     echo $this->Form->control('start_est', ['empty' => true]);
                     echo $this->Form->control('deadline', ['empty' => true]);
                     echo $this->Form->control('duration_est');
-                    echo $this->Form->control('link');
+                    // echo $this->Form->control('link');
                     echo $this->Form->control('service_id', ['options' => $services, 'empty' => true]);
-                    echo $this->Form->control('notes');
-                    echo $this->Form->control('done');
-                    echo $this->Form->control('done_at', ['empty' => true]);
-                    echo $this->Form->control('duration');
-                ?>
-            </fieldset>
-            <?= $this->Form->button(__('Submit')) ?>
-            <?= $this->Form->end() ?>
-        </div>
+                    // echo $this->Form->control('done_at', ['empty' => true]);
+                    // echo $this->Form->control('duration');
+                    ?>
+                </div>
+                <div class="col">
+                    <?php
+                    echo $this->Form->control('notes', ['rows' => '15']);
+                    ?>
+                </div>
+            </div>
+        </fieldset>
+        <?= $this->Form->button(__('Submit')) ?>
+        <?= $this->Form->end() ?>
     </div>
 </div>
