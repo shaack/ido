@@ -22,3 +22,40 @@
 @import "header"; // css for the navigation and header
 @import "footer"; // css for the page footer
 @import "blocks"; // one scss file for every "block" (aka section or module) in your layout or CMS
+
+body {
+    font-size: 78% !important;
+    line-height: 1.25;
+    padding: 2rem 2rem 1rem 4rem;
+    * {
+        color: $black !important;
+    }
+}
+h1 {
+    font-size: 28px;
+    font-weight: normal;
+}
+h2 {
+    font-size: 20px;
+    font-weight: normal;
+}
+table.table {
+    border-color: $gray-400;
+    thead {
+        background-color: transparent;
+    }
+    tr {
+        background-color: transparent;
+    }
+    th, td {
+        padding: 0.3rem 0;
+        border-color: $gray-400;
+    }
+}
+form {
+    margin-bottom: 1rem !important;
+}
+
+main {
+    margin-bottom: 0;
+}

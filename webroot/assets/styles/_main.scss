@@ -60,6 +60,34 @@ main {
                 }
             }
         }
+        &.data {
+            border: none;
+            max-width: 12cm;
+            th, td {
+                padding: 0 0 0.3rem;
+                border: none;
+            }
+            th {
+                white-space: nowrap;
+                padding-right: 1rem;
+            }
+            td {
+                font-family: $font-family-monospace;
+                width: 100%;
+            }
+        }
+        &.sum {
+            border: none;
+            th, td {
+                padding-top: 0;
+                border: none;
+                b {
+
+                }
+            }
+            th {
+            }
+        }
     }
 
     .button {
@@ -167,6 +195,9 @@ main {
                 margin-bottom: 1rem;
             }
         }
+    }
+    .code {
+        font-family: $font-family-monospace;
     }
 }
 

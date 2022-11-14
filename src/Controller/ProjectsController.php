@@ -63,18 +63,28 @@ class ProjectsController extends AppController
             'contain' => ['Customers', 'ParentProjects', 'ProjectStatuses', 'ChildProjects',
                 'Services', 'Services.Projects.Customers', 'Services.Tasks', 'Services.Tasks.TimeTrackings'],
         ]);
-        $latestInvoiceNumber = null;
-        if($project) {
+        if ($this->request->is(['post', 'patch', 'put'])) {
+            $project = $this->Projects->patchEntity($project, $this->request->getData());
+            if ($this->Projects->save($project)) {
+                $this->Flash->success(__('The Invoice has been saved.'));
+            } else {
+                $this->Flash->error(__('The project could not be saved. Please, try again.'));
+            }
+        }
+        $invoiceStored = true;
+        if($project && !$project->invoice_number) {
             $latestInvoiceNumber = $this->Projects->find('all', [
                 'fields' => ['amount' => 'MAX(Projects.invoice_number)']
             ])->first()->amount;
-            // $project->invoice_number = $latestInvoice->;
-            // var_dump($latestInvoice);
+            $project->invoice_number = $latestInvoiceNumber + 1;
+            $project->invoice_date = new FrozenDate();
+            $invoiceStored = false;
+            if(!$project->end) {
+                $project->end = new FrozenDate();
+            }
         }
         $this->viewBuilder()->setLayout('print');
-        $project->invoice_number = $latestInvoiceNumber + 1;
-        $project->invoice_date = new FrozenDate();
-        $this->set(compact('project'));
+        $this->set(compact('project', 'invoiceStored'));
     }
 
     /**

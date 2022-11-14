@@ -64,4 +64,29 @@ class Project extends Entity
         'child_projects' => true,
         'services' => true,
     ];
+
+    function effort()
+    {
+        $services = $this->services;
+        $sum = 0.0;
+        foreach ($services as $service) {
+            $sum += $service->effort();
+        }
+        return round($sum * 4) / 4;
+    }
+
+    function costs()
+    {
+        return $this->effort() * $this->customer->hourly_rate;
+    }
+
+    function vat()
+    {
+        return $this->costs() * 0.19;
+    }
+
+    function total()
+    {
+        return $this->costs() + $this->vat();
+    }
 }
