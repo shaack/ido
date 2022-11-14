@@ -12,6 +12,7 @@
         <div class="actions row">
             <div class="col">
             <?= $this->Html->link(__('View Project'), ['action' => 'view',  $project->id]) ?>
+            <?= $this->Html->link(__('View Invoice'), ['action' => 'invoice',  $project->id]) ?>
             <?= $this->Html->link(__('List Projects'), ['action' => 'index']) ?>
             </div>
             <div class="col-auto text-end">

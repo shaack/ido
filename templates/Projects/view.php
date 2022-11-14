@@ -10,6 +10,7 @@ $parsedown = new Parsedown();
     <aside class="column">
         <div class="actions">
             <?= $this->Html->link(__('Edit Project'), ['action' => 'edit', $project->id], ['class' => 'side-nav-item']) ?>
+            <?= $this->Html->link(__('View Invoice'), ['action' => 'invoice',  $project->id]) ?>
             <?= $this->Html->link(__('List Projects'), ['action' => 'index'], ['class' => 'side-nav-item']) ?>
         </div>
     </aside>

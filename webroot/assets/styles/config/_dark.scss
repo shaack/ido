@@ -2,7 +2,7 @@
 
 $black: #fff;
 $white: #000;
-$pow: 1.8;
+$pow: 1.4;
 
 @function createGray($level) {
     $percent: $level / 10;
@@ -20,15 +20,8 @@ $gray-700: createGray(700);
 $gray-800: createGray(800);
 $gray-900: createGray(900);
 
-$body-bg: $gray-300;
-$primary: #135cc9;
+// $body-bg: $gray-100;
+$primary: #1161d5;
 
-// $body-color: $gray-900;
-// $body-bg: $gray-300;
-
-// $primary: #0658d3;
-// $link-color: $primary;
-
-// $bg-light: $gray-800;
-
-
+$alert-bg-scale: 70%;
+$alert-border-scale: 70%;

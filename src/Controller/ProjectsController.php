@@ -3,6 +3,8 @@ declare(strict_types=1);
 
 namespace App\Controller;
 
+use Cake\I18n\FrozenDate;
+
 /**
  * Projects Controller
  *
@@ -50,6 +52,28 @@ class ProjectsController extends AppController
                 'Services', 'Services.Projects.Customers', 'Services.Tasks', 'Services.Tasks.TimeTrackings'],
         ]);
 
+        $this->set(compact('project'));
+    }
+
+    /**
+     *
+     */
+    public function invoice($id) {
+        $project = $this->Projects->get($id, [
+            'contain' => ['Customers', 'ParentProjects', 'ProjectStatuses', 'ChildProjects',
+                'Services', 'Services.Projects.Customers', 'Services.Tasks', 'Services.Tasks.TimeTrackings'],
+        ]);
+        $latestInvoiceNumber = null;
+        if($project) {
+            $latestInvoiceNumber = $this->Projects->find('all', [
+                'fields' => ['amount' => 'MAX(Projects.invoice_number)']
+            ])->first()->amount;
+            // $project->invoice_number = $latestInvoice->;
+            // var_dump($latestInvoice);
+        }
+        $this->viewBuilder()->setLayout('print');
+        $project->invoice_number = $latestInvoiceNumber + 1;
+        $project->invoice_date = new FrozenDate();
         $this->set(compact('project'));
     }
 

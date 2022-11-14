@@ -26,7 +26,7 @@ main {
         tbody {
             tr {
                 &.task-marked {
-                    background-color: mix($yellow-100, $white, 10);
+                    background-color: mix($yellow-100, $white, 5);
                     font-weight: bolder;
                 }
 
