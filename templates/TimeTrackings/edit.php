@@ -63,6 +63,7 @@ $this->assign('title', "⏱️ " . $timeTracking->task->name);
     })
     window.start = () => {
         notifications.requestPermission()
+        notificationShown = false
         window.stopwatch.start()
     }
     window.stopAndAdd = () => {
