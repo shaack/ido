@@ -19,7 +19,7 @@ $this->assign('title', "⏱️ " . $timeTracking->task->name);
 <div class="timeTrackings form content">
     <?= $this->Form->create($timeTracking) ?>
     <fieldset>
-        <legend><?= __('Time Tracking') ?> <?= $timeTracking->task->name ?></legend>
+        <legend><?= __('Time Tracking') ?>: <?= $timeTracking->task->name ?></legend>
         <div class="stopwatch mb-3">
             <?= $this->Form->control('stopwatch'); ?>
             <button class="btn btn-success btn-sm btn-start" onclick="window.start(); return false;">start
