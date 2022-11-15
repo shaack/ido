@@ -22,7 +22,7 @@ $this->assign('title', "⏱️ " . $timeTracking->task->name);
         <legend><?= __('Time Tracking') ?> <?= $timeTracking->task->name ?></legend>
         <div class="stopwatch mb-3">
             <?= $this->Form->control('stopwatch'); ?>
-            <button class="btn btn-success btn-sm btn-start" onclick="window.stopwatch.start(); return false;">start
+            <button class="btn btn-success btn-sm btn-start" onclick="window.start(); return false;">start
             </button>
             <button class="btn btn-warning btn-sm btn-stop" onclick="window.stopwatch.stop(); return false;">pause
             </button>
@@ -44,16 +44,27 @@ $this->assign('title', "⏱️ " . $timeTracking->task->name);
 </div>
 <script type="module">
     import {Stopwatch} from "/lib/cm-web-modules/stopwatch/Stopwatch.js";
+    import {Notifications} from "../../webroot/lib/cm-web-modules/notifications/Notifications.js";
 
     const stopwatchOutput = document.getElementById("stopwatch")
     const durationInput = document.getElementById("duration")
     const form = document.getElementsByTagName("form")
+    let notificationShown = false
+    const notifications = new Notifications()
     window.stopwatch = new Stopwatch({
         onTimeChanged: () => {
             const minutesExpired = stopwatch.secondsExpired() / 60
+            if(minutesExpired >= 25 && !notificationShown) {
+                notificationShown = true
+                notifications.show("25 Minutes expired", "<?= h($timeTracking->task->name) ?>")
+            }
             stopwatchOutput.value = Math.round(minutesExpired * 100) / 100
         }
     })
+    window.start = () => {
+        notifications.requestPermission()
+        window.stopwatch.start()
+    }
     window.stopAndAdd = () => {
         if (!durationInput.value) {
             durationInput.value = 0

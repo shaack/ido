@@ -12,7 +12,7 @@
     "description": "",
     "dependencies": {
         "bootstrap": "^5.2.2",
-        "cm-web-modules": "^1.18.8",
+        "cm-web-modules": "^1.18.9",
         "modlib": "^1.2.10"
     }
 }
