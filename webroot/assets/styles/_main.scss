@@ -90,6 +90,17 @@ main {
         }
         a {
             display: block;
+            &.hover-bg {
+                border-radius: 4px;
+                padding: 0 4px;
+                &:hover {
+                    background-color: $primary;
+                    color: $white;
+                    * {
+                        color: $white;
+                    }
+                }
+            }
         }
     }
 
