@@ -16,7 +16,7 @@
             <tr>
                 <th><?= $this->Paginator->sort('name') ?></th>
                 <th><?= $this->Paginator->sort('prio') ?></th>
-                <th class="text-center">Track</th>
+                <th class="text-end"><?= $this->Paginator->sort('Track') ?></th>
                 <th><?= $this->Paginator->sort('start') ?></th>
                 <th><?= $this->Paginator->sort('deadline') ?></th>
                 <th><?= $this->Paginator->sort('customer_id') ?></th>
@@ -42,13 +42,13 @@
                         echo $icon;
                         ?></td>
                     <td class="text-end">
-                        <a class="text-nowrap hover-bg" href="/timeTrackings/add?task_id=<?= $task->id ?>"><?= $task->duration() > 0 ? $this->Number->format($task->duration()) : ''; ?> ⏱️</a>
+                        <a class="text-nowrap hover-bg" target="_blank" href="/timeTrackings/add?task_id=<?= $task->id ?>"><?= $task->duration() > 0 ? $this->Number->format($task->duration()) : ''; ?> ⏱️</a>
                     </td>
                     <td><?= h($task->start_est) ?></td>
                     <td><?= h($task->deadline) ?></td>
                     <?php $customer = $task->service->project->customer ?>
                     <td><?= $this->Html->link($customer->shortcut, ['controller' => 'Customers', 'action' => 'view', $customer->id], ['style' => 'color: ' . $customer->color]) ?></td>
-                    <td><?= $task->has('service') ? $this->Html->link($this->Text->truncate($task->service->name, 64), ['controller' => 'Services', 'action' => 'view', $task->service->id]) : '' ?></td>
+                    <td><?= $task->has('service') ? $this->Html->link($this->Text->truncate($task->service->name,  32), ['controller' => 'Services', 'action' => 'view', $task->service->id]) : '' ?></td>
                     <td><?= $this->Html->link($this->Text->truncate($task->service->project->name, 64), ['controller' => 'Projects', 'action' => 'view', $task->service->project->id]) ?></td>
                 </tr>
             <?php endforeach; ?>
