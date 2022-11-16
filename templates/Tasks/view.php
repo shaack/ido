@@ -93,7 +93,7 @@ $this->assign('title', $task->name);
                                 $durationSum += $timeTrackings->duration;
                                 ?>
                                 <tr>
-                                    <td><?= h($timeTrackings->start) ?></td>
+                                    <td><?= h($timeTrackings->created) ?></td>
                                     <td><?= h($timeTrackings->duration) ?></td>
                                     <td class="actions">
                                         <?= $this->Html->link(__('View'), ['controller' => 'TimeTrackings', 'action' => 'view', $timeTrackings->id]) ?>
@@ -103,8 +103,9 @@ $this->assign('title', $task->name);
                                 </tr>
                             <?php endforeach; ?>
                             <tr>
-                                <td></td>
-                                <td><b><?= $durationSum ?></b></td>
+                                <td class="text-end border-top border-2"</td>
+                                <td class="border-top border-2"><b><?= $durationSum ?></b></td>
+                                <td class="text-end border-top border-2"</td>
                             </tr>
                         </table>
                     </div>
