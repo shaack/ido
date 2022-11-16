@@ -35,8 +35,8 @@
             <tbody>
             <?php foreach ($tasks as $task): ?>
                 <tr class="<?= $task->marked ? 'task-marked' : '' ?>">
-                    <td><?= $this->Html->link($task->name ? $task->name : "- - - - -",
-                            ['action' => 'view', $task->id]) ?></td>
+                    <td><?= $this->Html->link($task->name ? $task->name : "=> " . $task->service->name,
+                            ['action' => 'view', $task->id], ['class' => $task->name ? '' : '']) ?></td>
                     <td class="text-end">
                         <a class="text-nowrap" href="/timeTrackings/add?task_id=<?= $task->id ?>"><?= $task->duration() > 0 ? $this->Number->format($task->duration()) : ''; ?> ⏱️</a>
                     </td>

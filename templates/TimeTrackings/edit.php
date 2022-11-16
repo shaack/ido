@@ -20,7 +20,7 @@ $this->assign('title', "⏱️ " . $timeTracking->task->name);
 <div class="timeTrackings form content">
     <?= $this->Form->create($timeTracking) ?>
     <fieldset>
-        <legend><?= __('Time Tracking') ?>: <?= $timeTracking->task->name ?></legend>
+        <legend><?= __('Time Tracking') ?>: <?= $timeTracking->task->name ?: "=> " . $timeTracking->task->service->name ?></legend>
         <div class="stopwatch mb-3">
             <?= $this->Form->control('stopwatch'); ?>
             <div class="progress mb-2">
