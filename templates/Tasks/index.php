@@ -27,8 +27,8 @@
             <tbody>
             <?php foreach ($tasks as $task): ?>
                 <tr class="<?= $task->marked ? 'task-marked' : '' ?>">
-                    <td><?= $this->Html->link($task->name ? $task->name : "=> " . $task->service->name,
-                            ['action' => 'view', $task->id], ['class' => $task->name ? '' : '']) ?></td>
+                    <td><?= $this->Html->link($task->name ? $this->Text->truncate($task->name, 80) : $task->service->name,
+                            ['action' => 'view', $task->id], ['class' => $task->name ? '' : 'opacity-50']) ?></td>
                     <td class="text-end"><?php
                         $icon = "";
                         switch($task->prio) {

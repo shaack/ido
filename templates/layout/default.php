@@ -66,7 +66,7 @@ $controller = $this->request->getParam('controller')
     </nav>
 </header>
 <main class="main">
-    <div class="container-fluid max-width-xxl">
+    <div class="container-fluid">
         <?= $this->Flash->render() ?>
         <?= $this->fetch('content') ?>
     </div>
