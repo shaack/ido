@@ -21,10 +21,11 @@ class ServicesController extends AppController
     public function index()
     {
         $this->paginate = [
-            'contain' => ['Projects'],
-            'order' => ['marked' => 'desc', 'id' => 'desc']
+            'contain' => ['Projects', 'Projects.Customers', 'Tasks', 'Tasks.TimeTrackings'],
+            'order' => ['id' => 'desc']
         ];
-        $services = $this->paginate($this->Services);
+        $options = ['conditions' => ['project_status_id' => 15]];
+        $services = $this->paginate($this->Services, $options);
 
         $this->set(compact('services'));
     }

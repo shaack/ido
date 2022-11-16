@@ -46,20 +46,12 @@
                     <?php $customer = $task->service->project->customer ?>
                     <td><?= $this->Html->link($customer->shortcut, ['controller' => 'Customers', 'action' => 'view', $customer->id], ['style' => 'color: ' . $customer->color]) ?></td>
                     <td><?= $task->has('service') ? $this->Html->link($task->service->name, ['controller' => 'Services', 'action' => 'view', $task->service->id]) : '' ?></td>
-                    <td><?= $task->service->project->name ?></td>
+                    <td><?= $this->Html->link($task->service->project->name, ['controller' => 'Projects', 'action' => 'view', $task->service->project->id]) ?></td>
                     <!-- <td><?= h($task->created) ?></td> -->
                     <!-- <td><?= h($task->done) ?></td> -->
                     <!-- <td><?= h($task->done_at) ?></td> -->
                     <td class="text-end">
-                        <!-- <?= $task->duration === null ? '' : $this->Number->format($task->duration) ?> // -->
-                        <?php
-                            $timeTrackings = $task->time_trackings;
-                            $sum = 0.0;
-                            foreach ($timeTrackings as $timeTracking) {
-                                $sum += $timeTracking->duration;
-                            }
-                            echo(round($sum * 4) / 4);
-                        ?>
+                        <?= $this->Number->format($task->duration()); ?>
                     </td>
                     <td class="actions">
                         <!-- <?= $this->Html->link(__('View'), ['action' => 'view', $task->id]) ?> -->

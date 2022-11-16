@@ -15,7 +15,7 @@
                     <th><?= $this->Paginator->sort('task_id') ?></th>
                     <th><?= $this->Paginator->sort('customer_id') ?></th>
                     <!-- <th><?= $this->Paginator->sort('pause') ?></th> -->
-                    <th><?= $this->Paginator->sort('duration') ?></th>
+                    <th class="text-end"><?= $this->Paginator->sort('duration') ?></th>
                     <th class="actions"><?= __('Actions') ?></th>
                 </tr>
             </thead>
@@ -30,10 +30,9 @@
                     ?>
                     <td><?= $this->Html->link($customer->shortcut, ['controller' => 'Customers', 'action' => 'view', $customer->id], ['style' => 'color: ' . $customer->color]) ?></td>
                     <!-- <td><?= $timeTracking->pause === null ? '' : $this->Number->format($timeTracking->pause) ?></td> -->
-                    <td><?= $timeTracking->duration === null ? '' : $this->Number->format($timeTracking->duration) ?></td>
+                    <td class="text-end"><?= $timeTracking->duration === null ? '' : $this->Number->format($timeTracking->duration) ?></td>
                     <td class="actions">
                         <?= $this->Html->link(__('Edit'), ['action' => 'edit', $timeTracking->id]) ?>
-                        <?= $this->Form->postLink(__('Delete'), ['action' => 'delete', $timeTracking->id], ['confirm' => __('Are you sure you want to delete # {0}?', $timeTracking->id)]) ?>
                     </td>
                 </tr>
                 <?php endforeach; ?>

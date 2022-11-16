@@ -34,7 +34,7 @@
 <header>
     <nav class="navbar navbar-expand-lg navbar-light bg-light">
         <div class="container-fluid">
-            <a class="navbar-brand" href="<?= $this->Url->build('/projects') ?>"><span class="char-1">I</span><span
+            <a class="navbar-brand" href="<?= $this->Url->build('/projects?current=1') ?>"><span class="char-1">I</span><span
                     class="char-2">d</span><span class="char-3">o</span></a>
             <button class="navbar-toggler" type="button" data-bs-toggle="collapse"
                     data-bs-target="#navbarSupportedContent"
@@ -44,16 +44,14 @@
             <div class="collapse navbar-collapse" id="navbarSupportedContent">
                 <ul class="navbar-nav ms-auto mb-2 mb-lg-0">
                     <li class="nav-item">
-                        <a class="nav-link" href="/customers">Customers</a>
+                        <a class="nav-link" href="/customers?current=1">Customers</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" href="/projects">Projects</a>
+                        <a class="nav-link" href="/projects?current=1">Projects</a>
                     </li>
-                    <!--
                     <li class="nav-item">
                         <a class="nav-link" href="/services">Services</a>
                     </li>
-                    -->
                     <li class="nav-item">
                         <a class="nav-link" href="/tasks">Tasks</a>
                     </li>

@@ -13,8 +13,11 @@
                     <!-- <th><?= $this->Paginator->sort('id') ?></th> -->
                     <th><?= $this->Paginator->sort('name') ?></th>
                     <th><?= $this->Paginator->sort('project_id') ?></th>
+                    <th><?= $this->Paginator->sort('customer_id') ?></th>
+                    <!--
                     <th><?= $this->Paginator->sort('effort_est') ?></th>
                     <th><?= $this->Paginator->sort('estimation_or_fixed_price') ?></th>
+                    -->
                     <th><?= $this->Paginator->sort('effort') ?></th>
                     <th><?= $this->Paginator->sort('costs') ?></th>
                     <!-- <th><?= $this->Paginator->sort('sort') ?></th> -->
@@ -23,15 +26,21 @@
                 </tr>
             </thead>
             <tbody>
-                <?php foreach ($services as $service): ?>
+                <?php foreach ($services as $service):
+                    $costs = $service->costs();
+                    ?>
                 <tr>
                     <!-- <td><?= $this->Number->format($service->id) ?></td> -->
                     <td><?= $this->Html->link($service->name, ['action' => 'view', $service->id]) ?></td>
                     <td><?= $service->has('project') ? $this->Html->link($service->project->name, ['controller' => 'Projects', 'action' => 'view', $service->project->id]) : '' ?></td>
-                    <td><?= $service->effort_est === null ? '' : $this->Number->format($service->effort_est) ?></td>
-                    <td><?= $service->estimation_or_fixed_price === null ? '' : $this->Number->format($service->estimation_or_fixed_price) ?></td>
-                    <td><?= $service->effort === null ? '' : $this->Number->format($service->effort) ?></td>
-                    <td><?= $service->costs === null ? '' : $this->Number->format($service->costs) ?></td>
+                    <?php $customer = $service->project->customer ?>
+                    <td><?= $this->Html->link($customer->shortcut, ['controller' => 'Customers', 'action' => 'view', $customer->id], ['style' => 'color: ' . $customer->color]) ?></td>
+                    <!--
+                    <td class="text-end"><?= $service->effort_est == 0 ? '' : $this->Number->format($service->effort_est) ?></td>
+                    <td class="text-end"><?= $service->estimation_or_fixed_price === null ? '' : $this->Number->format($service->estimation_or_fixed_price) ?></td>
+                    -->
+                    <td class="text-end"><?= $this->Number->format($service->effort()) ?></td>
+                    <td class="text-end"><?= $costs ? $this->Number->currency($costs) : "" ?></td>
                     <!-- <td><?= $service->sort === null ? '' : $this->Number->format($service->sort) ?></td>
                     <td><?= h($service->created) ?></td> -->
                     <td class="actions">

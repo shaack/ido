@@ -18,7 +18,8 @@ class CustomersController extends AppController
      */
     public function index()
     {
-        $options = array('conditions' => array('current' => true),
+        $current = $this->request->getQuery("current", false);
+        $options = array('conditions' => array('current' => $current),
             'order' => ['name' => "asc"]);
         $customers = $this->paginate($this->Customers, $options);
 

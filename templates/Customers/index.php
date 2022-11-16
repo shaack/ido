@@ -37,7 +37,7 @@
                     <td><?= h($customer->website) ?></td>
                     <td><?= h($customer->color) ?></td>
                     <td><?= h($customer->current) ?></td> -->
-                    <td><?= $this->Html->link($customer->name, ['action' => 'view', $customer->id]) ?></td>
+                    <td><?= $this->Html->link($this->Text->truncate($customer->name, 64), ['action' => 'view', $customer->id]) ?></td>
                     <!-- <td><?= h($customer->street) ?></td>
                     <td><?= h($customer->zip_city) ?></td>
                     <td><?= h($customer->country) ?></td>-->

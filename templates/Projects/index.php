@@ -23,6 +23,7 @@
                     <!-- <th><?= $this->Paginator->sort('paid_at') ?></th>
                     <th><?= $this->Paginator->sort('parent_id') ?></th> -->
                     <th><?= $this->Paginator->sort('project_status_id', 'Status') ?></th>
+                    <th class="text-end"><?= $this->Paginator->sort('costs') ?></th>
                     <!-- <th><?= $this->Paginator->sort('created') ?></th> -->
                     <th class="actions"><?= __('Actions') ?></th>
                 </tr>
@@ -46,6 +47,7 @@
                     <td class="project-status-<?= $project->project_status->id ?>">
                         <?= $this->Html->link($project->project_status->name, ['controller' => 'ProjectStatuses', 'action' => 'view', $project->project_status->id]) ?>
                     </td>
+                    <td class="text-end"><?= $project->costs() > 0 ? $this->Number->currency($project->costs()) : "" ?></td>
                     <!-- <td><?= h($project->created) ?></td> -->
                     <td class="actions">
                         <?= $this->Html->link(__('Edit'), ['action' => 'edit', $project->id]) ?>

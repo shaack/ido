@@ -20,6 +20,7 @@ class ProjectsController extends AppController
      */
     public function index()
     {
+        $current = $this->request->getQuery("current", false);
         $options = ['conditions' => ['OR' => [
             ['Projects.project_status_id' => 5],
             ['Projects.project_status_id' => 10],
@@ -29,11 +30,18 @@ class ProjectsController extends AppController
             ['Projects.project_status_id' => 30],
             ['Projects.project_status_id' => 35]
         ]]];
-        $this->paginate = [
-            'contain' => ['Customers', 'ParentProjects', 'ProjectStatuses'],
-            'order' => ['invoice_number' => 'asc', 'project_status_id' => 'asc', 'id' => 'desc']
-        ];
-        $projects = $this->paginate($this->Projects, $options);
+        if($current) {
+            $this->paginate = [
+                'contain' => ['Customers', 'ParentProjects', 'ProjectStatuses', 'Services', 'Services.Tasks', 'Services.Tasks.TimeTrackings'],
+                'order' => ['invoice_number' => 'asc', 'project_status_id' => 'asc', 'id' => 'desc']
+            ];
+        } else {
+            $this->paginate = [
+                'contain' => ['Customers', 'ParentProjects', 'ProjectStatuses', 'Services', 'Services.Tasks', 'Services.Tasks.TimeTrackings'],
+                'order' => ['id' => 'desc']
+            ];
+        }
+        $projects = $this->paginate($this->Projects, $current ? $options : []);
 
         $this->set(compact('projects'));
     }
