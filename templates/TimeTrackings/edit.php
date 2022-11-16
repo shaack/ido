@@ -22,6 +22,9 @@ $this->assign('title', "⏱️ " . $timeTracking->task->name);
         <legend><?= __('Time Tracking') ?>: <?= $timeTracking->task->name ?></legend>
         <div class="stopwatch mb-3">
             <?= $this->Form->control('stopwatch'); ?>
+            <div class="progress mb-2">
+                <div id="progress-bar" class="progress-bar bg-success" role="progressbar" aria-label="Basic example" style=""></div>
+            </div>
             <button class="btn btn-success btn-sm btn-start" onclick="window.start(); return false;">start
             </button>
             <button class="btn btn-warning btn-sm btn-stop" onclick="window.stopwatch.stop(); return false;">pause
@@ -51,13 +54,16 @@ $this->assign('title', "⏱️ " . $timeTracking->task->name);
     const form = document.getElementsByTagName("form")
     let notificationShown = false
     const notifications = new Notifications()
+    const progressBar = document.getElementById("progress-bar")
+    const pomodoroMinutes = 25
     window.stopwatch = new Stopwatch({
         onTimeChanged: () => {
             const minutesExpired = stopwatch.secondsExpired() / 60
-            if(minutesExpired >= 25 && !notificationShown) {
+            if(minutesExpired >= pomodoroMinutes && !notificationShown) {
                 notificationShown = true
-                notifications.show("25 Minutes expired", "<?= h($timeTracking->task->name) ?>")
+                notifications.show(pomodoroMinutes + " Minutes expired", "<?= h($timeTracking->task->name) ?>")
             }
+            progressBar.style.width = minutesExpired / pomodoroMinutes * 100 + "%"
             stopwatchOutput.value = Math.round(minutesExpired * 100) / 100
         }
     })
