@@ -22,7 +22,7 @@ class TimeTrackingsController extends AppController
     public function index()
     {
         $this->paginate = [
-            'contain' => ['Tasks', 'Tasks.Services', 'Tasks.Services.Projects.Customers'],
+            'contain' => ['Tasks', 'Tasks.Services', 'Tasks.Services.Projects', 'Tasks.Services.Projects.Customers'],
             'order' => ['id' => 'desc']
         ];
         $timeTrackings = $this->paginate($this->TimeTrackings);
@@ -69,7 +69,7 @@ class TimeTrackingsController extends AppController
         }
         */
         $timeTracking->task_id = $this->request->getQuery("task_id"); // shaack patch
-        $timeTracking->start = new FrozenTime('now', 'CET'); // shaack patch
+        // $timeTracking->start = new FrozenTime('now', 'CET'); //
         if ($this->TimeTrackings->save($timeTracking)) {
             $this->Flash->success(__('The time tracking has been saved.'));
         } else {

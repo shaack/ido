@@ -43,6 +43,8 @@ class TimeTrackingsTable extends Table
         $this->setDisplayField('id');
         $this->setPrimaryKey('id');
 
+        $this->addBehavior('Timestamp');
+
         $this->belongsTo('Tasks', [
             'foreignKey' => 'task_id',
             'joinType' => 'INNER',

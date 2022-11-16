@@ -15,6 +15,7 @@ $this->assign('title', "⏱️ " . $timeTracking->task->name);
     ) ?>
     <?= $this->Html->link(__('List Time Trackings'), ['action' => 'index'], ['class' => 'side-nav-item']) ?>
     <?= $this->Html->link(__('View Task'), ['controller' => 'Tasks', 'action' => 'view', $timeTracking->task->id]) ?>
+    <?= $this->Html->link(__('Tasks List'), ['controller' => 'Tasks', 'action' => 'index']) ?>
 </div>
 <div class="timeTrackings form content">
     <?= $this->Form->create($timeTracking) ?>
@@ -23,7 +24,7 @@ $this->assign('title', "⏱️ " . $timeTracking->task->name);
         <div class="stopwatch mb-3">
             <?= $this->Form->control('stopwatch'); ?>
             <div class="progress mb-2">
-                <div id="progress-bar" class="progress-bar bg-success" role="progressbar" aria-label="Basic example" style=""></div>
+                <div id="progress-bar" class="progress-bar bg-primary" role="progressbar" aria-label="Basic example" style=""></div>
             </div>
             <button class="btn btn-success btn-sm btn-start" onclick="window.start(); return false;">start
             </button>
@@ -83,5 +84,5 @@ $this->assign('title', "⏱️ " . $timeTracking->task->name);
         stopwatchOutput.value = 0
         form.submit()
     }
-    // stopwatch.start()
+    stopwatch.start()
 </script>
