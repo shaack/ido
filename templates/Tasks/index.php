@@ -48,8 +48,8 @@
                     <td><?= h($task->deadline) ?></td>
                     <?php $customer = $task->service->project->customer ?>
                     <td><?= $this->Html->link($customer->shortcut, ['controller' => 'Customers', 'action' => 'view', $customer->id], ['style' => 'color: ' . $customer->color]) ?></td>
-                    <td><?= $task->has('service') ? $this->Html->link($this->Text->truncate($task->service->name, 24), ['controller' => 'Services', 'action' => 'view', $task->service->id]) : '' ?></td>
-                    <td><?= $this->Html->link($this->Text->truncate($task->service->project->name, 32), ['controller' => 'Projects', 'action' => 'view', $task->service->project->id]) ?></td>
+                    <td><?= $task->has('service') ? $this->Html->link($this->Text->truncate($task->service->name, 64), ['controller' => 'Services', 'action' => 'view', $task->service->id]) : '' ?></td>
+                    <td><?= $this->Html->link($this->Text->truncate($task->service->project->name, 64), ['controller' => 'Projects', 'action' => 'view', $task->service->project->id]) ?></td>
                 </tr>
             <?php endforeach; ?>
             </tbody>
