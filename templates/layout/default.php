@@ -64,7 +64,7 @@
     </nav>
 </header>
 <main class="main">
-    <div class="container">
+    <div class="container-fluid max-width-xxl">
         <?= $this->Flash->render() ?>
         <?= $this->fetch('content') ?>
     </div>

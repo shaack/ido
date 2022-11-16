@@ -1,3 +1,18 @@
 body *:hover {
     // outline: 1px rgba(0, 0, 0, 0.2) solid;
 }
+$bp-sm: map-get($grid-breakpoints, "sm");
+$bp-md: map-get($grid-breakpoints, "md");
+$bp-lg: map-get($grid-breakpoints, "lg");
+$bp-xl: map-get($grid-breakpoints, "xl");
+$bp-xxl: map-get($grid-breakpoints, "xxl");
+
+$max-width-sm: map-get($container-max-widths, "sm");
+$max-width-md: map-get($container-max-widths, "md");
+$max-width-lg: map-get($container-max-widths, "lg");
+$max-width-xl: map-get($container-max-widths, "xl");
+$max-width-xxl: map-get($container-max-widths, "xxl");
+
+.max-width-xxl {
+    max-width: $max-width-xxl;
+}
