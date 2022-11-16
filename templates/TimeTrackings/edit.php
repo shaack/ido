@@ -84,5 +84,7 @@ $this->assign('title', "⏱️ " . $timeTracking->task->name);
         stopwatchOutput.value = 0
         form.submit()
     }
-    stopwatch.start()
+    if(<?= $timeTracking->duration > 0 ? "false" : "true" ?>) {
+        stopwatch.start()
+    }
 </script>
