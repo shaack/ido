@@ -20,13 +20,15 @@ $this->assign('title', "⏱️ " . $timeTracking->task->name);
 <div class="timeTrackings form content">
     <?= $this->Form->create($timeTracking) ?>
     <fieldset>
-        <legend><?= __('Time Tracking') ?>: <?= $timeTracking->task->name ?: "=> " . $timeTracking->task->service->name ?></legend>
+        <legend><?= __('Time Tracking') ?>
+            : <?= $timeTracking->task->name ?: "=> " . $timeTracking->task->service->name ?></legend>
         <div class="stopwatch mb-3">
             <?= $this->Form->control('stopwatch'); ?>
             <div class="progress mb-2">
-                <div id="progress-bar" class="progress-bar bg-primary" role="progressbar" aria-label="Basic example" style=""></div>
+                <div id="progress-bar" class="progress-bar bg-primary" role="progressbar" aria-label="Basic example"
+                     style=""></div>
             </div>
-            <button class="btn btn-success btn-sm btn-start" onclick="window.start(); return false;">start
+            <button id="button-start" class="btn btn-success btn-sm btn-start">start
             </button>
             <button class="btn btn-warning btn-sm btn-stop" onclick="window.stopwatch.stop(); return false;">pause
             </button>
@@ -60,7 +62,7 @@ $this->assign('title', "⏱️ " . $timeTracking->task->name);
     window.stopwatch = new Stopwatch({
         onTimeChanged: () => {
             const minutesExpired = stopwatch.secondsExpired() / 60
-            if(minutesExpired >= pomodoroMinutes && !notificationShown) {
+            if (minutesExpired >= pomodoroMinutes && !notificationShown) {
                 notificationShown = true
                 notifications.show(pomodoroMinutes + " Minutes expired", "<?= h($timeTracking->task->name) ?>")
             }
@@ -68,11 +70,21 @@ $this->assign('title', "⏱️ " . $timeTracking->task->name);
             stopwatchOutput.value = Math.round(minutesExpired * 100) / 100
         }
     })
-    window.start = () => {
-        notifications.requestPermission()
+    document.getElementById("button-start").addEventListener("click", (event) => {
+        event.preventDefault()
+        start()
+    })
+
+    function start() {
+        try {
+            notifications.requestPermission()
+        } catch (e) {
+            console.log(e)
+        }
         notificationShown = false
         window.stopwatch.start()
     }
+
     window.stopAndAdd = () => {
         if (!durationInput.value) {
             durationInput.value = 0
@@ -84,7 +96,7 @@ $this->assign('title', "⏱️ " . $timeTracking->task->name);
         stopwatchOutput.value = 0
         form.submit()
     }
-    if(<?= $timeTracking->duration > 0 ? "false" : "true" ?>) {
+    if (<?= $timeTracking->duration > 0 ? "false" : "true" ?>) {
         stopwatch.start()
     }
 </script>
