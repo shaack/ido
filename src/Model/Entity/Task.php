@@ -18,6 +18,7 @@ use Cake\ORM\Entity;
  * @property string|null $link
  * @property int|null $service_id
  * @property \Cake\I18n\FrozenTime|null $created
+ * @property \Cake\I18n\FrozenTime|null $modified
  * @property string|null $notes
  * @property bool $done
  * @property \Cake\I18n\FrozenTime|null $done_at
@@ -47,15 +48,17 @@ class Task extends Entity
         'link' => true,
         'service_id' => true,
         'created' => true,
+        'modified' => true,
         'notes' => true,
         'done' => true,
         'done_at' => true,
         'duration' => true,
         'service' => true,
-        'time_trackings' => true,
+        'time_trackings' => true
     ];
 
-    function duration() {
+    function duration()
+    {
         $timeTrackings = $this->time_trackings;
         $sum = 0.0;
         foreach ($timeTrackings as $timeTracking) {

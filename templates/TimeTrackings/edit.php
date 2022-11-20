@@ -32,7 +32,7 @@ $this->assign('title', "⏱️ " . $timeTracking->task->name);
             </button>
             <button class="btn btn-warning btn-sm btn-stop" onclick="window.stopwatch.stop(); return false;">pause
             </button>
-            <button class="btn btn-danger btn-sm btn-reset" onclick="window.stopwatch.reset(); return false;">reset
+            <button class="btn btn-danger btn-sm btn-reset" onclick="window.stopwatch.stop(); window.stopwatch.reset(); return false;">reset
             </button>
             <button class="btn btn-outline-primary btn-sm btn-stop" onclick="window.stopAndAdd(); return false;">add and
                 save

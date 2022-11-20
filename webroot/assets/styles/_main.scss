@@ -26,8 +26,18 @@ main {
         tbody {
             tr {
                 &.task-marked {
-                    background-color: mix($yellow-100, $white, 5);
-                    font-weight: bolder;
+                    // background-color: mix($yellow-100, $white, 5);
+                    // font-weight: bold;
+                    a {
+                        color: $info;
+                    }
+                }
+                &.done-true {
+                    a {
+                        // color: $text-muted;
+                        opacity: 0.5;
+                        text-decoration: line-through;
+                    }
                 }
 
                 td {

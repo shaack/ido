@@ -34,9 +34,9 @@ $controller = $this->request->getParam('controller')
 </head>
 <body>
 <header>
-    <nav class="navbar navbar-expand-lg navbar-light bg-light">
+    <nav class="navbar navbar-expand-sm navbar-light bg-light">
         <div class="container-fluid">
-            <a class="navbar-brand" href="<?= $this->Url->build('/projects?current=1') ?>"><span class="char-1">I</span><span
+            <a class="navbar-brand" href="<?= $this->Url->build('/tasks') ?>"><span class="char-1">I</span><span
                     class="char-2">d</span><span class="char-3">o</span></a>
             <button class="navbar-toggler" type="button" data-bs-toggle="collapse"
                     data-bs-target="#navbarSupportedContent"
@@ -44,7 +44,7 @@ $controller = $this->request->getParam('controller')
                 <span class="navbar-toggler-icon"></span>
             </button>
             <div class="collapse navbar-collapse" id="navbarSupportedContent">
-                <ul class="navbar-nav ms-auto mb-2 mb-lg-0">
+                <ul class="navbar-nav ms-auto mb-lg-0">
                     <li class="nav-item">
                         <a class="nav-link <?= $controller != "Customers" ?: "active" ?>" href="/customers?current=1">Customers</a>
                     </li>

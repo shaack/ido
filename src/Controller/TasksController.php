@@ -3,6 +3,9 @@ declare(strict_types=1);
 
 namespace App\Controller;
 
+use Cake\I18n\FrozenDate;
+use Cake\I18n\FrozenTime;
+
 /**
  * Tasks Controller
  *
@@ -22,7 +25,12 @@ class TasksController extends AppController
             'contain' => ['Services', 'Services.Projects', 'Services.Projects.Customers', 'TimeTrackings'],
             'order' => ['marked' => 'desc', 'prio' => 'desc', 'id' => 'desc']
         ];
-        $options = array('conditions' => array('done' => false));
+        $now = FrozenDate::now()->timestamp;
+        $options = array('maxLimit' => 1000,
+            'limit' => 1000, 'conditions' => array('OR' =>
+            [['done =' => false],
+                ['done_at >' => $now]] // heute erledigt
+        )); // todo or from today
         $tasks = $this->paginate($this->Tasks, $options);
 
         $this->set(compact('tasks'));
@@ -93,6 +101,16 @@ class TasksController extends AppController
         }
         $services = $this->Tasks->Services->find('list', ['limit' => 1000, 'order' => ['id' => 'DESC']])->all();
         $this->set(compact('task', 'services'));
+    }
+
+    public function done($id)
+    {
+        $done = $this->request->getQuery("done", null);
+        $task = $this->Tasks->get($id);
+        $task->done = $done;
+        $task->done_at = FrozenTime::now();
+        $this->Tasks->save($task);
+        $this->redirect(["action" => "index"]);
     }
 
     /**

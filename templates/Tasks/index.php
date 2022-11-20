@@ -14,6 +14,7 @@
         <table>
             <thead>
             <tr>
+                <th><?= $this->Paginator->sort('done') ?></th>
                 <th><?= $this->Paginator->sort('name') ?></th>
                 <th><?= $this->Paginator->sort('prio') ?></th>
                 <th class="text-end"><?= $this->Paginator->sort('Track') ?></th>
@@ -26,9 +27,10 @@
             </thead>
             <tbody>
             <?php foreach ($tasks as $task): ?>
-                <tr class="<?= $task->marked ? 'task-marked' : '' ?>">
+                <tr class="<?= $task->done ? 'done-true' : 'done-false' ?> <?= $task->marked ? 'task-marked' : '' ?>">
+                    <td class="text-end"><a href="/tasks/done/<?= $task->id ?>?done=<?= $task->done ? "0" : "1" ?>">d️️one</a></td>
                     <td><?= $this->Html->link($task->name ? $this->Text->truncate($task->name, 80) : $task->service->name,
-                            ['action' => 'view', $task->id], ['class' => $task->name ? '' : 'opacity-50']) ?></td>
+                            ['action' => 'view', $task->id], ['class' => $task->name ? '' : 'fst-italic']) ?></td>
                     <td class="text-end"><?php
                         $icon = "";
                         switch($task->prio) {

@@ -11,7 +11,7 @@ $this->assign('title', $task->name);
     <?= $this->Html->link(__('Edit Task'), ['action' => 'edit', $task->id], ['class' => 'side-nav-item']) ?>
     <?= $this->Form->postLink(__('Delete Task'), ['action' => 'delete', $task->id], ['confirm' => __('Are you sure you want to delete # {0}?', $task->id), 'class' => 'side-nav-item']) ?>
     <?= $this->Html->link(__('List Tasks'), ['action' => 'index'], ['class' => 'side-nav-item']) ?>
-    <?= $this->Html->link(__('New Task'), ['action' => 'add'], ['class' => 'side-nav-item']) ?>
+    <?= $this->Html->link(__('New Task in this Service'), ['action' => 'add', '?' => ['service_id' => $task->service->id]], ['class' => 'side-nav-item']) ?>
 </div>
 <div class="row">
     <div class="column-responsive column-80">
