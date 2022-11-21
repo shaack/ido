@@ -28,7 +28,7 @@
             <tbody>
             <?php foreach ($tasks as $task): ?>
                 <tr class="<?= $task->done ? 'done-true' : 'done-false' ?> <?= $task->marked ? 'task-marked' : '' ?>">
-                    <td class="text-end"><a href="/tasks/done/<?= $task->id ?>?done=<?= $task->done ? "0" : "1" ?>">d️️one</a></td>
+                    <td class="text-end"><a href="/tasks/done/<?= $task->id ?>?done=<?= $task->done ? "0" : "1" ?>"><?= $task->done ? "◉" : "○" ?></a></td>
                     <td><?= $this->Html->link($task->name ? $this->Text->truncate($task->name, 80) : $task->service->name,
                             ['action' => 'view', $task->id], ['class' => $task->name ? '' : 'fst-italic']) ?></td>
                     <td class="text-end"><?php
