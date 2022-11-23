@@ -101,7 +101,8 @@ class TimeTrackingsController extends AppController
             }
         }
         $tasks = $this->TimeTrackings->Tasks->find('list', ['limit' => 1000, 'order' => ['id' => 'DESC']])->all();
-        $this->set(compact('timeTracking', 'tasks'));
+        $hideNavigation = true;
+        $this->set(compact('timeTracking', 'tasks', 'hideNavigation'));
     }
 
     /**

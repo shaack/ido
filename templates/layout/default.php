@@ -41,6 +41,7 @@ $controller = $this->request->getParam('controller')
 </head>
 <body>
 <header>
+    <?php if(!$this->get('hideNavigation')) : ?>
     <nav class="navbar navbar-expand-sm navbar-light bg-light">
         <div class="container-fluid">
             <a class="navbar-brand" href="<?= $this->Url->build('/tasks') ?>"><span class="char-1">I</span><span
@@ -71,6 +72,7 @@ $controller = $this->request->getParam('controller')
             </div>
         </div>
     </nav>
+    <?php endif ?>
 </header>
 <main class="main">
     <div class="container-fluid">

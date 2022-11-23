@@ -7,6 +7,7 @@
 
 $this->assign('title', "⏱️ " . ($timeTracking->task->name ? $timeTracking->task->name : $timeTracking->task->service->name));
 ?>
+<!--
 <div class="actions">
     <?= $this->Form->postLink(
         __('Delete'),
@@ -17,6 +18,7 @@ $this->assign('title', "⏱️ " . ($timeTracking->task->name ? $timeTracking->t
     <?= $this->Html->link(__('View Task'), ['controller' => 'Tasks', 'action' => 'view', $timeTracking->task->id]) ?>
     <?= $this->Html->link(__('Tasks List'), ['controller' => 'Tasks', 'action' => 'index']) ?>
 </div>
+-->
 <div class="timeTrackings form content">
     <?= $this->Form->create($timeTracking) ?>
     <fieldset>
@@ -38,13 +40,23 @@ $this->assign('title', "⏱️ " . ($timeTracking->task->name ? $timeTracking->t
             </button>
         </div>
         <?php
-        echo $this->Form->control('task_id', ['options' => $tasks]);
         echo $this->Form->control('start', ['empty' => true]);
-        // echo $this->Form->control('pause');
         echo $this->Form->control('duration');
         ?>
     </fieldset>
-    <?= $this->Form->button(__('Submit')) ?>
+    <!--
+    <div class="mb-3">
+        <?= $this->Form->button(__('Submit')) ?>
+    </div>
+    -->
+    <fieldset>
+        <?php
+        echo $this->Form->control('task.notes', ['label' => 'Task Notes']);
+        ?>
+    </fieldset>
+    <div class="mb-3">
+        <?= $this->Form->button(__('Submit')) ?>
+    </div>
     <?= $this->Form->end() ?>
 </div>
 <script type="module">

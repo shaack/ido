@@ -27,13 +27,19 @@
             </tr>
             </thead>
             <tbody>
+            <script>
+                function showTracking(taskId) {
+                    window.open("/timeTrackings/add?task_id=" + taskId, "_blank", "popup")
+                }
+            </script>
             <?php foreach ($tasks as $task): ?>
                 <tr class="<?= $task->done ? 'done-true' : 'done-false' ?> <?= $task->marked ? 'task-marked' : '' ?>">
                     <td class="text-end"><a class="no-line-through" href="/tasks/done/<?= $task->id ?>?done=<?= $task->done ? "0" : "1" ?>"><?= $task->done ? '<i class="fa-solid fa-circle"></i>' : '<i class="fa-regular fa-circle"></i>' ?></a></td>
                     <td><?= $this->Html->link($task->name ? $this->Text->truncate($task->name, 80) : $task->service->name,
                             ['action' => 'view', $task->id], ['class' => $task->name ? '' : 'fst-italic']) ?></td>
                     <td class="text-end">
-                        <a class="text-nowrap hover-bg" target="_blank" href="/timeTrackings/add?task_id=<?= $task->id ?>"><?= $task->duration() > 0 ? $this->Number->format($task->duration()) : ''; ?> <i class="fa-solid fa-stopwatch"></i>️</a>
+                        <!-- /timeTrackings/add?task_id=<?= $task->id ?> -->
+                        <a class="text-nowrap hover-bg" target="_blank" onclick="showTracking(<?= $task->id ?>)" href="#"><?= $task->duration() > 0 ? $this->Number->format($task->duration()) : ''; ?> <i class="fa-solid fa-stopwatch"></i>️</a>
                     </td>
                     <td class="text-end"><?php
                         $icon = "";
