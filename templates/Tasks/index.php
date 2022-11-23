@@ -16,8 +16,9 @@
             <tr>
                 <th><?= $this->Paginator->sort('done') ?></th>
                 <th><?= $this->Paginator->sort('name') ?></th>
-                <th><?= $this->Paginator->sort('prio') ?></th>
                 <th class="text-end"><?= $this->Paginator->sort('Track') ?></th>
+                <th><?= $this->Paginator->sort('prio') ?></th>
+                <th><?= $this->Paginator->sort('marked') ?></th>
                 <th><?= $this->Paginator->sort('start') ?></th>
                 <th><?= $this->Paginator->sort('deadline') ?></th>
                 <th><?= $this->Paginator->sort('customer_id') ?></th>
@@ -28,24 +29,28 @@
             <tbody>
             <?php foreach ($tasks as $task): ?>
                 <tr class="<?= $task->done ? 'done-true' : 'done-false' ?> <?= $task->marked ? 'task-marked' : '' ?>">
-                    <td class="text-end"><a href="/tasks/done/<?= $task->id ?>?done=<?= $task->done ? "0" : "1" ?>"><?= $task->done ? "◉" : "○" ?></a></td>
+                    <td class="text-end"><a class="no-line-through" href="/tasks/done/<?= $task->id ?>?done=<?= $task->done ? "0" : "1" ?>"><?= $task->done ? '<i class="fa-solid fa-circle"></i>' : '<i class="fa-regular fa-circle"></i>' ?></a></td>
                     <td><?= $this->Html->link($task->name ? $this->Text->truncate($task->name, 80) : $task->service->name,
                             ['action' => 'view', $task->id], ['class' => $task->name ? '' : 'fst-italic']) ?></td>
+                    <td class="text-end">
+                        <a class="text-nowrap hover-bg" target="_blank" href="/timeTrackings/add?task_id=<?= $task->id ?>"><?= $task->duration() > 0 ? $this->Number->format($task->duration()) : ''; ?> <i class="fa-solid fa-stopwatch"></i>️</a>
+                    </td>
                     <td class="text-end"><?php
                         $icon = "";
                         switch($task->prio) {
+                            case 0:
+                                $icon = "<a href='tasks/prio/$task->id?prio=1'><i class=\"fa-solid fa-plus-minus\"></i></a>";
+                                break;
                             case 1:
-                                $icon = "<span class='text-warning'>+</span>";
+                                $icon = "<a href='tasks/prio/$task->id?prio=-1' class='text-warning'><i class=\"fa-solid fa-plus\"></i></a>";
                                 break;
                             case -1:
-                                $icon = "<span class='text-muted'>-</span>";
+                                $icon = "<a href='tasks/prio/$task->id?prio=0' class='text-muted'><i class=\"fa-solid fa-minus\"></i></a>";
                                 break;
                         }
                         echo $icon;
                         ?></td>
-                    <td class="text-end">
-                        <a class="text-nowrap hover-bg" target="_blank" href="/timeTrackings/add?task_id=<?= $task->id ?>"><?= $task->duration() > 0 ? $this->Number->format($task->duration()) : ''; ?> ⏱️</a>
-                    </td>
+                    <td class="text-end"><a class="no-line-through" href="/tasks/marked/<?= $task->id ?>?marked=<?= $task->marked ? "0" : "1" ?>"><?= $task->marked ? '<i class="fa-solid fa-flag"></i>' : '<i class="fa-regular fa-flag"></i>' ?></a></td>
                     <td><?= h($task->start_est) ?></td>
                     <td><?= h($task->deadline) ?></td>
                     <?php $customer = $task->service->project->customer ?>

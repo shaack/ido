@@ -1,0 +1,14 @@
+export const faFlag: IconDefinition;
+export const faStopwatch: IconDefinition;
+export const faStar: IconDefinition;
+export const faCircle: IconDefinition;
+export const faMinus: IconDefinition;
+export const faSubtract: IconDefinition;
+export const faPlus: IconDefinition;
+export const faAdd: IconDefinition;
+export const faPlusMinus: IconDefinition;
+export const faNotdef: IconDefinition;
+import { IconDefinition, IconLookup, IconName, IconPrefix, IconPack } from '@fortawesome/fontawesome-common-types';
+export { IconDefinition, IconLookup, IconName, IconPrefix, IconPack } from '@fortawesome/fontawesome-common-types';
+export const prefix: IconPrefix;
+export const fas: IconPack;

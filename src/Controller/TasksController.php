@@ -23,7 +23,7 @@ class TasksController extends AppController
     {
         $this->paginate = [
             'contain' => ['Services', 'Services.Projects', 'Services.Projects.Customers', 'TimeTrackings'],
-            'order' => ['marked' => 'desc', 'prio' => 'desc', 'id' => 'desc']
+            'order' => ['marked' => 'desc', 'prio' => 'desc', 'id' => 'asc']
         ];
         $now = FrozenDate::now()->timestamp;
         $options = array('maxLimit' => 1000,
@@ -109,6 +109,24 @@ class TasksController extends AppController
         $task = $this->Tasks->get($id);
         $task->done = $done;
         $task->done_at = FrozenTime::now();
+        $this->Tasks->save($task);
+        $this->redirect(["action" => "index"]);
+    }
+
+    public function marked($id)
+    {
+        $marked = $this->request->getQuery("marked", 0);
+        $task = $this->Tasks->get($id);
+        $task->marked = $marked;
+        $this->Tasks->save($task);
+        $this->redirect(["action" => "index"]);
+    }
+
+    public function prio($id)
+    {
+        $prio = $this->request->getQuery("prio", 0);
+        $task = $this->Tasks->get($id);
+        $task->prio = $prio;
         $this->Tasks->save($task);
         $this->redirect(["action" => "index"]);
     }

@@ -37,6 +37,9 @@ main {
                         // color: $text-muted;
                         opacity: 0.5;
                         text-decoration: line-through;
+                        &.no-line-through {
+                            text-decoration: none;
+                        }
                     }
                 }
 

@@ -1,0 +1,171 @@
+circle:
+  aliases:
+    unicodes:
+      composite:
+        - 1f534
+        - 1f535
+        - 1f7e0
+        - 1f7e1
+        - 1f7e2
+        - 1f7e3
+        - 1f7e4
+        - 25cf
+        - 26aa
+        - 26ab
+        - 2b24
+        - f10c
+        - f1db
+      secondary:
+        - 10f111
+  changes:
+    - 3.0.0
+    - 5.0.0
+    - 5.10.1
+    - 5.10.2
+    - 6.0.0-beta1
+    - 6.0.0
+    - 6.2.0
+  label: Circle
+  search:
+    terms: []
+  styles:
+    - solid
+    - regular
+  unicode: f111
+  voted: false
+flag:
+  aliases:
+    unicodes:
+      composite:
+        - 1f3f4
+        - f11d
+      secondary:
+        - 10f024
+  changes:
+    - 1.0.0
+    - 5.0.0
+    - 6.0.0-beta1
+    - 6.2.0
+  label: flag
+  search:
+    terms: []
+  styles:
+    - solid
+    - regular
+  unicode: f024
+  voted: false
+minus:
+  aliases:
+    names:
+      - subtract
+    unicodes:
+      composite:
+        - '2013'
+        - '2212'
+        - '2796'
+      secondary:
+        - 10f068
+  changes:
+    - 1.0.0
+    - 5.0.0
+    - 6.0.0-beta1
+    - 6.2.0
+  label: minus
+  search:
+    terms: []
+  styles:
+    - solid
+  unicode: f068
+  voted: false
+notdef:
+  changes:
+    - 6.0.0-beta1
+    - 6.2.0
+  label: Notdef
+  search:
+    terms: []
+  styles:
+    - solid
+    - regular
+  unicode: e1fe
+  voted: false
+plus:
+  aliases:
+    names:
+      - add
+    unicodes:
+      composite:
+        - '2795'
+        - f067
+      primary:
+        - f067
+      secondary:
+        - 102b
+        - 10f067
+  changes:
+    - 1.0.0
+    - 5.0.0
+    - 5.0.13
+    - 6.0.0-beta1
+    - 6.2.0
+  label: plus
+  search:
+    terms: []
+  styles:
+    - solid
+  unicode: 2b
+  voted: false
+plus-minus:
+  changes:
+    - 6.0.0-beta1
+    - 6.2.0
+  label: Plus Minus
+  search:
+    terms: []
+  styles:
+    - solid
+  unicode: e43c
+  voted: false
+star:
+  aliases:
+    unicodes:
+      composite:
+        - 2b50
+        - f006
+      secondary:
+        - 10f005
+  changes:
+    - 1.0.0
+    - 5.0.0
+    - 5.10.2
+    - 6.0.0-beta1
+    - 6.0.0
+    - 6.2.0
+  label: Star
+  search:
+    terms: []
+  styles:
+    - solid
+  unicode: f005
+  voted: false
+stopwatch:
+  aliases:
+    unicodes:
+      composite:
+        - 23f1
+      secondary:
+        - 10f2f2
+  changes:
+    - 5.0.0
+    - 5.10.2
+    - 6.0.0-beta1
+    - 6.0.0-beta2
+    - 6.0.0-beta3
+    - 6.2.0
+  label: Stopwatch
+  search:
+    terms: []
+  styles:
+    - solid
+  unicode: f2f2
+  voted: false
