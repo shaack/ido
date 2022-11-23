@@ -5,7 +5,7 @@
  * @var string[]|\Cake\Collection\CollectionInterface $tasks
  */
 
-$this->assign('title', "⏱️ " . $timeTracking->task->name);
+$this->assign('title', "⏱️ " . ($timeTracking->task->name ? $timeTracking->task->name : $timeTracking->task->service->name));
 ?>
 <div class="actions">
     <?= $this->Form->postLink(
@@ -20,8 +20,7 @@ $this->assign('title', "⏱️ " . $timeTracking->task->name);
 <div class="timeTrackings form content">
     <?= $this->Form->create($timeTracking) ?>
     <fieldset>
-        <legend><?= __('Time Tracking') ?>
-            : <?= $timeTracking->task->name ?: "=> " . $timeTracking->task->service->name ?></legend>
+        <legend><i class="fa-solid fa-stopwatch"></i>️ <?= $timeTracking->task->name ?: "<i>" . $timeTracking->task->service->name . "</i>" ?></legend>
         <div class="stopwatch mb-3">
             <?= $this->Form->control('stopwatch'); ?>
             <div class="progress mb-2">

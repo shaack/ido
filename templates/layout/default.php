@@ -26,9 +26,9 @@ $controller = $this->request->getParam('controller')
     </title>
     <?= $this->Html->meta('icon') ?>
 
-    <link href="assets/fontawesome-subset/css/fontawesome.min.css" rel="stylesheet">
-    <link href="assets/fontawesome-subset/css/solid.min.css" rel="stylesheet">
-    <link href="assets/fontawesome-subset/css/regular.min.css" rel="stylesheet">
+    <link href="/assets/fontawesome-subset/css/fontawesome.min.css" rel="stylesheet">
+    <link href="/assets/fontawesome-subset/css/solid.min.css" rel="stylesheet">
+    <link href="/assets/fontawesome-subset/css/regular.min.css" rel="stylesheet">
     <!--
     <script defer src="/assets/fontawesome-subset/js/solid.min.js"></script>
     <script defer src="/assets/fontawesome-subset/js/regular.min.js"></script>
@@ -81,5 +81,9 @@ $controller = $this->request->getParam('controller')
 <footer>
 </footer>
 <script src="/node_modules/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
+<script src="/node_modules/bootstrap-input-spinner/src/bootstrap-input-spinner.js"></script>
+<script>
+
+</script>
 </body>
 </html>
