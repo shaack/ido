@@ -7,8 +7,9 @@
 <div class="tasks index content">
     <div class="row d-flex align-items-center mb-2">
         <div class="col"><h3 class="m-0"><?= __('Tasks') ?></h3></div>
+        <div class="col-auto text-muted">done today: <?= $this->Number->format($this->get('doneToday')) ?></div>
         <div
-            class="col text-end"><?= $this->Html->link(__('New Task'), ['action' => 'add'], ['class' => 'btn btn-primary btn-sm float-right']) ?></div>
+            class="col-auto text-end"><?= $this->Html->link(__('New Task'), ['action' => 'add'], ['class' => 'btn btn-primary btn-sm float-right']) ?></div>
     </div>
     <div class="table-responsive">
         <table>

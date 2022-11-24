@@ -19,6 +19,13 @@ $this->assign('title', "⏱️ " . ($timeTracking->task->name ? $timeTracking->t
     <?= $this->Html->link(__('Tasks List'), ['controller' => 'Tasks', 'action' => 'index']) ?>
 </div>
 -->
+<div class="float-end">
+<?= $this->Form->postLink(
+    __('Delete'),
+    ['action' => 'delete', $timeTracking->id],
+    ['confirm' => __('Are you sure you want to delete # {0}?', $timeTracking->id), 'class' => 'text-danger']
+) ?>
+</div>
 <div class="timeTrackings form content">
     <?= $this->Form->create($timeTracking) ?>
     <fieldset>

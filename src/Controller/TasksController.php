@@ -33,7 +33,11 @@ class TasksController extends AppController
         )); // todo or from today
         $tasks = $this->paginate($this->Tasks, $options);
 
-        $this->set(compact('tasks'));
+        // time trackings today
+        $doneToday = $this->Tasks->TimeTrackings->find()->where(["created >" => $now])->sumOf('duration');
+
+
+        $this->set(compact('tasks', 'doneToday'));
     }
 
     /**
