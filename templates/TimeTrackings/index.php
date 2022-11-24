@@ -24,7 +24,7 @@
                     ?>
                 <tr>
                     <td><?= $this->Html->link($timeTracking->created, ['action' => 'edit', $timeTracking->id]) ?></td>
-                    <td><?= $timeTracking->has('task') ? $this->Html->link($timeTracking->task->name ? $timeTracking->task->name : "=> ". $timeTracking->task->service->name, ['controller' => 'Tasks', 'action' => 'view', $timeTracking->task->id]) : '' ?></td>
+                    <td class="<?= $timeTracking->task->name ? "" : "fst-italic" ?>"><?= $timeTracking->has('task') ? $this->Html->link($timeTracking->task->name ?: $timeTracking->task->service->name, ['controller' => 'Tasks', 'action' => 'view', $timeTracking->task->id]) : '' ?></td>
                     <td><?= $this->Html->link($customer->shortcut, ['controller' => 'Customers', 'action' => 'view', $customer->id], ['style' => 'color: ' . $customer->color]) ?></td>
                     <td><?= $this->Html->link($this->Text->truncate($timeTracking->task->service->name, 32), ['controller' => 'Services', 'action' => 'view', $timeTracking->task->service->id]) ?></td>
                     <td><?= $this->Html->link($this->Text->truncate($timeTracking->task->service->project->name, 32), ['controller' => 'Projects', 'action' => 'view', $timeTracking->task->service->project->id]) ?></td>

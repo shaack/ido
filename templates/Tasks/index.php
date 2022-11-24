@@ -7,7 +7,35 @@
 <div class="tasks index content">
     <div class="row d-flex align-items-center mb-2">
         <div class="col"><h3 class="m-0"><?= __('Tasks') ?></h3></div>
-        <div class="col-auto text-muted">done today: <?= $this->Number->format($this->get('doneToday')) ?></div>
+        <?php
+        $doneToday = floatval($this->get('doneToday'));
+        $doneTodayClass = "text-muted";
+        if ($doneToday > 0) {
+            if ($doneToday < 1) {
+                $doneTodayClass = "text-danger";
+            } else if ($doneToday < 2) {
+                $doneTodayClass = "text-warning";
+            } else if ($doneToday < 4) {
+                $doneTodayClass = "text-success";
+            } else if ($doneToday < 6) {
+                $doneTodayClass = "text-info";
+            } else if ($doneToday < 7) {
+                $doneTodayClass = "text-info fw-bold";
+            } else if ($doneToday < 8) {
+                $doneTodayClass = "text-info fw-bold fs-5";
+            } else if ($doneToday < 9) {
+                $doneTodayClass = "text-info fw-bold fs-4";
+            } else if ($doneToday < 10) {
+                $doneTodayClass = "text-info fw-bold fs-3";
+            } else if ($doneToday < 11) {
+                $doneTodayClass = "text-info fw-bold fs-2";
+            } else {
+                $doneTodayClass = "text-info fw-bold fs-1";
+            }
+        }
+        ?>
+        <div class="col-auto"><span class="text-muted">today's hrs:</span> <span
+                class="<?= $doneTodayClass ?>"><?= $this->Number->format($this->get('doneToday')) ?></span></div>
         <div
             class="col-auto text-end"><?= $this->Html->link(__('New Task'), ['action' => 'add'], ['class' => 'btn btn-primary btn-sm float-right']) ?></div>
     </div>
@@ -35,16 +63,20 @@
             </script>
             <?php foreach ($tasks as $task): ?>
                 <tr class="<?= $task->done ? 'done-true' : 'done-false' ?> <?= $task->marked ? 'task-marked' : '' ?>">
-                    <td class="text-end"><a class="no-line-through" href="/tasks/done/<?= $task->id ?>?done=<?= $task->done ? "0" : "1" ?>"><?= $task->done ? '<i class="fa-solid fa-circle"></i>' : '<i class="fa-regular fa-circle"></i>' ?></a></td>
+                    <td class="text-end"><a class="no-line-through"
+                                            href="/tasks/done/<?= $task->id ?>?done=<?= $task->done ? "0" : "1" ?>"><?= $task->done ? '<i class="fa-solid fa-circle"></i>' : '<i class="fa-regular fa-circle"></i>' ?></a>
+                    </td>
                     <td><?= $this->Html->link($task->name ? $this->Text->truncate($task->name, 80) : $task->service->name,
                             ['action' => 'view', $task->id], ['class' => $task->name ? '' : 'fst-italic']) ?></td>
                     <td class="text-end">
                         <!-- /timeTrackings/add?task_id=<?= $task->id ?> -->
-                        <a class="text-nowrap hover-bg" target="_blank" onclick="showTracking(<?= $task->id ?>)" href="#"><?= $task->duration() > 0 ? $this->Number->format($task->duration()) : ''; ?> <i class="fa-solid fa-stopwatch"></i>️</a>
+                        <a class="text-nowrap hover-bg" target="_blank" onclick="showTracking(<?= $task->id ?>)"
+                           href="#"><?= $task->duration() > 0 ? $this->Number->format($task->duration()) : ''; ?> <i
+                                class="fa-solid fa-stopwatch"></i>️</a>
                     </td>
                     <td class="text-end"><?php
                         $icon = "";
-                        switch($task->prio) {
+                        switch ($task->prio) {
                             case 0:
                                 $icon = "<a ondblclick='window.location=\"tasks/prio/$task->id?prio=-1\"; return false;' href='tasks/prio/$task->id?prio=1'><i class=\"fa-solid fa-plus-minus\"></i></a>";
                                 break;
@@ -57,12 +89,14 @@
                         }
                         echo $icon;
                         ?></td>
-                    <td class="text-end"><a class="no-line-through" href="/tasks/marked/<?= $task->id ?>?marked=<?= $task->marked ? "0" : "1" ?>"><?= $task->marked ? '<i class="fa-solid fa-flag"></i>' : '<i class="fa-regular fa-flag"></i>' ?></a></td>
+                    <td class="text-end"><a class="no-line-through"
+                                            href="/tasks/marked/<?= $task->id ?>?marked=<?= $task->marked ? "0" : "1" ?>"><?= $task->marked ? '<i class="fa-solid fa-flag"></i>' : '<i class="fa-regular fa-flag"></i>' ?></a>
+                    </td>
                     <td><?= h($task->start_est) ?></td>
                     <td><?= h($task->deadline) ?></td>
                     <?php $customer = $task->service->project->customer ?>
                     <td><?= $this->Html->link($customer->shortcut, ['controller' => 'Customers', 'action' => 'view', $customer->id], ['style' => 'color: ' . $customer->color]) ?></td>
-                    <td><?= $task->has('service') ? $this->Html->link($this->Text->truncate($task->service->name,  32), ['controller' => 'Services', 'action' => 'view', $task->service->id]) : '' ?></td>
+                    <td><?= $task->has('service') ? $this->Html->link($this->Text->truncate($task->service->name, 32), ['controller' => 'Services', 'action' => 'view', $task->service->id]) : '' ?></td>
                     <td><?= $this->Html->link($this->Text->truncate($task->service->project->name, 64), ['controller' => 'Projects', 'action' => 'view', $task->service->project->id]) ?></td>
                 </tr>
             <?php endforeach; ?>
