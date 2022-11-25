@@ -83,7 +83,7 @@ $controller = $this->request->getParam('controller')
 <footer>
 </footer>
 <script src="/node_modules/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
-<script src="/node_modules/bootstrap-input-spinner/src/bootstrap-input-spinner.js"></script>
+<!-- <script src="/node_modules/bootstrap-input-spinner/src/bootstrap-input-spinner.js"></script> -->
 <script>
 
 </script>

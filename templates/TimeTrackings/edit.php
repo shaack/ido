@@ -9,27 +9,24 @@ $this->assign('title', "⏱️ " . ($timeTracking->task->name ? $timeTracking->t
 ?>
 <!--
 <div class="actions">
-    <?= $this->Form->postLink(
-        __('Delete'),
-        ['action' => 'delete', $timeTracking->id],
-        ['confirm' => __('Are you sure you want to delete # {0}?', $timeTracking->id), 'class' => 'side-nav-item']
-    ) ?>
     <?= $this->Html->link(__('List Time Trackings'), ['action' => 'index'], ['class' => 'side-nav-item']) ?>
     <?= $this->Html->link(__('View Task'), ['controller' => 'Tasks', 'action' => 'view', $timeTracking->task->id]) ?>
     <?= $this->Html->link(__('Tasks List'), ['controller' => 'Tasks', 'action' => 'index']) ?>
 </div>
 -->
-<div class="float-end">
-<?= $this->Form->postLink(
-    __('Delete'),
-    ['action' => 'delete', $timeTracking->id],
-    ['confirm' => __('Are you sure you want to delete # {0}?', $timeTracking->id), 'class' => 'text-danger']
-) ?>
+<div class="row">
+    <div class="col">
+        <h2><i class="fa-solid fa-stopwatch"></i>️ <?= $timeTracking->task->name ?: "<i>" . $timeTracking->task->service->name . "</i>" ?></h2>
+    </div>
+    <div class="col-auto"><?= $this->Form->postLink(
+            __('Delete'),
+            ['action' => 'delete', $timeTracking->id],
+            ['confirm' => __('Are you sure you want to delete #{0}?', $timeTracking->id), 'class' => 'text-danger']
+        ) ?></div>
 </div>
 <div class="timeTrackings form content">
     <?= $this->Form->create($timeTracking) ?>
     <fieldset>
-        <legend><i class="fa-solid fa-stopwatch"></i>️ <?= $timeTracking->task->name ?: "<i>" . $timeTracking->task->service->name . "</i>" ?></legend>
         <div class="stopwatch mb-3">
             <?= $this->Form->control('stopwatch'); ?>
             <div class="progress mb-2">

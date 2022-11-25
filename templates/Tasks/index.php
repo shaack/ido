@@ -58,7 +58,7 @@
             <tbody>
             <script>
                 function showTracking(taskId) {
-                    window.open("/timeTrackings/add?task_id=" + taskId, "_blank", "popup")
+                    window.open("/timeTrackings/add?task_id=" + taskId, "_blank", "popup,width=640,height=800,left=500,top=200")
                 }
             </script>
             <?php foreach ($tasks as $task): ?>
