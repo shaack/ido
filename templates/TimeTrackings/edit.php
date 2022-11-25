@@ -16,7 +16,9 @@ $this->assign('title', "⏱️ " . ($timeTracking->task->name ? $timeTracking->t
 -->
 <div class="row">
     <div class="col">
-        <h2><i class="fa-solid fa-stopwatch"></i>️ <?= $timeTracking->task->name ?: "<i>" . $timeTracking->task->service->name . "</i>" ?></h2>
+        <h2>
+            <i class="fa-solid fa-stopwatch"></i>️ <?= $timeTracking->task->name ?: "<i>" . $timeTracking->task->service->name . "</i>" ?>
+        </h2>
     </div>
     <div class="col-auto"><?= $this->Form->postLink(
             __('Delete'),
@@ -37,7 +39,8 @@ $this->assign('title', "⏱️ " . ($timeTracking->task->name ? $timeTracking->t
             </button>
             <button class="btn btn-warning btn-sm btn-stop" onclick="window.stopwatch.stop(); return false;">pause
             </button>
-            <button class="btn btn-danger btn-sm btn-reset" onclick="window.stopwatch.stop(); window.stopwatch.reset(); return false;">reset
+            <button class="btn btn-danger btn-sm btn-reset"
+                    onclick="window.stopwatch.stop(); window.stopwatch.reset(); return false;">reset
             </button>
             <button class="btn btn-outline-primary btn-sm btn-stop" onclick="window.stopAndAdd(); return false;">add and
                 save
@@ -74,9 +77,11 @@ $this->assign('title', "⏱️ " . ($timeTracking->task->name ? $timeTracking->t
     const notifications = new Notifications()
     const progressBar = document.getElementById("progress-bar")
     const pomodoroMinutes = 25
+    const title = document.title
     window.stopwatch = new Stopwatch({
         onTimeChanged: () => {
             const minutesExpired = stopwatch.secondsExpired() / 60
+            document.title = title + " " + Math.round(minutesExpired * 100) / 100
             if (minutesExpired >= pomodoroMinutes && !notificationShown) {
                 notificationShown = true
                 notifications.show(pomodoroMinutes + " Minutes expired", "<?= h($timeTracking->task->name) ?>")
@@ -115,3 +120,21 @@ $this->assign('title', "⏱️ " . ($timeTracking->task->name ? $timeTracking->t
         stopwatch.start()
     }
 </script>
+<!--
+<script>
+    blinkTitle()
+
+    function blinkTitle() {
+        const title = document.title
+        let i = 0
+        setInterval(() => {
+            if (i % 2 === 0) {
+                document.title = title + " ⏱️"
+            } else {
+                document.title = title
+            }
+            i++
+        }, 1000)
+    }
+</script>
+-->
