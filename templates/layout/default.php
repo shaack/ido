@@ -35,6 +35,9 @@ $controller = $this->request->getParam('controller')
     -->
     <link href="/assets/styles/screen.css" rel="stylesheet">
 
+    <script src="/node_modules/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="/node_modules/bootstrap-show-toast/src/bootstrap-show-toast.js"></script>
+
     <?= $this->fetch('meta') ?>
     <?= $this->fetch('css') ?>
     <?= $this->fetch('script') ?>
@@ -82,7 +85,6 @@ $controller = $this->request->getParam('controller')
 </main>
 <footer>
 </footer>
-<script src="/node_modules/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
 <!-- <script src="/node_modules/bootstrap-input-spinner/src/bootstrap-input-spinner.js"></script> -->
 <script>
 

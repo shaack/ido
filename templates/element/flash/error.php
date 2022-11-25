@@ -8,4 +8,10 @@ if (!isset($params['escape']) || $params['escape'] !== false) {
     $message = h($message);
 }
 ?>
-<div class="message error" onclick="this.classList.add('hidden');"><?= $message ?></div>
+<script>
+    bootstrap.showToast({
+        body: "<?= $message ?>",
+        toastClass: "text-bg-danger",
+        closeButtonClass: "btn-close-white"
+    })
+</script>

@@ -70,8 +70,8 @@
                             ['action' => 'view', $task->id], ['class' => $task->name ? '' : 'fst-italic']) ?></td>
                     <td class="text-end">
                         <!-- /timeTrackings/add?task_id=<?= $task->id ?> -->
-                        <a class="text-nowrap hover-bg" target="_blank" onclick="showTracking(<?= $task->id ?>)"
-                           href="#"><?= $task->duration() > 0 ? $this->Number->format($task->duration()) : ''; ?> <i
+                        <a class="text-nowrap hover-bg" target="_blank" <?php /*onclick="showTracking(<?= $task->id ?>)" */ ?>
+                           href="/timeTrackings/add?task_id=<?= $task->id ?>"><?= $task->duration() > 0 ? $this->Number->format($task->duration()) : ''; ?> <i
                                 class="fa-solid fa-stopwatch"></i>️</a>
                     </td>
                     <td class="text-end"><?php
