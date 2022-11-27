@@ -94,6 +94,7 @@ class TimeTrackingsController extends AppController
         ]);
         if ($this->request->is(['patch', 'post', 'put'])) {
             $timeTracking = $this->TimeTrackings->patchEntity($timeTracking, $this->request->getData());
+            $timeTracking->set("duration", round($timeTracking->get("duration"), 2));
             if ($this->TimeTrackings->save($timeTracking)) {
                 $this->Flash->success(__('The time tracking has been saved.'));
             } else {

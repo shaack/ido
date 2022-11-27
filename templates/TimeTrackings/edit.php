@@ -5,7 +5,8 @@
  * @var string[]|\Cake\Collection\CollectionInterface $tasks
  */
 
-$this->assign('title', "⏱️ " . ($timeTracking->task->name ? $timeTracking->task->name : $timeTracking->task->service->name));
+$taskName = $timeTracking->task->name ?: $timeTracking->task->service->name;
+$this->assign('title', "⏱️" . $this->Text->truncate($taskName, 20));
 ?>
 <!--
 <div class="actions">
@@ -27,7 +28,7 @@ $this->assign('title', "⏱️ " . ($timeTracking->task->name ? $timeTracking->t
         ) ?></div>
 </div>
 <div class="timeTrackings form content">
-    <?= $this->Form->create($timeTracking) ?>
+    <?= $this->Form->create($timeTracking, ["id" => "time-tracking-form"]) ?>
     <fieldset>
         <div class="stopwatch mb-3">
             <?= $this->Form->control('stopwatch'); ?>
@@ -72,7 +73,7 @@ $this->assign('title', "⏱️ " . ($timeTracking->task->name ? $timeTracking->t
 
     const stopwatchOutput = document.getElementById("stopwatch")
     const durationInput = document.getElementById("duration")
-    const form = document.getElementsByTagName("form")
+    const form = document.getElementById("time-tracking-form")
     let notificationShown = false
     const notifications = new Notifications()
     const progressBar = document.getElementById("progress-bar")
@@ -112,7 +113,9 @@ $this->assign('title', "⏱️ " . ($timeTracking->task->name ? $timeTracking->t
         if (!stopwatchOutput.value) {
             stopwatchOutput.value = 0
         }
-        durationInput.value = "" + (parseFloat(durationInput.value.replace(",", ".")) + parseFloat(stopwatchOutput.value) / 60)
+        const duration = (parseFloat(durationInput.value.replace(",", ".")) + parseFloat(stopwatchOutput.value) / 60).toFixed(2)
+        durationInput.value = "" + duration
+        console.log(durationInput.value)
         stopwatchOutput.value = 0
         form.submit()
     }

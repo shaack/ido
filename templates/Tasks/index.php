@@ -15,19 +15,19 @@
                 $doneTodayClass = "text-danger";
             } else if ($doneToday < 2) {
                 $doneTodayClass = "text-warning";
-            } else if ($doneToday < 4) {
+            } else if ($doneToday < 3) {
                 $doneTodayClass = "text-success";
-            } else if ($doneToday < 6) {
+            } else if ($doneToday < 4) {
                 $doneTodayClass = "text-info";
-            } else if ($doneToday < 7) {
+            } else if ($doneToday < 5) {
                 $doneTodayClass = "text-info fw-bold";
-            } else if ($doneToday < 8) {
+            } else if ($doneToday < 6) {
                 $doneTodayClass = "text-info fw-bold fs-5";
-            } else if ($doneToday < 9) {
+            } else if ($doneToday < 7) {
                 $doneTodayClass = "text-info fw-bold fs-4";
-            } else if ($doneToday < 10) {
+            } else if ($doneToday < 8) {
                 $doneTodayClass = "text-info fw-bold fs-3";
-            } else if ($doneToday < 11) {
+            } else if ($doneToday < 9) {
                 $doneTodayClass = "text-info fw-bold fs-2";
             } else {
                 $doneTodayClass = "text-info fw-bold fs-1";
