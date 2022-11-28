@@ -47,7 +47,8 @@ class Service extends Entity
         'tasks' => true,
     ];
 
-    function effort() {
+    function effort()
+    {
         $tasks = $this->tasks;
         $sum = 0.0;
         foreach ($tasks as $task) {
@@ -56,7 +57,22 @@ class Service extends Entity
         return round($sum * 4) / 4;
     }
 
-    function costs() {
+    function costs()
+    {
         return $this->effort() * $this->project->customer->hourly_rate;
+    }
+
+    function countTasks()
+    {
+        $tasks = $this->tasks;
+        $count = 0;
+        $todoCount = 0;
+        foreach ($tasks as $task) {
+            $count++;
+            if(!$task->done) {
+                $todoCount++;
+            }
+        }
+        return ["count" => $count, "todo" => $todoCount];
     }
 }

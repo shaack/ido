@@ -166,41 +166,40 @@ $parsedown = new Parsedown();
                     <div class="table-responsive">
                         <table>
                             <tr>
-                                <!-- <th><?= __('Id') ?></th> -->
                                 <th><?= __('Name') ?></th>
-                                <!-- <th><?= __('Project Id') ?></th> -->
+                                <th><?= __('Tasks') ?></th>
                                 <th  class="text-end"><?= __('Effort Est') ?></th>
-                                <!-- <th><?= __('Estimation Or Fixed Price') ?></th> -->
                                 <th  class="text-end"><?= __('Effort') ?></th>
                                 <th  class="text-end"><?= __('Costs') ?></th>
-                                <!-- <th><?= __('Notes') ?></th> -->
-                                <!-- <th><?= __('Sort') ?></th> -->
-                                <!-- <th><?= __('Created') ?></th> -->
                                 <th class="actions"><?= __('Actions') ?></th>
                             </tr>
                             <?php $effortSum = 0;
-                            foreach ($project->services as $services) :
-                                $effortSum += $services->effort();
+                            foreach ($project->services as $service) :
+                                $effortSum += $service->effort();
+                                $tasksCount = $service->countTasks();
+                                $tasksDoneCount = $tasksCount["count"] - $tasksCount["todo"];
+                                $trClass = "";
+                                if($tasksCount["count"] == 0) {
+                                    $trClass = "text-muted";
+                                } else {
+                                    $trClass = $tasksCount["count"] - $tasksDoneCount > 0 ? 'done-false' : 'done-true';
+                                }
                                 ?>
-                                <tr>
-                                    <!-- <td><?= h($services->id) ?></td> -->
-                                    <td><?= $this->Html->link($services->name, ['controller' => 'Services', 'action' => 'view', $services->id]) ?></td>
-                                    <!-- <td><?= h($services->project_id) ?></td> -->
-                                    <td  class="text-end"><?= h($services->effort_est) ?></td>
-                                    <!-- <td><?= h($services->estimation_or_fixed_price) ?></td> -->
-                                    <td class="text-end"><?= h($services->effort()) ?></td>
-                                    <td class="text-end"><?= $this->Number->currency($services->costs()) ?></td>
-                                    <!-- <td><?= h($services->notes) ?></td>
-                            <td><?= h($services->sort) ?></td>
-                            <td><?= h($services->created) ?></td> -->
+                                <tr class="<?= $trClass ?>">
+                                    <td><?= $this->Html->link($service->name, ['controller' => 'Services', 'action' => 'view', $service->id]) ?></td>
+                                    <td><?= $tasksDoneCount ?> / <?= $tasksCount["count"] ?></td>
+                                    <td  class="text-end"><?= h($service->effort_est) ?></td>
+                                    <td class="text-end"><?= h($service->effort()) ?></td>
+                                    <td class="text-end"><?= $this->Number->currency($service->costs()) ?></td>
                                     <td class="actions">
-                                        <?= $this->Html->link(__('View'), ['controller' => 'Services', 'action' => 'view', $services->id]) ?>
-                                        <?= $this->Html->link(__('Edit'), ['controller' => 'Services', 'action' => 'edit', $services->id]) ?>
-                                        <?= $this->Form->postLink(__('Delete'), ['controller' => 'Services', 'action' => 'delete', $services->id], ['confirm' => __('Are you sure you want to delete # {0}?', $services->id)]) ?>
+                                        <?= $this->Html->link(__('View'), ['controller' => 'Services', 'action' => 'view', $service->id]) ?>
+                                        <?= $this->Html->link(__('Edit'), ['controller' => 'Services', 'action' => 'edit', $service->id]) ?>
+                                        <?= $this->Form->postLink(__('Delete'), ['controller' => 'Services', 'action' => 'delete', $service->id], ['confirm' => __('Are you sure you want to delete # {0}?', $service->id)]) ?>
                                     </td>
                                 </tr>
                             <?php endforeach; ?>
                             <tr>
+                                <td></td>
                                 <td></td>
                                 <td></td>
                                 <td class="text-end"><b><?= $effortSum ?></b></td>

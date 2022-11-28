@@ -36,13 +36,17 @@ main {
                     a {
                         // color: $text-muted;
                         opacity: 0.5;
-                        text-decoration: line-through;
+                        // text-decoration: line-through;
                         &.no-line-through {
                             text-decoration: none;
                         }
                     }
                 }
-
+                &.text-muted {
+                    a {
+                        color: $text-muted;
+                    }
+                }
                 td {
                     &.project-status-15 a {
                         color: $success;

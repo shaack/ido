@@ -2,13 +2,15 @@
 /** @var $project \App\Model\Entity\Project */
 /** @var $invoiceStored boolean */
 
+$type = $this->request->getQuery('type', 'default');
 $latestInvoiceNumber = $this->get('latestInvoiceNumber');
 $asNumber = intval($latestInvoiceNumber);
 $newInvoiceNumber = $asNumber + 1;
 
+$foreign = $project->customer->country && $project->customer->country !== "Deutschland";
+$lang = $foreign ? "en" : "de";
 $fileName =  $project->invoice_date->i18nFormat('yyyy-MM-dd') .
-    " Rechnung " . $project->invoice_number . " " . $project->customer->shortcut . " " . $project->name;
-
+    " " . ($lang == "de" ? "Rechnung" : "Invoice") . " " . $project->invoice_number . " " . $project->customer->shortcut . " " . $project->name;
 $this->assign('title', $fileName);
 ?>
 
@@ -20,7 +22,7 @@ $this->assign('title', $fileName);
         Tel. +49 (0)5141 403 95 11<br/>
         shaack.com<br/>
     </address>
-    <div class="">An:</div>
+    <div class=""><?= ($lang == "de" ? "An" : "To") ?>:</div>
     <address class="mb-5">
         <?= $project->customer->name ?><br/>
         <?= $project->customer->street ?><br/>
@@ -28,45 +30,45 @@ $this->assign('title', $fileName);
         <?= $project->customer->country ? $project->customer->country . '' : '' ?><br/>
     </address>
 </div>
-<h1 class="mb-0">Rechnung</h1>
+<h1 class="mb-0"><?= ($lang == "de" ? "Rechnung" : "Invoice") ?></h1>
 <h2 class="mb-4"><?= $project->name ?></h2>
 <?= $this->Form->create($project) ?>
 <table class="data">
     <tr>
-        <th><label for="invoice_number">Rechnungsnummer</label></th>
+        <th><label for="invoice_number"><?= ($lang == "de" ? "Rechnungsnummer" : "Invoice number") ?></label></th>
         <td>
             <?= $invoiceStored ? $project->invoice_number : $this->Form->control('invoice_number'); ?>
         </td>
     </tr>
     <tr>
-        <th><label for="invoice_number">Datum</label></th>
+        <th><label for="invoice_number"><?= ($lang == "de" ? "Datum" : "Date") ?></label></th>
         <td>
             <?= $invoiceStored ? $project->invoice_date : $this->Form->control('invoice_date'); ?>
         </td>
     </tr>
     <tr>
-        <th>Steuernummer</th>
+        <th><?= ($lang == "de" ? "Steuernummer" : "Tax number") ?></th>
         <td>17/116/11120</td>
     </tr>
     <tr>
-        <th>Ust-Id Nr.</th>
+        <th><?= ($lang == "de" ? "Ust-Id Nr." : "VAT ID No.") ?></th>
         <td>DE246560796</td>
     </tr>
     <tr>
-        <th>Zeitraum der Leistung</th>
+        <th><?= ($lang == "de" ? "Zeitraum der Leistung" : "Period of the service") ?></th>
         <td><?= $project->start ?> -
             <?= $invoiceStored ? $project->end : $this->Form->control('end'); ?></td>
     </tr>
 </table>
 <?= !$invoiceStored ? $this->Form->button(__('Submit')) : "" ?>
 <?= $this->Form->end() ?>
-<p>Vielen Dank für Ihren Auftrag, den wir wie folgt abrechnen.</p>
+<p><?= ($lang == "de" ? "Vielen Dank für Ihren Auftrag, den wir wie folgt abrechnen." : "Thank you for your order, which we will invoice as follows.") ?></p>
 <table class="mb-2">
     <thead>
     <tr>
-        <th>Leistung</th>
-        <th class="text-end">Aufwand</th>
-        <th class="text-end">Betrag</th>
+        <th><?= ($lang == "de" ? "Leistung" : "Service") ?></th>
+        <th class="text-end"><?= ($lang == "de" ? "Aufwand" : "Effort") ?></th>
+        <th class="text-end"><?= ($lang == "de" ? "Betrag" : "Amount") ?></th>
     </tr>
     </thead>
     <tbody>
