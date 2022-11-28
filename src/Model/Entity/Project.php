@@ -26,9 +26,9 @@ use Cake\ORM\Entity;
  * @property \Cake\I18n\FrozenTime|null $created
  *
  * @property \App\Model\Entity\Customer $customer
- * @property \App\Model\Entity\ParentProject $parent_project
+ * @property \App\Model\Entity\Project $parent_project
  * @property \App\Model\Entity\ProjectStatus $project_status
- * @property \App\Model\Entity\ChildProject[] $child_projects
+ * @property \App\Model\Entity\Project[] $child_projects
  * @property \App\Model\Entity\Service[] $services
  */
 class Project extends Entity
