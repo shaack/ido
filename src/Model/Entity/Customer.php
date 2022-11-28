@@ -19,6 +19,7 @@ use Cake\ORM\Entity;
  * @property string|null $street
  * @property string|null $zip_city
  * @property string|null $country
+ * @property string|null $address_addition
  * @property string|null $invoice_email
  * @property \Cake\I18n\FrozenTime|null $created
  *
@@ -47,6 +48,7 @@ class Customer extends Entity
         'street' => true,
         'zip_city' => true,
         'country' => true,
+        'address_addition' => true,
         'invoice_email' => true,
         'created' => true,
         'contacts' => true,

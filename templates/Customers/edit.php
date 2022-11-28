@@ -33,6 +33,7 @@
                         echo $this->Form->control('street');
                         echo $this->Form->control('zip_city');
                         echo $this->Form->control('country');
+                        echo $this->Form->control('address_addition');
                         echo $this->Form->control('invoice_email');
                         ?>
                     </div>

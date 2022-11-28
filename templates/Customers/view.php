@@ -5,15 +5,6 @@
  */
 
 $parsedown = new Parsedown();
-echo "customer has address_addition: " . $customer->has('address_addition');
-echo "<br/>";
-echo "customer has invoice_email: " . $customer->has('invoice_email');
-echo "<br/>";
-echo "customer has country: " . $customer->has('country');
-echo "<br/>";
-echo "customer has created: " . $customer->has('created');
-echo "<br/>";
-echo "customer has id: " . $customer->has('id');
 ?>
 <div class="row">
     <aside class="column">
@@ -57,6 +48,10 @@ echo "customer has id: " . $customer->has('id');
                         <tr>
                             <th><?= __('Country') ?></th>
                             <td><?= h($customer->country) ?></td>
+                        </tr>
+                        <tr>
+                            <th><?= __('Address addition') ?></th>
+                            <td><?= h($customer->address_addition) ?></td>
                         </tr>
                         <tr>
                             <th><?= __('Invoice Email') ?></th>
