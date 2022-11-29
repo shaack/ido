@@ -104,6 +104,7 @@
         </table>
     </div>
     <div class="paginator">
+        <!--
         <?php if ($this->Paginator->hasPage(2)) { ?>
             <ul class="pagination">
                 <?= $this->Paginator->first('<< ' . __('first')) ?>
@@ -114,5 +115,7 @@
             </ul>
         <?php } ?>
         <p><?= $this->Paginator->counter(__('Page {{page}} of {{pages}}, showing {{current}} record(s) out of {{count}} total')) ?></p>
+        -->
+        <p><?= $this->Paginator->counter(__('{{current}} record(s)')) ?></p>
     </div>
 </div>

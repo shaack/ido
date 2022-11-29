@@ -21,21 +21,21 @@ class TasksController extends AppController
      */
     public function index()
     {
+        $filter = $this->request->getQuery("filter");
         $this->paginate = [
             'contain' => ['Services', 'Services.Projects', 'Services.Projects.Customers', 'TimeTrackings'],
             'order' => ['marked' => 'desc', 'prio' => 'desc', 'id' => 'asc']
         ];
         $now = FrozenDate::now()->timestamp;
-        $options = array('maxLimit' => 1000,
-            'limit' => 1000, 'conditions' => array('OR' =>
-            [['done =' => false],
-                ['done_at >' => $now]] // heute erledigt
-        )); // todo or from today
+        $conditions = [['OR' => [['done =' => false], ['done_at >' => $now]]]];
+        if($filter == "customers") {
+            $conditions[] = ['Customers.shortcut !=' => 'SHA'];
+        }
+        $options = ['maxLimit' => 1000, 'limit' => 1000, 'conditions' => $conditions];
         $tasks = $this->paginate($this->Tasks, $options);
 
         // time trackings today
         $doneToday = $this->Tasks->TimeTrackings->find()->where(["created >" => $now])->sumOf('duration');
-
 
         $this->set(compact('tasks', 'doneToday'));
     }
