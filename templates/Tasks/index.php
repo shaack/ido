@@ -36,6 +36,11 @@
         ?>
         <div class="col-auto"><span class="text-muted">today's hrs:</span> <span
                 class="<?= $doneTodayClass ?>"><?= $this->Number->format($this->get('doneToday')) ?></span></div>
+        <div class="col-auto text-muted">
+            <span class="me-2"><?= $this->Number->format($this->get('done1')) ?></span>
+            <span class="me-2"><?= $this->Number->format($this->get('done2')) ?></span>
+            <span><?= $this->Number->format($this->get('done3')) ?></span>
+        </div>
         <div
             class="col-auto text-end"><?= $this->Html->link(__('New Task'), ['action' => 'add'], ['class' => 'btn btn-primary btn-sm float-right']) ?></div>
     </div>

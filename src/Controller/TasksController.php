@@ -3,8 +3,10 @@ declare(strict_types=1);
 
 namespace App\Controller;
 
+use Cake\Chronos\Date;
 use Cake\I18n\FrozenDate;
 use Cake\I18n\FrozenTime;
+use DateInterval;
 
 /**
  * Tasks Controller
@@ -23,10 +25,12 @@ class TasksController extends AppController
     {
         $filter = $this->request->getQuery("filter");
         $this->paginate = [
-            'contain' => ['Services', 'Services.Projects', 'Services.Projects.Customers', 'TimeTrackings'],
+            'contain' => ['Services', 'Services.Projects' => ['conditions' => ['project_status_id' => '15']], 'Services.Projects.Customers', 'TimeTrackings'],
             'order' => ['marked' => 'desc', 'prio' => 'desc', 'id' => 'asc']
         ];
-        $now = FrozenDate::now()->timestamp;
+        $now = FrozenDate::now();
+        $oneDayInterval = new DateInterval("P1D");
+        $yesterday = $now->sub($oneDayInterval);
         $conditions = [['OR' => [['done =' => false], ['done_at >' => $now]]]];
         if($filter == "customers") {
             $conditions[] = ['Customers.shortcut !=' => 'SHA'];
@@ -34,10 +38,22 @@ class TasksController extends AppController
         $options = ['maxLimit' => 1000, 'limit' => 1000, 'conditions' => $conditions];
         $tasks = $this->paginate($this->Tasks, $options);
 
-        // time trackings today
-        $doneToday = $this->Tasks->TimeTrackings->find()->where(["created >" => $now])->sumOf('duration');
+        $day = FrozenDate::now();
+        $dayBefore = $day->add($oneDayInterval);
 
-        $this->set(compact('tasks', 'doneToday'));
+        // time trackings today
+        $doneToday = $this->Tasks->TimeTrackings->find()->where(["created >" => $day])->sumOf('duration');
+        $day = $day->sub($oneDayInterval);
+        $dayBefore = $dayBefore->sub($oneDayInterval);
+        $done1 = $this->Tasks->TimeTrackings->find()->where(["created >" => $day])->where(["created <" => $dayBefore])->sumOf('duration');
+        $day = $day->sub($oneDayInterval);
+        $dayBefore = $dayBefore->sub($oneDayInterval);
+        $done2 = $this->Tasks->TimeTrackings->find()->where(["created >" => $day])->where(["created <" => $dayBefore])->sumOf('duration');
+        $day = $day->sub($oneDayInterval);
+        $dayBefore = $dayBefore->sub($oneDayInterval);
+        $done3 = $this->Tasks->TimeTrackings->find()->where(["created >" => $day])->where(["created <" => $dayBefore])->sumOf('duration');
+
+        $this->set(compact('tasks', 'doneToday', 'done1', 'done2', 'done3'));
     }
 
     /**

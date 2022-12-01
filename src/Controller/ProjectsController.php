@@ -69,7 +69,7 @@ class ProjectsController extends AppController
     public function invoice($id) {
         $project = $this->Projects->get($id, [
             'contain' => ['Customers', 'ParentProjects', 'ProjectStatuses', 'ChildProjects',
-                'Services', 'Services.Projects.Customers', 'Services.Tasks', 'Services.Tasks.TimeTrackings'],
+                'Services' => ['sort' => ['sort desc', 'Services.id asc']], 'Services.Projects.Customers', 'Services.Tasks', 'Services.Tasks.TimeTrackings'],
         ]);
         if ($this->request->is(['post', 'patch', 'put'])) {
             $project = $this->Projects->patchEntity($project, $this->request->getData());

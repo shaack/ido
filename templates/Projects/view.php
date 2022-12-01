@@ -17,6 +17,59 @@ $parsedown = new Parsedown();
     <div class="column-responsive column-80">
         <div class="projects view content">
             <h3><?= h($project->name) ?></h3>
+            <div class="related">
+                <h4><?= __('Related Services') ?></h4>
+                <div class="actions">
+                    <a class="button-clear" href="/services/add?project_id=<?= $project->id ?>">Add Service</a>
+                </div>
+                <?php if (!empty($project->services)) : ?>
+                    <div class="table-responsive">
+                        <table>
+                            <tr>
+                                <th><?= __('Name') ?></th>
+                                <th><?= __('Tasks') ?></th>
+                                <th  class="text-end"><?= __('Effort Est') ?></th>
+                                <th  class="text-end"><?= __('Effort') ?></th>
+                                <th  class="text-end"><?= __('Costs') ?></th>
+                                <th class="actions"><?= __('Actions') ?></th>
+                            </tr>
+                            <?php $effortSum = 0;
+                            foreach ($project->services as $service) :
+                                $effortSum += $service->effort();
+                                $tasksCount = $service->countTasks();
+                                $tasksDoneCount = $tasksCount["count"] - $tasksCount["todo"];
+                                $trClass = "";
+                                if($tasksCount["count"] == 0) {
+                                    $trClass = "";
+                                } else {
+                                    $trClass = $tasksCount["count"] - $tasksDoneCount > 0 ? '' : 'opacity-50';
+                                }
+                                ?>
+                                <tr class="<?= $trClass ?>">
+                                    <td><?= $this->Html->link($service->name, ['controller' => 'Services', 'action' => 'view', $service->id]) ?></td>
+                                    <td><?= $tasksDoneCount ?> / <?= $tasksCount["count"] ?></td>
+                                    <td  class="text-end"><?= h($service->effort_est) ?></td>
+                                    <td class="text-end"><?= h($service->effort()) ?></td>
+                                    <td class="text-end"><?= $this->Number->currency($service->costs()) ?></td>
+                                    <td class="actions">
+                                        <?= $this->Html->link(__('View'), ['controller' => 'Services', 'action' => 'view', $service->id]) ?>
+                                        <?= $this->Html->link(__('Edit'), ['controller' => 'Services', 'action' => 'edit', $service->id]) ?>
+                                        <?= $this->Form->postLink(__('Delete'), ['controller' => 'Services', 'action' => 'delete', $service->id], ['confirm' => __('Are you sure you want to delete # {0}?', $service->id)]) ?>
+                                    </td>
+                                </tr>
+                            <?php endforeach; ?>
+                            <tr>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                                <td class="text-end"><b><?= $effortSum ?></b></td>
+                                <td class="text-end"><b><?= $this->Number->currency($effortSum * $project->hourly_rate) ?></b></td>
+                            </tr>
+                        </table>
+                    </div>
+                <?php endif; ?>
+            </div>
+            <h4><?= __('Project Fields') ?></h4>
             <div class="row">
                 <div class="col-md-6">
                     <table>
@@ -82,18 +135,18 @@ $parsedown = new Parsedown();
                 </div>
 
                 <div class="col">
-                    <?php if($project->notes) { ?>
                         <div class="text">
                             <strong><?= __('Notes') ?></strong>
                             <blockquote>
                                 <?php
+                                if ($project->notes) {
                                 $text = h($project->notes);
                                 $text = preg_replace('/(?:^|\s)#(\w+)/', ' <span class="text-info">#$1</span>', $text);
                                 ?>
                                 <?= $parsedown->parse($text); ?>
+                                <?php } ?>
                             </blockquote>
                         </div>
-                    <?php } ?>
                     <?php if($project->description) { ?>
                     <div class="text">
                         <strong><?= __('Description') ?></strong>
@@ -157,58 +210,6 @@ $parsedown = new Parsedown();
                     </div>
                 </div>
             <?php endif; ?>
-            <div class="related">
-                <h4><?= __('Related Services') ?></h4>
-                <div class="actions">
-                    <a class="button-clear" href="/services/add?project_id=<?= $project->id ?>">Add Service</a>
-                </div>
-                <?php if (!empty($project->services)) : ?>
-                    <div class="table-responsive">
-                        <table>
-                            <tr>
-                                <th><?= __('Name') ?></th>
-                                <th><?= __('Tasks') ?></th>
-                                <th  class="text-end"><?= __('Effort Est') ?></th>
-                                <th  class="text-end"><?= __('Effort') ?></th>
-                                <th  class="text-end"><?= __('Costs') ?></th>
-                                <th class="actions"><?= __('Actions') ?></th>
-                            </tr>
-                            <?php $effortSum = 0;
-                            foreach ($project->services as $service) :
-                                $effortSum += $service->effort();
-                                $tasksCount = $service->countTasks();
-                                $tasksDoneCount = $tasksCount["count"] - $tasksCount["todo"];
-                                $trClass = "";
-                                if($tasksCount["count"] == 0) {
-                                    $trClass = "text-muted";
-                                } else {
-                                    $trClass = $tasksCount["count"] - $tasksDoneCount > 0 ? 'done-false' : 'done-true';
-                                }
-                                ?>
-                                <tr class="<?= $trClass ?>">
-                                    <td><?= $this->Html->link($service->name, ['controller' => 'Services', 'action' => 'view', $service->id]) ?></td>
-                                    <td><?= $tasksDoneCount ?> / <?= $tasksCount["count"] ?></td>
-                                    <td  class="text-end"><?= h($service->effort_est) ?></td>
-                                    <td class="text-end"><?= h($service->effort()) ?></td>
-                                    <td class="text-end"><?= $this->Number->currency($service->costs()) ?></td>
-                                    <td class="actions">
-                                        <?= $this->Html->link(__('View'), ['controller' => 'Services', 'action' => 'view', $service->id]) ?>
-                                        <?= $this->Html->link(__('Edit'), ['controller' => 'Services', 'action' => 'edit', $service->id]) ?>
-                                        <?= $this->Form->postLink(__('Delete'), ['controller' => 'Services', 'action' => 'delete', $service->id], ['confirm' => __('Are you sure you want to delete # {0}?', $service->id)]) ?>
-                                    </td>
-                                </tr>
-                            <?php endforeach; ?>
-                            <tr>
-                                <td></td>
-                                <td></td>
-                                <td></td>
-                                <td class="text-end"><b><?= $effortSum ?></b></td>
-                                <td class="text-end"><b><?= $this->Number->currency($effortSum * $project->hourly_rate) ?></b></td>
-                            </tr>
-                        </table>
-                    </div>
-                <?php endif; ?>
-            </div>
         </div>
     </div>
 </div>
