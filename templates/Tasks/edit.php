@@ -19,7 +19,7 @@
     <fieldset>
         <legend><?= __('Edit Task') ?></legend>
         <div class="row">
-            <div class="col-md-8">
+            <div class="col-md">
                 <?php
                 echo $this->Form->control('done');
                 echo $this->Form->control('marked');
@@ -34,9 +34,9 @@
                 // echo $this->Form->control('duration');
                 ?>
             </div>
-            <div class="col">
+            <div class="col-md">
                 <?php
-                echo $this->Form->control('notes', ['rows' => '15']);
+                echo $this->Form->control('notes', ['rows' => '15', 'class' => 'markdown']);
                 ?>
             </div>
         </div>

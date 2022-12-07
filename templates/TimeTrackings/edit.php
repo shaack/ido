@@ -35,7 +35,8 @@ $this->assign('title', "⏱️" . $this->Text->truncate($taskName, 20));
                 <input id="stopwatch" type="text" class="form-control text-end" placeholder="" name="stopwatch"/>
                 <button type="button" id="button-start" class="btn btn-success">start
                 </button>
-                <button type="button" class="btn btn-warning btn-stop" onclick="window.stopwatch.stop(); return false;">pause
+                <button type="button" class="btn btn-warning btn-stop" onclick="window.stopwatch.stop(); return false;">
+                    pause
                 </button>
                 <button type="button" class="btn btn-danger btn-reset"
                         onclick="window.stopwatch.stop(); window.stopwatch.reset(); return false;">reset
@@ -66,6 +67,7 @@ $this->assign('title', "⏱️" . $this->Text->truncate($taskName, 20));
 <script type="module">
     import {Stopwatch} from "/lib/cm-web-modules/stopwatch/Stopwatch.js";
     import {Notifications} from "../../webroot/lib/cm-web-modules/notifications/Notifications.js";
+
     const stopwatchOutput = document.getElementById("stopwatch")
     const durationInput = document.getElementById("duration")
     const form = document.getElementById("time-tracking-form")
@@ -86,8 +88,8 @@ $this->assign('title', "⏱️" . $this->Text->truncate($taskName, 20));
             stopwatchOutput.value = Math.round(minutesExpired * 100) / 100
         },
         onStateChanged: (running) => {
-            if(running) {
-                if(!progressBar.classList.contains("bg-primary")) {
+            if (running) {
+                if (!progressBar.classList.contains("bg-primary")) {
                     progressBar.classList.add("bg-primary")
                     progressBar.classList.add("progress-bar-striped")
                     progressBar.classList.add("progress-bar-animated")
@@ -95,7 +97,7 @@ $this->assign('title', "⏱️" . $this->Text->truncate($taskName, 20));
                     progressBar.classList.remove("bg-secondary")
                 }
             } else {
-                if(progressBar.classList.contains("bg-primary")) {
+                if (progressBar.classList.contains("bg-primary")) {
                     progressBar.classList.remove("bg-primary")
                     progressBar.classList.remove("progress-bar-striped")
                     progressBar.classList.remove("progress-bar-animated")
