@@ -33,24 +33,12 @@ $this->assign('title', $task->name);
                             <td><?= $task->prio === null ? '' : $this->Number->format($task->prio) ?></td>
                         </tr>
                         <tr>
-                            <th><?= __('Duration Est') ?></th>
-                            <td><?= $task->duration_est === null ? '' : $this->Number->format($task->duration_est) ?></td>
-                        </tr>
-                        <tr>
-                            <th><?= __('Duration') ?></th>
-                            <td><?= $task->duration === null ? '' : $this->Number->format($task->duration) ?></td>
-                        </tr>
-                        <tr>
                             <th><?= __('Start Est') ?></th>
                             <td><?= h($task->start_est) ?></td>
                         </tr>
                         <tr>
                             <th><?= __('Deadline') ?></th>
                             <td><?= h($task->deadline) ?></td>
-                        </tr>
-                        <tr>
-                            <th><?= __('Created') ?></th>
-                            <td><?= h($task->created) ?></td>
                         </tr>
                         <tr>
                             <th><?= __('Marked') ?></th>
@@ -63,9 +51,9 @@ $this->assign('title', $task->name);
                     </table>
                 </div>
                 <div class="col">
-                    <?php if($task->notes) { ?>
-                        <div class="text">
-                            <strong><?= __('Notes') ?></strong>
+                    <div class="text">
+                        <strong><?= __('Notes') ?></strong>
+                        <?php if ($task->notes) { ?>
                             <blockquote>
                                 <?php
                                 $text = h($task->notes);
@@ -73,13 +61,15 @@ $this->assign('title', $task->name);
                                 ?>
                                 <?= $parsedown->parse($text); ?>
                             </blockquote>
-                        </div>
-                    <?php } ?>
+                        <?php } ?>
+                    </div>
                 </div>
             </div>
             <div class="related">
                 <h4><?= __('Related Time Trackings') ?></h4>
-                <a href="/timeTrackings/add?task_id=<?= $task->id ?>">Start Tracking</a>
+                <div class="actions">
+                    <a target="_blank" href="/timeTrackings/add?task_id=<?= $task->id ?>">Start Tracking</a>
+                </div>
                 <?php if (!empty($task->time_trackings)) : ?>
                     <div class="table-responsive">
                         <table>
@@ -103,9 +93,11 @@ $this->assign('title', $task->name);
                                 </tr>
                             <?php endforeach; ?>
                             <tr>
-                                <td class="text-end border-top border-2"</td>
+                                <td class="text-end border-top border-2"
+                                </td>
                                 <td class="border-top border-2"><b><?= $durationSum ?></b></td>
-                                <td class="text-end border-top border-2"</td>
+                                <td class="text-end border-top border-2"
+                                </td>
                             </tr>
                         </table>
                     </div>
