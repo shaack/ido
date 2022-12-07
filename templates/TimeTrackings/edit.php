@@ -31,46 +31,41 @@ $this->assign('title', "⏱️" . $this->Text->truncate($taskName, 20));
     <?= $this->Form->create($timeTracking, ["id" => "time-tracking-form"]) ?>
     <fieldset>
         <div class="stopwatch mb-3">
-            <?= $this->Form->control('stopwatch'); ?>
+            <div class="input-group mb-3" style="max-width: 320px">
+                <input id="stopwatch" type="text" class="form-control text-end" placeholder="" name="stopwatch"/>
+                <button type="button" id="button-start" class="btn btn-success">start
+                </button>
+                <button type="button" class="btn btn-warning btn-stop" onclick="window.stopwatch.stop(); return false;">pause
+                </button>
+                <button type="button" class="btn btn-danger btn-reset"
+                        onclick="window.stopwatch.stop(); window.stopwatch.reset(); return false;">reset
+                </button>
+            </div>
             <div class="progress mb-2">
-                <div id="progress-bar" class="progress-bar bg-primary" role="progressbar" aria-label="Basic example"
+                <div id="progress-bar" class="progress-bar bg-secondary" role="progressbar" aria-label="Basic example"
                      style=""></div>
             </div>
-            <button id="button-start" class="btn btn-success btn-sm btn-start">start
-            </button>
-            <button class="btn btn-warning btn-sm btn-stop" onclick="window.stopwatch.stop(); return false;">pause
-            </button>
-            <button class="btn btn-danger btn-sm btn-reset"
-                    onclick="window.stopwatch.stop(); window.stopwatch.reset(); return false;">reset
-            </button>
-            <button class="btn btn-outline-primary btn-sm btn-stop" onclick="window.stopAndAdd(); return false;">add and
-                save
-            </button>
         </div>
-        <?php
-        echo $this->Form->control('start', ['empty' => true]);
-        echo $this->Form->control('duration');
-        ?>
+        <div class="row">
+            <div class="col"><?= $this->Form->control('duration') ?></div>
+        </div>
     </fieldset>
-    <!--
-    <div class="mb-3">
-        <?= $this->Form->button(__('Submit')) ?>
-    </div>
-    -->
     <fieldset>
         <?php
-        echo $this->Form->control('task.notes', ['label' => 'Task Notes']);
+        echo $this->Form->control('task.notes', ['label' => 'Task Notes', 'rows' => 16, 'class' => 'font-monospace']);
         ?>
     </fieldset>
     <div class="mb-3">
-        <?= $this->Form->button(__('Submit')) ?>
+        <button class="btn btn-secondary">Submit</button>
+        <button class="btn btn-primary" onclick="window.stopAndAdd(); return false;">
+            Add Stopwatch and Submit
+        </button>
     </div>
     <?= $this->Form->end() ?>
 </div>
 <script type="module">
     import {Stopwatch} from "/lib/cm-web-modules/stopwatch/Stopwatch.js";
     import {Notifications} from "../../webroot/lib/cm-web-modules/notifications/Notifications.js";
-
     const stopwatchOutput = document.getElementById("stopwatch")
     const durationInput = document.getElementById("duration")
     const form = document.getElementById("time-tracking-form")
@@ -89,6 +84,24 @@ $this->assign('title', "⏱️" . $this->Text->truncate($taskName, 20));
             }
             progressBar.style.width = minutesExpired / pomodoroMinutes * 100 + "%"
             stopwatchOutput.value = Math.round(minutesExpired * 100) / 100
+        },
+        onStateChanged: (running) => {
+            if(running) {
+                if(!progressBar.classList.contains("bg-primary")) {
+                    progressBar.classList.add("bg-primary")
+                    progressBar.classList.add("progress-bar-striped")
+                    progressBar.classList.add("progress-bar-animated")
+                    progressBar.classList.remove("bg-secondary")
+                    progressBar.classList.remove("bg-secondary")
+                }
+            } else {
+                if(progressBar.classList.contains("bg-primary")) {
+                    progressBar.classList.remove("bg-primary")
+                    progressBar.classList.remove("progress-bar-striped")
+                    progressBar.classList.remove("progress-bar-animated")
+                    progressBar.classList.add("bg-secondary")
+                }
+            }
         }
     })
     document.getElementById("button-start").addEventListener("click", (event) => {
@@ -119,25 +132,28 @@ $this->assign('title', "⏱️" . $this->Text->truncate($taskName, 20));
         stopwatchOutput.value = 0
         form.submit()
     }
+    stopwatch.start()
+    /*
     if (<?= $timeTracking->duration > 0 ? "false" : "true" ?>) {
         stopwatch.start()
     }
-</script>
-<!--
-<script>
-    blinkTitle()
+    */
+    // Allow TAB
+    const textarea = document.querySelector('textarea')
+    textarea.addEventListener('keydown', function (e) {
+        if (e.key === 'Tab') {
+            e.preventDefault();
+            var start = this.selectionStart;
+            var end = this.selectionEnd;
 
-    function blinkTitle() {
-        const title = document.title
-        let i = 0
-        setInterval(() => {
-            if (i % 2 === 0) {
-                document.title = title + " ⏱️"
-            } else {
-                document.title = title
-            }
-            i++
-        }, 1000)
-    }
+            // set textarea value to: text before caret + tab + text after caret
+            this.value = this.value.substring(0, start) +
+                "\t" + this.value.substring(end);
+
+            // put caret at right position again
+            this.selectionStart =
+                this.selectionEnd = start + 1;
+        }
+    })
+    textarea.style.tabSize = "4"
 </script>
--->

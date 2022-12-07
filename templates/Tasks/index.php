@@ -3,43 +3,50 @@
  * @var \App\View\AppView $this
  * @var iterable<\App\Model\Entity\Task> $tasks
  */
+
+function doneClass($doneTime) {
+    $doneTodayClass = "text-muted";
+    if ($doneTime > 0) {
+        if ($doneTime < 1) {
+            // $doneTodayClass = "text-danger";
+        } else if ($doneTime < 2) {
+            // $doneTodayClass = "text-warning";
+        } else if ($doneTime < 3) {
+            // $doneTodayClass = "text-warning";
+        } else if ($doneTime < 4) {
+            $doneTodayClass = "text-success";
+        } else if ($doneTime < 5) {
+            $doneTodayClass = "text-info";
+        } else if ($doneTime < 6) {
+            $doneTodayClass = "text-info fs-5";
+        } else if ($doneTime < 7) {
+            $doneTodayClass = "text-info fs-4";
+        } else if ($doneTime < 8) {
+            $doneTodayClass = "text-info fs-3";
+        } else if ($doneTime < 9) {
+            $doneTodayClass = "text-info fs-2";
+        } else {
+            $doneTodayClass = "text-info fs-1";
+        }
+    }
+    return $doneTodayClass;
+}
 ?>
 <div class="tasks index content">
     <div class="row d-flex align-items-center mb-2">
         <div class="col"><h3 class="m-0"><?= __('Tasks') ?></h3></div>
         <?php
         $doneToday = floatval($this->get('doneToday'));
-        $doneTodayClass = "text-muted";
-        if ($doneToday > 0) {
-            if ($doneToday < 1) {
-                $doneTodayClass = "text-danger";
-            } else if ($doneToday < 2) {
-                $doneTodayClass = "text-warning";
-            } else if ($doneToday < 3) {
-                $doneTodayClass = "text-success";
-            } else if ($doneToday < 4) {
-                $doneTodayClass = "text-info";
-            } else if ($doneToday < 5) {
-                $doneTodayClass = "text-info fw-bold";
-            } else if ($doneToday < 6) {
-                $doneTodayClass = "text-info fw-bold fs-5";
-            } else if ($doneToday < 7) {
-                $doneTodayClass = "text-info fw-bold fs-4";
-            } else if ($doneToday < 8) {
-                $doneTodayClass = "text-info fw-bold fs-3";
-            } else if ($doneToday < 9) {
-                $doneTodayClass = "text-info fw-bold fs-2";
-            } else {
-                $doneTodayClass = "text-info fw-bold fs-1";
-            }
-        }
+        $done1 = $this->get('done1');
+        $done2 = $this->get('done2');
+        $done3 = $this->get('done3');
         ?>
         <div class="col-auto"><span class="text-muted">today's hrs:</span> <span
-                class="<?= $doneTodayClass ?>"><?= $this->Number->format($this->get('doneToday')) ?></span></div>
+                class="<?= doneClass($doneToday) ?>"><?= $this->Number->format($doneToday) ?></span></div>
         <div class="col-auto text-muted">
-            <span class="me-2"><?= $this->Number->format($this->get('done1')) ?></span>
-            <span class="me-2"><?= $this->Number->format($this->get('done2')) ?></span>
-            <span><?= $this->Number->format($this->get('done3')) ?></span>
+            <span class="me-2 <?= doneClass($done1) ?>"><?= $this->Number->format($done1) ?></span>
+            <span class="me-2 <?= doneClass($done2) ?>"><?= $this->Number->format($done2) ?></span>
+            <span class="<?= doneClass($done3) ?>"><?= $this->Number->format($done3) ?></span>
         </div>
         <div
             class="col-auto text-end"><?= $this->Html->link(__('New Task'), ['action' => 'add'], ['class' => 'btn btn-primary btn-sm float-right']) ?></div>

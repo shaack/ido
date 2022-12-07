@@ -33,7 +33,7 @@ class ProjectsController extends AppController
         if($current) {
             $this->paginate = [
                 'contain' => ['Customers', 'ParentProjects', 'ProjectStatuses', 'Services', 'Services.Tasks', 'Services.Tasks.TimeTrackings'],
-                'order' => ['invoice_number' => 'asc', 'project_status_id' => 'asc', 'id' => 'desc']
+                'order' => ['invoice_number' => 'asc', 'project_status_id' => 'asc', 'id' => 'asc']
             ];
         } else {
             $this->paginate = [

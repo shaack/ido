@@ -42,7 +42,7 @@ $parsedown = new Parsedown();
                                 if($tasksCount["count"] == 0) {
                                     $trClass = "";
                                 } else {
-                                    $trClass = $tasksCount["count"] - $tasksDoneCount > 0 ? '' : 'opacity-50';
+                                    $trClass = $tasksCount["count"] - $tasksDoneCount > 0 ? '' : 'opacity-75 text-muted';
                                 }
                                 ?>
                                 <tr class="<?= $trClass ?>">
