@@ -87,7 +87,7 @@ $this->assign('title', $fileName);
     <?php foreach ($project->services as $services) : ?>
         <tr>
             <td class="w-100"><?= h($services->name) ?></td>
-            <td class="text-end code ps-4"><?= $this->Number->format($services->effort()) ?></td>
+            <td class="text-end code ps-4"><?= $this->Number->precision($services->effort(), 2) ?></td>
             <td class="text-end code ps-4"><?= $this->Number->currency($services->costs()) ?></td>
         </tr>
     <?php endforeach; ?>
