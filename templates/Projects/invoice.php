@@ -49,8 +49,8 @@ $this->assign('title', $fileName);
             </tr>
             <tr>
                 <th><?= ($lang == "de" ? "Zeitraum der Leistung" : "Period of the service") ?></th>
-                <td><?= $project->start ?> -
-                    <?= $invoiceStored ? $project->end : $this->Form->control('end'); ?></td>
+                <td><?= $project->start->format("d.m.y") ?> -
+                    <?= $invoiceStored ? $project->end->format("d.m.y") : $this->Form->control('end'); ?></td>
             </tr>
         </table>
     </div>
@@ -65,7 +65,7 @@ $this->assign('title', $fileName);
             <tr>
                 <th><label for="invoice_number"><?= ($lang == "de" ? "Datum" : "Date") ?></label></th>
                 <td>
-                    <?= $invoiceStored ? $project->invoice_date : $this->Form->control('invoice_date'); ?>
+                    <?= $invoiceStored ? $project->invoice_date->format("d.m.Y") : $this->Form->control('invoice_date'); ?>
                 </td>
             </tr>
         </table>
