@@ -50,7 +50,7 @@ $controller = $this->request->getParam('controller')
     <?php if (!$this->get('hideNavigation')) : ?>
         <nav class="navbar navbar-expand-sm navbar-light bg-light">
             <div class="container-fluid">
-                <a class="navbar-brand" href="<?= $this->Url->build('/tasks') ?>"><span class="char-1">I</span><span
+                <a class="navbar-brand" href="<?= $this->Url->build('/tasks?filter=customers') ?>"><span class="char-1">I</span><span
                         class="char-2">d</span><span class="char-3">o</span></a>
                 <button class="navbar-toggler" type="button" data-bs-toggle="collapse"
                         data-bs-target="#navbarSupportedContent"
@@ -71,7 +71,7 @@ $controller = $this->request->getParam('controller')
                                href="/services">Services</a>
                         </li>
                         <li class="nav-item">
-                            <a class="nav-link <?= $controller != "Tasks" ?: "active" ?>" href="/tasks">Tasks</a>
+                            <a class="nav-link <?= $controller != "Tasks" ?: "active" ?>" href="/tasks?filter=customers">Tasks</a>
                         </li>
                         <li class="nav-item">
                             <a class="nav-link <?= $controller != "TimeTrackings" ?: "active" ?>"

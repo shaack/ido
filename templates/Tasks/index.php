@@ -90,10 +90,10 @@ function doneClass($doneTime) {
                         $icon = "";
                         switch ($task->prio) {
                             case 0:
-                                $icon = "<a ondblclick='window.location=\"tasks/prio/$task->id?prio=-1\"; return false;' href='tasks/prio/$task->id?prio=1'><i class=\"fa-solid fa-plus-minus\"></i></a>";
+                                $icon = "<a href='tasks/prio/$task->id?prio=1'><i class=\"fa-solid fa-plus\"></i></a> <a href='tasks/prio/$task->id?prio=-1'><i class=\"fa-solid fa-minus\"></i></a>";
                                 break;
                             case 1:
-                                $icon = "<a ondblclick='window.location=\"tasks/prio/$task->id?prio=0\"; return false;' href='#' class='text-warning'><i class=\"fa-solid fa-plus\"></i></a>";
+                                $icon = "<a href='tasks/prio/$task->id?prio=0' class='text-warning'><i class=\"fa-solid fa-plus\"></i></a>";
                                 break;
                             case -1:
                                 $icon = "<a href='tasks/prio/$task->id?prio=0' class='text-muted'><i class=\"fa-solid fa-minus\"></i></a>";
