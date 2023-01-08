@@ -114,6 +114,10 @@ $parsedown = new Parsedown();
                             <th><?= __('Current') ?></th>
                             <td><?= $customer->current ? __('Yes') : __('No'); ?></td>
                         </tr>
+                        <tr>
+                            <th><?= __('Internal') ?></th>
+                            <td><?= $customer->internal ? __('Yes') : __('No'); ?></td>
+                        </tr>
                     </table>
                 </div>
                 <div class="col">

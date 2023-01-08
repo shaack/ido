@@ -23,6 +23,7 @@
                     echo $this->Form->control('notes');
                     echo $this->Form->control('color');
                     echo $this->Form->control('current');
+                    echo $this->Form->control('internal');
                     echo $this->Form->control('name');
                     echo $this->Form->control('street');
                     echo $this->Form->control('zip_city');

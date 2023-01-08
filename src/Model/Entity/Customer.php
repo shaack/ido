@@ -22,6 +22,7 @@ use Cake\ORM\Entity;
  * @property string|null $address_addition
  * @property string|null $invoice_email
  * @property \Cake\I18n\FrozenTime|null $created
+ * @property bool $internal
  *
  * @property \App\Model\Entity\Contact[] $contacts
  * @property \App\Model\Entity\Project[] $projects
@@ -51,7 +52,8 @@ class Customer extends Entity
         'address_addition' => true,
         'invoice_email' => true,
         'created' => true,
+        'internal' => true,
         'contacts' => true,
-        'projects' => true,
+        'projects' => true
     ];
 }
