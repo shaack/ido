@@ -14,7 +14,8 @@ if (!isset($params['escape']) || $params['escape'] !== false) {
 ?>
 <script>
     bootstrap.showToast({
-        body: "<?= $message ?>"
+        body: "<?= $message ?>",
+        position: "top-0 start-0"
         // toastClass: "text-bg-success",
         // closeButtonClass: "btn-close-white"
     })

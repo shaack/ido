@@ -13,6 +13,7 @@ if (!isset($params['escape']) || $params['escape'] !== false) {
         body: "<?= $message ?>",
         toastClass: "text-bg-success",
         closeButtonClass: "btn-close-white",
-        delay: 1000
+        delay: 1000,
+        position: "top-0 start-0"
     })
 </script>
