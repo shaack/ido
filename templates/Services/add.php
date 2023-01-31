@@ -5,6 +5,21 @@
  * @var \Cake\Collection\CollectionInterface|string[] $projects
  */
 ?>
+<div class="actions">
+    <div class="row">
+        <div class="col">
+            <?= $this->Html->link(__('View Service'), ['action' => 'view', $service->id], ['class' => 'side-nav-item']) ?>
+            <?= $this->Html->link(__('List Services'), ['action' => 'index'], ['class' => 'side-nav-item']) ?>
+        </div>
+        <div class="col-auto">
+            <?= $this->Form->postLink(
+                __('Delete'),
+                ['action' => 'delete', $service->id],
+                ['confirm' => __('Are you sure you want to delete # {0}?', $service->id), 'class' => 'side-nav-item']
+            ) ?>
+        </div>
+    </div>
+</div>
 <div class="row">
     <aside class="column">
         <div class="side-nav">

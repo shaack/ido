@@ -8,13 +8,6 @@
 $taskName = $timeTracking->task->name ?: $timeTracking->task->service->name;
 $this->assign('title', "⏱️" . $this->Text->truncate($taskName, 20));
 ?>
-<!--
-<div class="actions">
-    <?= $this->Html->link(__('List Time Trackings'), ['action' => 'index'], ['class' => 'side-nav-item']) ?>
-    <?= $this->Html->link(__('View Task'), ['controller' => 'Tasks', 'action' => 'view', $timeTracking->task->id]) ?>
-    <?= $this->Html->link(__('Tasks List'), ['controller' => 'Tasks', 'action' => 'index']) ?>
-</div>
--->
 <div class="row">
     <div class="col">
         <h2>

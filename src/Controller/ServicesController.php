@@ -84,10 +84,10 @@ class ServicesController extends AppController
             $service = $this->Services->patchEntity($service, $this->request->getData());
             if ($this->Services->save($service)) {
                 $this->Flash->success(__('The service has been saved.'));
-
-                return $this->redirect(['action' => 'index']);
+                // return $this->redirect(['action' => 'index']);
+            } else {
+                $this->Flash->error(__('The service could not be saved. Please, try again.'));
             }
-            $this->Flash->error(__('The service could not be saved. Please, try again.'));
         }
         $projects = $this->Services->Projects->find('list', ['limit' => 1000, 'order' => ['id' => 'DESC']])->all();
         $this->set(compact('service', 'projects'));
@@ -110,6 +110,6 @@ class ServicesController extends AppController
             $this->Flash->error(__('The service could not be deleted. Please, try again.'));
         }
 
-        return $this->redirect(['action' => 'index']);
+        return $this->redirect(['action' => 'view', 'controller' => 'projects', $service->project_id]);
     }
 }

@@ -57,7 +57,7 @@ class ProjectsController extends AppController
     {
         $project = $this->Projects->get($id, [
             'contain' => ['Customers', 'ParentProjects', 'ProjectStatuses', 'ChildProjects',
-                'Services' => ['sort' => ['sort desc', 'Services.id asc']], 'Services.Projects.Customers', 'Services.Tasks', 'Services.Tasks.TimeTrackings'],
+                'Services' => ['sort' => ['sort desc', 'Services.id desc']], 'Services.Projects.Customers', 'Services.Tasks', 'Services.Tasks.TimeTrackings'],
         ]);
 
         $this->set(compact('project'));
