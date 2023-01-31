@@ -3,6 +3,8 @@
  * @var \App\View\AppView $this
  * @var \App\Model\Entity\Service $service
  */
+
+$this->assign('title', h($service->name));
 ?>
 <div class="row">
     <aside class="column">

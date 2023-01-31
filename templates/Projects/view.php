@@ -5,6 +5,7 @@
  */
 
 $parsedown = new Parsedown();
+$this->assign('title', h($project->name));
 ?>
 <div class="row">
     <aside class="column">
@@ -16,7 +17,7 @@ $parsedown = new Parsedown();
     </aside>
     <div class="column-responsive column-80">
         <div class="projects view content">
-            <h3><?= h($project->name) ?></h3>
+            <h3><?= __('Project') ?> <?= h($project->name) ?></h3>
             <div class="related">
                 <h4><?= __('Related Services') ?></h4>
                 <div class="actions">
@@ -69,7 +70,7 @@ $parsedown = new Parsedown();
                     </div>
                 <?php endif; ?>
             </div>
-            <h4><?= __('Project Fields') ?></h4>
+            <h4><?= __('Project') ?> <?= h($project->name) ?></h4>
             <div class="row">
                 <div class="col-md-6">
                     <table>

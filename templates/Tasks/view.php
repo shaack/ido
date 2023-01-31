@@ -5,7 +5,7 @@
  */
 
 $parsedown = new Parsedown();
-$this->assign('title', $task->name);
+$this->assign('title', $task->name ? $task->name : $task->service->name);
 ?>
 <div class="actions">
     <?= $this->Html->link(__('Edit Task'), ['action' => 'edit', $task->id], ['class' => 'side-nav-item']) ?>
