@@ -9,7 +9,7 @@
     <div class="row">
         <div class="col">
             <?= $this->Html->link(__('View Service'), ['action' => 'view', $service->id], ['class' => 'side-nav-item']) ?>
-            <?= $this->Html->link(__('List Services'), ['action' => 'index'], ['class' => 'side-nav-item']) ?>
+            <?= $this->Html->link(__('View Project'), ['action' => 'view', 'controller' => 'projects', $service->project_id], ['class' => 'side-nav-item']) ?>
         </div>
         <div class="col-auto">
             <?= $this->Form->postLink(
@@ -21,12 +21,6 @@
     </div>
 </div>
 <div class="row">
-    <aside class="column">
-        <div class="side-nav">
-            <h4 class="heading"><?= __('Actions') ?></h4>
-            <?= $this->Html->link(__('List Services'), ['action' => 'index'], ['class' => 'side-nav-item']) ?>
-        </div>
-    </aside>
     <div class="column-responsive column-80">
         <div class="services form content">
             <?= $this->Form->create($service) ?>

@@ -12,7 +12,7 @@ $this->assign('title', h($service->name));
             <div class="row">
                 <div class="col">
                     <?= $this->Html->link(__('Edit Service'), ['action' => 'edit', $service->id], ['class' => 'side-nav-item']) ?>
-                    <?= $this->Html->link(__("Project " . $service->project->name), ['action' => 'view', 'controller' => 'projects', $service->project_id], ['class' => 'side-nav-item']) ?>
+                    <?= $this->Html->link(__("View Project"), ['action' => 'view', 'controller' => 'projects', $service->project_id], ['class' => 'side-nav-item']) ?>
                 </div>
                 <div class="col-auto">
                     <?= $this->Form->postLink(__('Delete'), ['action' => 'delete', $service->id], ['confirm' => __('Are you sure you want to delete # {0}?', $service->id), 'class' => 'side-nav-item text-danger']) ?>
