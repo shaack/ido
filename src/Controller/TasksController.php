@@ -28,15 +28,15 @@ class TasksController extends AppController
             'contain' => ['Services', 'Services.Projects' => ['conditions' => ['project_status_id' => '15']], 'Services.Projects.Customers', 'TimeTrackings'],
             'order' => ['marked' => 'desc', 'prio' => 'desc', 'id' => 'asc']
         ];
-        $now = FrozenDate::now();
-        $oneDayInterval = new DateInterval("P1D");
-        $yesterday = $now->sub($oneDayInterval);
-        $conditions = [['OR' => [['done =' => false], ['done_at >' => $now]]]];
+        $now = FrozenTime::now();
+        $conditions = [['OR' => [['done =' => false], ['done_at >' => $now->sub(new DateInterval("PT1H"))]]]];
         if($filter == "customers") {
             $conditions[] = ['Customers.shortcut !=' => 'SHA'];
         }
         $options = ['maxLimit' => 1000, 'limit' => 1000, 'conditions' => $conditions];
         $tasks = $this->paginate($this->Tasks, $options);
+
+        $oneDayInterval = new DateInterval("P1D");
 
         $day = FrozenDate::now();
         $dayBefore = $day->add($oneDayInterval);
