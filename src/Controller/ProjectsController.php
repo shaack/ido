@@ -63,6 +63,15 @@ class ProjectsController extends AppController
         $this->set(compact('project'));
     }
 
+    public function offer($id) {
+        $project = $this->Projects->get($id, [
+            'contain' => ['Customers', 'ParentProjects', 'ProjectStatuses', 'ChildProjects',
+                'Services' => ['sort' => ['sort desc', 'Services.id asc']], 'Services.Projects.Customers', 'Services.Tasks', 'Services.Tasks.TimeTrackings'],
+        ]);
+        $this->viewBuilder()->setLayout('print');
+        $this->set(compact('project'));
+    }
+
     /**
      *
      */

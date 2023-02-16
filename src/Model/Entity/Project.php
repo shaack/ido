@@ -75,9 +75,24 @@ class Project extends Entity
         return round($sum * 4) / 4;
     }
 
+    function effortPlanned()
+    {
+        $services = $this->services;
+        $sum = 0.0;
+        foreach ($services as $service) {
+            $sum += $service->effortPlanned();
+        }
+        return round($sum * 4) / 4;
+    }
+
     function costs()
     {
-        return $this->effort() * $this->customer->hourly_rate;
+        return $this->effort() * $this->hourly_rate;
+    }
+
+    function costsPlanned()
+    {
+        return $this->effortPlanned() * $this->hourly_rate;
     }
 
     function vat()

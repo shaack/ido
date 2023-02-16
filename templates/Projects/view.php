@@ -12,7 +12,7 @@ $this->assign('title', h($project->name));
         <div class="actions">
             <?= $this->Html->link(__('Edit Project'), ['action' => 'edit', $project->id], ['class' => 'side-nav-item']) ?>
             <?= $this->Html->link(__('View Invoice'), ['action' => 'invoice',  $project->id], ["target" => "_blank"]) ?>
-            <?= $this->Html->link(__('List Projects'), ['action' => 'index'], ['class' => 'side-nav-item']) ?>
+            <?= $this->Html->link(__('View Offer'), ['action' => 'offer',  $project->id], ["target" => "_blank"]) ?>
         </div>
     </aside>
     <div class="column-responsive column-80">

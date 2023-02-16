@@ -57,9 +57,17 @@ class Service extends Entity
         return round($sum * 4) / 4;
     }
 
+    function effortPlanned() {
+        return $this->effort_est;
+    }
+
+    function costsPlanned() {
+        return $this->effort_est * $this->project->hourly_rate;
+    }
+
     function costs()
     {
-        return $this->effort() * $this->project->customer->hourly_rate;
+        return $this->effort() * $this->project->hourly_rate;
     }
 
     function countTasks()
