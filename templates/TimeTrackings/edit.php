@@ -24,15 +24,18 @@ $this->assign('title', "⏱️" . $this->Text->truncate($taskName, 20));
     <?= $this->Form->create($timeTracking, ["id" => "time-tracking-form"]) ?>
     <fieldset>
         <div class="stopwatch mb-3">
-            <div class="input-group mb-3" style="max-width: 320px">
-                <input id="stopwatch" type="text" class="form-control text-end" placeholder="" name="stopwatch"/>
-                <button type="button" id="button-start" class="btn btn-success">start
+            <div class="input-group mb-3" style="max-width: 380px">
+                <input id="stopwatch" type="text" class="form-control text-end" placeholder="" name="stopwatch" value="0"/>
+                <button type="button" id="btn-start" class="btn btn-success">start
                 </button>
-                <button type="button" class="btn btn-warning btn-stop" onclick="window.stopwatch.stop(); return false;">
+                <button type="button" class="btn btn-warning btn-pause" id="btn-pause">
                     pause
                 </button>
-                <button type="button" class="btn btn-danger btn-reset"
-                        onclick="window.stopwatch.stop(); window.stopwatch.reset(); return false;">reset
+                <button type="button" class="btn btn-danger btn-reset" id="btn-reset">reset
+                </button>
+                <button type="button" class="btn btn-outline-secondary btn-modify" id="btn-minus">-5
+                </button>
+                <button type="button" class="btn btn-outline-secondary btn-modify" id="btn-plus">+5
                 </button>
             </div>
             <div class="progress mb-2">
@@ -69,16 +72,22 @@ $this->assign('title', "⏱️" . $this->Text->truncate($taskName, 20));
     const progressBar = document.getElementById("progress-bar")
     const pomodoroMinutes = 25
     const title = document.title
+    let additionalMinutes = 0
+
+    function updateTimerOutput() {
+        const minutesExpired = stopwatch.secondsExpired() / 60 + additionalMinutes
+        document.title = title + " " + Math.round(minutesExpired * 100) / 100
+        if (minutesExpired >= pomodoroMinutes && !notificationShown) {
+            notificationShown = true
+            notifications.show(pomodoroMinutes + " Minutes expired", "<?= h($timeTracking->task->name) ?>")
+        }
+        progressBar.style.width = minutesExpired / pomodoroMinutes * 100 + "%"
+        stopwatchOutput.value = Math.round(minutesExpired * 100) / 100
+    }
+
     window.stopwatch = new Stopwatch({
         onTimeChanged: () => {
-            const minutesExpired = stopwatch.secondsExpired() / 60
-            document.title = title + " " + Math.round(minutesExpired * 100) / 100
-            if (minutesExpired >= pomodoroMinutes && !notificationShown) {
-                notificationShown = true
-                notifications.show(pomodoroMinutes + " Minutes expired", "<?= h($timeTracking->task->name) ?>")
-            }
-            progressBar.style.width = minutesExpired / pomodoroMinutes * 100 + "%"
-            stopwatchOutput.value = Math.round(minutesExpired * 100) / 100
+            updateTimerOutput()
         },
         onStateChanged: (running) => {
             if (running) {
@@ -99,9 +108,29 @@ $this->assign('title', "⏱️" . $this->Text->truncate($taskName, 20));
             }
         }
     })
-    document.getElementById("button-start").addEventListener("click", (event) => {
+
+    document.getElementById("btn-start").addEventListener("click", (event) => {
         event.preventDefault()
         start()
+    })
+    document.getElementById("btn-pause").addEventListener("click", (event) => {
+        event.preventDefault()
+        window.stopwatch.stop()
+    })
+    document.getElementById("btn-reset").addEventListener("click", (event) => {
+        event.preventDefault()
+        additionalMinutes = 0
+        window.stopwatch.reset()
+    })
+    document.getElementById("btn-minus").addEventListener("click", (event) => {
+        event.preventDefault()
+        additionalMinutes = additionalMinutes - 5
+        updateTimerOutput()
+    })
+    document.getElementById("btn-plus").addEventListener("click", (event) => {
+        event.preventDefault()
+        additionalMinutes = additionalMinutes + 5
+        updateTimerOutput()
     })
 
     function start() {
@@ -127,7 +156,8 @@ $this->assign('title', "⏱️" . $this->Text->truncate($taskName, 20));
         stopwatchOutput.value = 0
         form.submit()
     }
-    stopwatch.start()
+    updateTimerOutput()
+    // stopwatch.start()
     /*
     if (<?= $timeTracking->duration > 0 ? "false" : "true" ?>) {
         stopwatch.start()
