@@ -55,16 +55,18 @@ function doneClass($doneTime) {
         <table>
             <thead>
             <tr>
-                <th><?= $this->Paginator->sort('done') ?></th>
+                <th><?= $this->Paginator->sort('') ?></th>
                 <th><?= $this->Paginator->sort('name') ?></th>
                 <th class="text-end"><?= $this->Paginator->sort('Track') ?></th>
-                <th><?= $this->Paginator->sort('prio') ?></th>
-                <th><?= $this->Paginator->sort('marked') ?></th>
+                <th><?= $this->Paginator->sort('cst') ?></th>
+                <!-- <th><?= $this->Paginator->sort('prio') ?></th> -->
+                <!--
                 <th><?= $this->Paginator->sort('start') ?></th>
                 <th><?= $this->Paginator->sort('deadline') ?></th>
-                <th><?= $this->Paginator->sort('customer_id') ?></th>
-                <th><?= $this->Paginator->sort('service_id') ?></th>
+                -->
                 <th><?= $this->Paginator->sort('project_id') ?></th>
+                <th><?= $this->Paginator->sort('service_id') ?></th>
+                <th><?= $this->Paginator->sort('marked') ?></th>
             </tr>
             </thead>
             <tbody>
@@ -74,6 +76,7 @@ function doneClass($doneTime) {
                 }
             </script>
             <?php foreach ($tasks as $task): ?>
+                <?php $customer = $task->service->project->customer ?>
                 <tr class="<?= $task->done ? 'done-true' : 'done-false' ?> <?= $task->marked ? 'task-marked' : '' ?>">
                     <td class="text-end"><a class="no-line-through"
                                             href="/tasks/done/<?= $task->id ?>?done=<?= $task->done ? "0" : "1" ?>"><?= $task->done ? '<i class="fa-solid fa-circle"></i>' : '<i class="fa-regular fa-circle"></i>' ?></a>
@@ -86,6 +89,8 @@ function doneClass($doneTime) {
                            href="/timeTrackings/add?task_id=<?= $task->id ?>"><?= $task->duration() > 0 ? $this->Number->format($task->duration()) : ''; ?> <i
                                 class="fa-solid fa-stopwatch"></i>️</a>
                     </td>
+                    <td><?= $this->Html->link($customer->shortcut, ['controller' => 'Customers', 'action' => 'view', $customer->id], ['style' => 'color: ' . $customer->color]) ?></td>
+                    <!--
                     <td class="text-end"><?php
                         $icon = "";
                         switch ($task->prio) {
@@ -100,18 +105,18 @@ function doneClass($doneTime) {
                                 break;
                         }
                         echo $icon;
-                        ?></td>
-                    <td class="text-end"><a class="no-line-through"
-                                            href="/tasks/marked/<?= $task->id ?>?marked=<?= $task->marked ? "0" : "1" ?>"><?= $task->marked ? '<i class="fa-solid fa-flag"></i>' : '<i class="fa-regular fa-flag"></i>' ?></a>
+                        ?></td>-->
                     </td>
-                    <td><?= h($task->start_est) ?></td>
-                    <td><?= h($task->deadline) ?></td>
-                    <?php $customer = $task->service->project->customer ?>
-                    <td><?= $this->Html->link($customer->shortcut, ['controller' => 'Customers', 'action' => 'view', $customer->id], ['style' => 'color: ' . $customer->color]) ?></td>
-                    <td><?= $task->has('service') ? $this->Html->link($this->Text->truncate($task->service->name, 32), ['controller' => 'Services', 'action' => 'view', $task->service->id]) : '' ?></td>
+                        <!--
+                        <td><?= h($task->start_est) ?></td>
+                        <td><?= h($task->deadline) ?></td>
+                        -->
                     <td><?= $this->Html->link($this->Text->truncate($task->service->project->name, 64), ['controller' => 'Projects', 'action' => 'view', $task->service->project->id]) ?></td>
+                    <td><?= $task->has('service') ? $this->Html->link($this->Text->truncate($task->service->name, 32), ['controller' => 'Services', 'action' => 'view', $task->service->id]) : '' ?></td>
+                    <td><a class="no-line-through"
+                                            href="/tasks/marked/<?= $task->id ?>?marked=<?= $task->marked ? "0" : "1" ?>"><?= $task->marked ? '<i class="fa-solid fa-flag"></i>' : '<i class="fa-regular fa-flag"></i>' ?></a>
                 </tr>
-            <?php endforeach; ?>
+                <?php endforeach; ?>
             </tbody>
         </table>
     </div>

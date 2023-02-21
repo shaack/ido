@@ -90,7 +90,7 @@ class TimeTrackingsController extends AppController
     public function edit($id = null)
     {
         $timeTracking = $this->TimeTrackings->get($id, [
-            'contain' => ['Tasks', 'Tasks.Services'],
+            'contain' => ['Tasks', 'Tasks.Services', 'Tasks.Services.Projects', 'Tasks.Services.Projects.Customers'],
         ]);
         if ($this->request->is(['patch', 'post', 'put'])) {
             $timeTracking = $this->TimeTrackings->patchEntity($timeTracking, $this->request->getData());
