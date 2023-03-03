@@ -79,16 +79,26 @@ $this->assign('title', $fileName);
     <thead>
     <tr>
         <th><?= ($lang == "de" ? "Leistung" : "Service") ?></th>
-        <th class="text-end"><?= ($lang == "de" ? "Aufwand" : "Effort") ?></th>
+        <?php if(!$project->fixed_price) { ?>
+            <th class="text-end"><?= ($lang == "de" ? "Aufwand" : "Effort") ?></th>
+        <?php } else {
+            echo "<th></th>";
+        } ?>
         <th class="text-end"><?= ($lang == "de" ? "Betrag" : "Amount") ?></th>
     </tr>
     </thead>
     <tbody>
-    <?php foreach ($project->services as $services) : ?>
+    <?php foreach ($project->services as $service) : ?>
         <tr>
-            <td class="w-100"><?= h($services->name) ?></td>
-            <td class="text-end code ps-4"><?= $this->Number->precision($services->effort(), 2) ?></td>
-            <td class="text-end code ps-4"><?= $this->Number->currency($services->costs()) ?></td>
+            <td class="w-100"><?= h($service->name) ?></td>
+            <td class="text-end code ps-4">
+                <?php
+                    if(!$service->estimation_or_fixed_price) {
+                        echo $this->Number->precision($service->effort(), 2);
+                    }
+                ?>
+            </td>
+            <td class="text-end code ps-4"><?= $this->Number->currency($service->costs()) ?></td>
         </tr>
     <?php endforeach; ?>
     </tbody>

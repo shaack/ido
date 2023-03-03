@@ -87,7 +87,12 @@ class Project extends Entity
 
     function costs()
     {
-        return $this->effort() * $this->hourly_rate;
+        $services = $this->services;
+        $sum = 0.0;
+        foreach ($services as $service) {
+            $sum += $service->costs();
+        }
+        return $sum;
     }
 
     function costsPlanned()

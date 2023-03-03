@@ -11,8 +11,8 @@ $this->assign('title', h($project->name));
     <aside class="column">
         <div class="actions">
             <?= $this->Html->link(__('Edit Project'), ['action' => 'edit', $project->id], ['class' => 'side-nav-item']) ?>
-            <?= $this->Html->link(__('View Invoice'), ['action' => 'invoice',  $project->id], ["target" => "_blank"]) ?>
-            <?= $this->Html->link(__('View Offer'), ['action' => 'offer',  $project->id], ["target" => "_blank"]) ?>
+            <?= $this->Html->link(__('View Invoice'), ['action' => 'invoice', $project->id], ["target" => "_blank"]) ?>
+            <?= $this->Html->link(__('View Offer'), ['action' => 'offer', $project->id], ["target" => "_blank"]) ?>
         </div>
     </aside>
     <div class="column-responsive column-80">
@@ -29,9 +29,9 @@ $this->assign('title', h($project->name));
                             <tr>
                                 <th><?= __('Name') ?></th>
                                 <th><?= __('Tasks') ?></th>
-                                <th  class="text-end"><?= __('Effort Est') ?></th>
-                                <th  class="text-end"><?= __('Effort') ?></th>
-                                <th  class="text-end"><?= __('Costs') ?></th>
+                                <th class="text-end"><?= __('Effort Est') ?></th>
+                                <th class="text-end"><?= __('Effort') ?></th>
+                                <th class="text-end"><?= __('Costs') ?></th>
                                 <th class="actions"><?= __('Actions') ?></th>
                             </tr>
                             <?php $effortSum = 0;
@@ -40,7 +40,7 @@ $this->assign('title', h($project->name));
                                 $tasksCount = $service->countTasks();
                                 $tasksDoneCount = $tasksCount["count"] - $tasksCount["todo"];
                                 $trClass = "";
-                                if($tasksCount["count"] == 0) {
+                                if ($tasksCount["count"] == 0) {
                                     $trClass = "";
                                 } else {
                                     $trClass = $tasksCount["count"] - $tasksDoneCount > 0 ? '' : 'opacity-75 text-muted';
@@ -49,9 +49,15 @@ $this->assign('title', h($project->name));
                                 <tr class="<?= $trClass ?>">
                                     <td><?= $this->Html->link($service->name, ['controller' => 'Services', 'action' => 'view', $service->id]) ?></td>
                                     <td><?= $tasksDoneCount ?> / <?= $tasksCount["count"] ?></td>
-                                    <td  class="text-end"><?= h($service->effort_est) ?></td>
+                                    <td class="text-end"><?= h($service->effort_est) ?></td>
                                     <td class="text-end"><?= h($service->effort()) ?></td>
-                                    <td class="text-end"><?= $this->Number->currency($service->costs()) ?></td>
+                                    <td class="text-end"><?php
+                                        if ($service->estimation_or_fixed_price) {
+                                            echo $this->Number->currency($service->estimation_or_fixed_price);
+                                        } else {
+                                            echo $this->Number->currency($service->costs());
+                                        }
+                                        ?></td>
                                     <td class="actions">
                                         <?= $this->Html->link(__('View'), ['controller' => 'Services', 'action' => 'view', $service->id]) ?>
                                         <?= $this->Html->link(__('Edit'), ['controller' => 'Services', 'action' => 'edit', $service->id]) ?>
@@ -64,7 +70,8 @@ $this->assign('title', h($project->name));
                                 <td></td>
                                 <td></td>
                                 <td class="text-end"><b><?= $effortSum ?></b></td>
-                                <td class="text-end"><b><?= $this->Number->currency($effortSum * $project->hourly_rate) ?></b></td>
+                                <td class="text-end">
+                                    <b><?= $this->Number->currency($project->costs()) ?></b></td>
                             </tr>
                         </table>
                     </div>
@@ -136,25 +143,25 @@ $this->assign('title', h($project->name));
                 </div>
 
                 <div class="col">
-                        <div class="text">
-                            <strong><?= __('Notes') ?></strong>
-                            <blockquote>
-                                <?php
-                                if ($project->notes) {
+                    <div class="text">
+                        <strong><?= __('Notes') ?></strong>
+                        <blockquote>
+                            <?php
+                            if ($project->notes) {
                                 $text = h($project->notes);
                                 $text = preg_replace('/(?:^|\s)#(\w+)/', ' <span class="text-info">#$1</span>', $text);
                                 ?>
                                 <?= $parsedown->parse($text); ?>
-                                <?php } ?>
-                            </blockquote>
-                        </div>
-                    <?php if($project->description) { ?>
-                    <div class="text">
-                        <strong><?= __('Description') ?></strong>
-                        <blockquote>
-                            <?= $parsedown->parse(h($project->description)); ?>
+                            <?php } ?>
                         </blockquote>
                     </div>
+                    <?php if ($project->description) { ?>
+                        <div class="text">
+                            <strong><?= __('Description') ?></strong>
+                            <blockquote>
+                                <?= $parsedown->parse(h($project->description)); ?>
+                            </blockquote>
+                        </div>
                     <?php } ?>
                 </div>
             </div>

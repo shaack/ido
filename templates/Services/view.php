@@ -37,7 +37,7 @@ $this->assign('title', h($service->name));
                     <td><?= $service->effort_est === null ? '' : $this->Number->format($service->effort_est) ?></td>
                 </tr>
                 <tr>
-                    <th><?= __('Estimation Or Fixed Price') ?></th>
+                    <th><?= __('Fixed Price') ?></th>
                     <td><?= $service->estimation_or_fixed_price === null ? '' : $this->Number->format($service->estimation_or_fixed_price) ?></td>
                 </tr>
                 <tr>

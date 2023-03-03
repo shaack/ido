@@ -67,7 +67,11 @@ class Service extends Entity
 
     function costs()
     {
-        return $this->effort() * $this->project->hourly_rate;
+        if($this->estimation_or_fixed_price) {
+            return $this->estimation_or_fixed_price;
+        } else {
+            return $this->effort() * $this->project->hourly_rate;
+        }
     }
 
     function countTasks()
