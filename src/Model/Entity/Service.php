@@ -65,12 +65,12 @@ class Service extends Entity
         return $this->effort_est * $this->project->hourly_rate;
     }
 
-    function costs()
+    function costs($hourlyRate = null)
     {
         if($this->estimation_or_fixed_price) {
             return $this->estimation_or_fixed_price;
         } else {
-            return $this->effort() * $this->project->hourly_rate;
+            return $this->effort() * ($hourlyRate !== null ? $hourlyRate : $this->project->hourly_rate);
         }
     }
 

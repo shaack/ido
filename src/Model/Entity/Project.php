@@ -90,7 +90,7 @@ class Project extends Entity
         $services = $this->services;
         $sum = 0.0;
         foreach ($services as $service) {
-            $sum += $service->costs();
+            $sum += $service->costs($this->hourly_rate);
         }
         return $sum;
     }
