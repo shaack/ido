@@ -90,8 +90,7 @@ class ProjectsTable extends Table
             ->allowEmptyString('customer_id');
 
         $validator
-            ->date('start')
-            ->allowEmptyDate('start');
+            ->date('start');
 
         $validator
             ->date('end_est')
