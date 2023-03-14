@@ -57,7 +57,7 @@ $customer = $timeTracking->task->service->project->customer;
     </fieldset>
     <fieldset>
         <?php
-        echo $this->Form->control('task.notes', ['label' => 'Task Notes', 'rows' => 16, 'class' => 'font-monospace']);
+        echo $this->Form->control('task.notes', ['label' => 'Task Notes', 'rows' => 15, 'class' => 'font-monospace']);
         ?>
     </fieldset>
     <div class="mb-3">
