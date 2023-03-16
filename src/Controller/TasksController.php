@@ -94,7 +94,8 @@ class TasksController extends AppController
             $task->service_id = $this->request->getQuery("service_id"); // shaack patch
         }
         $services = $this->Tasks->Services->find('list', ['limit' => 1000, 'order' => ['id' => 'DESC']])->all();
-        $task->prio = 1;
+        // $task->prio = 1;
+        $task->marked = 1;
         $this->set(compact('task', 'services'));
     }
 

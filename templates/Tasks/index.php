@@ -4,7 +4,8 @@
  * @var iterable<\App\Model\Entity\Task> $tasks
  */
 
-function doneClass($doneTime) {
+function doneClass($doneTime)
+{
     $doneTodayClass = "text-muted";
     if ($doneTime > 0) {
         if ($doneTime < 1) {
@@ -31,6 +32,7 @@ function doneClass($doneTime) {
     }
     return $doneTodayClass;
 }
+
 ?>
 <div class="tasks index content">
     <div class="row d-flex align-items-center mb-2">
@@ -58,15 +60,15 @@ function doneClass($doneTime) {
                 <th><?= $this->Paginator->sort('') ?></th>
                 <th><?= $this->Paginator->sort('name') ?></th>
                 <th class="text-end"><?= $this->Paginator->sort('Track') ?></th>
+                <th><?= $this->Paginator->sort('') ?></th>
                 <th><?= $this->Paginator->sort('cst') ?></th>
                 <!--
                 <th><?= $this->Paginator->sort('start') ?></th>
                 <th><?= $this->Paginator->sort('deadline') ?></th>
                 -->
-                <th><?= $this->Paginator->sort('project_id') ?></th>
                 <th><?= $this->Paginator->sort('service_id') ?></th>
-                <th><?= $this->Paginator->sort('prio') ?></th>
-                <th><?= $this->Paginator->sort('marked') ?></th>
+                <th><?= $this->Paginator->sort('project_id') ?></th>
+                <!-- <th><?= $this->Paginator->sort('prio') ?></th> -->
             </tr>
             </thead>
             <tbody>
@@ -85,18 +87,23 @@ function doneClass($doneTime) {
                             ['action' => 'view', $task->id], ['class' => $task->name ? '' : 'fst-italic']) ?></td>
                     <td class="text-end">
                         <!-- /timeTrackings/add?task_id=<?= $task->id ?> -->
-                        <a class="text-nowrap hover-bg" target="_blank" <?php /*onclick="showTracking(<?= $task->id ?>)" */ ?>
-                           href="/timeTrackings/add?task_id=<?= $task->id ?>"><?= $task->duration() > 0 ? $this->Number->format($task->duration()) : ''; ?> <i
+                        <a class="text-nowrap hover-bg"
+                           target="_blank" <?php /*onclick="showTracking(<?= $task->id ?>)" */ ?>
+                           href="/timeTrackings/add?task_id=<?= $task->id ?>"><?= $task->duration() > 0 ? $this->Number->format($task->duration()) : ''; ?>
+                            <i
                                 class="fa-solid fa-stopwatch"></i>️</a>
                     </td>
+                    <td><a class="no-line-through"
+                           href="/tasks/marked/<?= $task->id ?>?marked=<?= $task->marked ? "0" : "1" ?>"><?= $task->marked ? '<i class="fa-solid fa-flag"></i>' : '<i class="fa-regular fa-flag"></i>' ?></a>
                     <td><?= $this->Html->link($customer->shortcut, ['controller' => 'Customers', 'action' => 'view', $customer->id], ['style' => 'color: ' . $customer->color]) ?></td>
                     </td>
-                        <!--
+                    <!--
                         <td><?= h($task->start_est) ?></td>
                         <td><?= h($task->deadline) ?></td>
                         -->
                     <td><?= $this->Html->link($this->Text->truncate($task->service->project->name, 64), ['controller' => 'Projects', 'action' => 'view', $task->service->project->id]) ?></td>
                     <td><?= $task->has('service') ? $this->Html->link($this->Text->truncate($task->service->name, 32), ['controller' => 'Services', 'action' => 'view', $task->service->id]) : '' ?></td>
+                    <!--
                     <td class="text-end"><?php
                         $icon = "";
                         switch ($task->prio) {
@@ -111,11 +118,9 @@ function doneClass($doneTime) {
                                 break;
                         }
                         echo $icon;
-                        ?></td>
-                    <td><a class="no-line-through"
-                                            href="/tasks/marked/<?= $task->id ?>?marked=<?= $task->marked ? "0" : "1" ?>"><?= $task->marked ? '<i class="fa-solid fa-flag"></i>' : '<i class="fa-regular fa-flag"></i>' ?></a>
+                        ?></td>-->
                 </tr>
-                <?php endforeach; ?>
+            <?php endforeach; ?>
             </tbody>
         </table>
     </div>
