@@ -66,4 +66,12 @@ class Task extends Entity
         }
         return round($sum * 4) / 4;
     }
+
+    function _getSmartName() {
+        if($this->name) {
+            return $this->name;
+        } else {
+            return $this->service->smartName;
+        }
+    }
 }

@@ -87,4 +87,12 @@ class Service extends Entity
         }
         return ["count" => $count, "todo" => $todoCount];
     }
+
+    function _getSmartName() {
+        if($this->name) {
+            return $this->name;
+        } else {
+            return $this->project->name;
+        }
+    }
 }

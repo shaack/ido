@@ -78,12 +78,14 @@ function doneClass($doneTime)
                 }
             </script>
             <?php foreach ($tasks as $task): ?>
-                <?php $customer = $task->service->project->customer ?>
+                <?php
+                $customer = $task->service->project->customer;
+                ?>
                 <tr class="<?= $task->done ? 'done-true' : 'done-false' ?> <?= $task->marked ? 'task-marked' : '' ?>">
                     <td class="text-end"><a class="no-line-through"
                                             href="/tasks/done/<?= $task->id ?>?done=<?= $task->done ? "0" : "1" ?>"><?= $task->done ? '<i class="fa-solid fa-circle"></i>' : '<i class="fa-regular fa-circle"></i>' ?></a>
                     </td>
-                    <td><?= $this->Html->link($task->name ? $this->Text->truncate($task->name, 80) : $task->service->name,
+                    <td><?= $this->Html->link($this->Text->truncate($task->smartName, 80),
                             ['action' => 'view', $task->id], ['class' => $task->name ? '' : 'fst-italic']) ?></td>
                     <td class="text-end">
                         <!-- /timeTrackings/add?task_id=<?= $task->id ?> -->
@@ -101,8 +103,9 @@ function doneClass($doneTime)
                         <td><?= h($task->start_est) ?></td>
                         <td><?= h($task->deadline) ?></td>
                         -->
-                    <td><?= $this->Html->link($this->Text->truncate($task->service->project->name, 64), ['controller' => 'Projects', 'action' => 'view', $task->service->project->id]) ?></td>
-                    <td><?= $task->has('service') ? $this->Html->link($this->Text->truncate($task->service->name, 32), ['controller' => 'Services', 'action' => 'view', $task->service->id]) : '' ?></td>
+                    <td><?= $this->Html->link($this->Text->truncate($task->service->smartName, 45), ['controller' => 'Services', 'action' => 'view', $task->service->id],
+                            ['class' => $task->service->name ? '' : 'fst-italic']) ?></td>
+                    <td><?= $this->Html->link($this->Text->truncate($task->service->project->name, 40), ['controller' => 'Projects', 'action' => 'view', $task->service->project->id]) ?></td>
                     <!--
                     <td class="text-end"><?php
                         $icon = "";

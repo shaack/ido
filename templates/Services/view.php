@@ -74,10 +74,10 @@ $this->assign('title', h($service->name));
                             <th><?= __('Done') ?></th>
                             <th><?= __('Marked') ?></th>
                             <th><?= __('Name') ?></th>
-                            <th><?= __('Prio') ?></th>
-                            <!-- <th><?= __('Start Est') ?></th>
-                            <th><?= __('Deadline') ?></th>
-                            <th><?= __('Duration Est') ?></th> -->
+                            <!-- <th><?= __('Prio') ?></th> -->
+                            <th><?= __('Start Est') ?></th>
+                            <!-- <th><?= __('Deadline') ?></th> -->
+                            <!-- <th><?= __('Duration Est') ?></th> -->
                             <!-- <th><?= __('Link') ?></th> -->
                             <!-- <th><?= __('Service Id') ?></th> -->
                             <!-- <th><?= __('Created') ?></th> -->
@@ -92,10 +92,10 @@ $this->assign('title', h($service->name));
                             <td><?= h($task->done) ?></td>
                             <td><?= h($task->marked) ?></td>
                             <td><?= $this->Html->link($task->name, ['controller' => 'Tasks', 'action' => 'view', $task->id]) ?></td>
-                            <td><?= h($task->prio) ?></td>
-                            <!-- <td><?= h($task->start_est) ?></td>
-                            <td><?= h($task->deadline) ?></td>
-                            <td><?= h($task->duration_est) ?></td> -->
+                            <!-- <td><?= h($task->prio) ?></td> -->
+                            <td><?= h($task->start_est) ?></td>
+                            <!-- <td><?= h($task->deadline) ?></td> -->
+                            <!-- <td><?= h($task->duration_est) ?></td> -->
                             <!-- <td><?= h($task->link) ?></td>
                             <td><?= h($task->service_id) ?></td>
                             <td><?= h($task->created) ?></td>

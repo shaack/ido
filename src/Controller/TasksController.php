@@ -29,7 +29,7 @@ class TasksController extends AppController
             'order' => ['marked' => 'desc', 'prio' => 'desc', 'id' => 'asc']
         ];
         $now = FrozenTime::now();
-        $conditions = [['OR' => [['done =' => false], ['done_at >' => $now->sub(new DateInterval("PT1H"))]]]];
+        $conditions = ['OR' => [['start_est <=' => $now], ['start_est IS' => null]], ['OR' => [['done =' => false], ['done_at >' => $now->sub(new DateInterval("PT1H"))]]]];
         if($filter == "customers") {
             $conditions[] = ['Customers.shortcut !=' => 'SHA'];
         }
