@@ -35,7 +35,7 @@ function doneClass($doneTime)
 
 ?>
 <div class="tasks index content">
-    <div class="row d-flex align-items-center mb-2">
+    <div class="row d-flex align-items-baseline mb-2">
         <div class="col"><h3 class="m-0"><?= __('Tasks') ?></h3></div>
         <?php
         $doneToday = floatval($this->get('doneToday'));
