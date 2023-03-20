@@ -5,8 +5,7 @@
  * @var string[]|\Cake\Collection\CollectionInterface $tasks
  */
 
-$taskName = $timeTracking->task->name ?: $timeTracking->task->service->name;
-$this->assign('title', "⏱️" . $this->Text->truncate($taskName, 20));
+$this->assign('title', $this->Text->truncate($timeTracking->task->smartName, 20));
 $customer = $timeTracking->task->service->project->customer;
 ?>
 <div class="row">
@@ -84,13 +83,13 @@ $customer = $timeTracking->task->service->project->customer;
 
     function updateTimerOutput() {
         const minutesExpired = stopwatch.secondsExpired() / 60 + additionalMinutes
-        document.title = title + " " + Math.round(minutesExpired * 100) / 100
+        document.title = title + " ⏱️ " + (Math.round(minutesExpired * 100) / 100).toFixed(2)
         if (minutesExpired >= pomodoroMinutes && !notificationShown) {
             notificationShown = true
             notifications.show(pomodoroMinutes + " Minutes expired", "<?= h($timeTracking->task->name) ?>")
         }
         progressBar.style.width = minutesExpired / pomodoroMinutes * 100 + "%"
-        stopwatchOutput.value = Math.round(minutesExpired * 100) / 100
+        stopwatchOutput.value = (Math.round(minutesExpired * 100) / 100).toFixed(2)
     }
 
     window.stopwatch = new Stopwatch({
