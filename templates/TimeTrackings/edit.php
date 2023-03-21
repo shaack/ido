@@ -21,6 +21,7 @@ function doneClass($doneTime)
     }
     return $doneTodayClass;
 }
+
 ?>
 <div class="row">
     <div class="col">
@@ -46,7 +47,8 @@ function doneClass($doneTime)
     <fieldset>
         <div class="stopwatch mb-3">
             <div class="input-group mb-3" style="max-width: 380px">
-                <input id="stopwatch" type="text" class="form-control text-end" placeholder="" name="stopwatch" value="0"/>
+                <input id="stopwatch" type="text" class="form-control text-end" placeholder="" name="stopwatch"
+                       value="0"/>
                 <button type="button" id="btn-start" class="btn btn-success">start
                 </button>
                 <button type="button" class="btn btn-warning btn-pause" id="btn-pause">
@@ -66,7 +68,8 @@ function doneClass($doneTime)
         </div>
         <div class="row">
             <div class="col"><?= $this->Form->control('duration') ?></div>
-            <div class="col-auto <?= doneClass($doneToday) ?>" style="margin-top: 1.8rem">Done today: <?= $this->Number->format($doneToday, ["places" => 2]) ?></div>
+            <div class="col-auto <?= doneClass($doneToday) ?>" style="margin-top: 1.8rem">Done
+                today: <?= $this->Number->format($doneToday, ["places" => 2]) ?></div>
         </div>
     </fieldset>
     <fieldset>
@@ -97,6 +100,7 @@ function doneClass($doneTime)
     const progressBar = document.getElementById("progress-bar")
     const title = document.title
     let additionalMinutes = 0
+
     function updateTimerOutput() {
         const minutesExpired = stopwatch.secondsExpired() / 60 + additionalMinutes
         document.title = title + " ⏱️ " + (Math.round(minutesExpired * 100) / 100).toFixed(2)
@@ -108,13 +112,19 @@ function doneClass($doneTime)
             hourExpired = true
             notifications.show(hourMinutes + " Minutes expired", "<?= h($timeTracking->task->name) ?>")
         }
-        if(!pomodoroExpired) {
+        if (!pomodoroExpired) {
             progressBar.style.width = minutesExpired / pomodoroMinutes * 100 + "%"
-        } else {
+        } else if (!hourExpired) {
             progressBar.style.width = minutesExpired / hourMinutes * 100 + "%"
-            if(stopwatch.running()) {
+            if (stopwatch.running()) {
                 progressBar.classList.remove("bg-primary")
                 progressBar.classList.add("bg-success")
+            }
+        } else {
+            progressBar.style.width = minutesExpired / hourMinutes * 100 + "%"
+            if (stopwatch.running()) {
+                progressBar.classList.remove("bg-success")
+                progressBar.classList.add("bg-warning")
             }
         }
         stopwatchOutput.value = (Math.round(minutesExpired * 100) / 100).toFixed(2)
@@ -128,10 +138,12 @@ function doneClass($doneTime)
         onStateChanged: (running) => {
             if (running) {
                 if (!progressBar.classList.contains("progress-bar-striped")) {
-                    if(!pomodoroExpired) {
+                    if (!pomodoroExpired) {
                         progressBar.classList.add("bg-primary")
-                    } else {
+                    } else if (!hourExpired) {
                         progressBar.classList.add("bg-success")
+                    } else {
+                        progressBar.classList.add("bg-warning")
                     }
                     progressBar.classList.add("progress-bar-striped")
                     progressBar.classList.add("progress-bar-animated")
