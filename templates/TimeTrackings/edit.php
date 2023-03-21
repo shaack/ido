@@ -68,7 +68,7 @@ function doneClass($doneTime)
         </div>
         <div class="row">
             <div class="col"><?= $this->Form->control('duration') ?></div>
-            <div class="col-auto <?= doneClass($doneToday) ?>" style="margin-top: 1.8rem">Done
+            <div class="col-auto <?= doneClass($doneToday) ?>" style="margin-top: 1.9rem">Done
                 today: <?= $this->Number->format($doneToday, ["places" => 2]) ?></div>
         </div>
     </fieldset>
