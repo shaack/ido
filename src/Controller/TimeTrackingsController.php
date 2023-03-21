@@ -4,6 +4,7 @@ declare(strict_types=1);
 namespace App\Controller;
 
 use Cake\Chronos\Date;
+use Cake\I18n\FrozenDate;
 use Cake\I18n\FrozenTime;
 
 /**
@@ -54,29 +55,17 @@ class TimeTrackingsController extends AppController
     public function add()
     {
         $timeTracking = $this->TimeTrackings->newEmptyEntity();
-        /*
-        if ($this->request->is('post')) {
-            $timeTracking = $this->TimeTrackings->patchEntity($timeTracking, $this->request->getData());
-            if ($this->TimeTrackings->save($timeTracking)) {
-                $this->Flash->success(__('The time tracking has been saved.'));
-
-                return $this->redirect(['action' => 'index']);
-            }
-            $this->Flash->error(__('The time tracking could not be saved. Please, try again.'));
-        } else {
-            $timeTracking->task_id = $this->request->getQuery("task_id"); // shaack patch
-            $timeTracking->start = new FrozenTime('now', 'CET'); // shaack patch
-        }
-        */
         $timeTracking->task_id = $this->request->getQuery("task_id"); // shaack patch
-        // $timeTracking->start = new FrozenTime('now', 'CET'); //
+        $timeTracking->duration = 0;
         if ($this->TimeTrackings->save($timeTracking)) {
             $this->Flash->success(__('The time tracking has been saved.'));
         } else {
             $this->Flash->error(__('Error saving time tracking.'));
         }
-        // $tasks = $this->TimeTrackings->Tasks->find('list', ['limit' => 1000, 'order' => ['id' => 'DESC']])->all();
-        // $this->set(compact('timeTracking', 'tasks'));
+        $this->TimeTrackings->deleteAll([ // delete old trackings
+            "duration" => 0,
+            "created <" => FrozenDate::now()->subDay(3)
+        ]);
         return $this->redirect(['action' => 'edit', $timeTracking->id]);
     }
 
@@ -103,7 +92,8 @@ class TimeTrackingsController extends AppController
         }
         $tasks = $this->TimeTrackings->Tasks->find('list', ['limit' => 1000, 'order' => ['id' => 'DESC']])->all();
         $hideNavigation = true;
-        $this->set(compact('timeTracking', 'tasks', 'hideNavigation'));
+        $doneToday = $this->TimeTrackings->find()->where(["created >" => FrozenDate::now()])->sumOf('duration');
+        $this->set(compact('timeTracking', 'tasks', 'hideNavigation', 'doneToday'));
     }
 
     /**

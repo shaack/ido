@@ -3,10 +3,24 @@
  * @var \App\View\AppView $this
  * @var \App\Model\Entity\TimeTracking $timeTracking
  * @var string[]|\Cake\Collection\CollectionInterface $tasks
+ * @var double $doneToday
  */
 
 $this->assign('title', $this->Text->truncate($timeTracking->task->smartName, 20));
 $customer = $timeTracking->task->service->project->customer;
+
+function doneClass($doneTime)
+{
+    $doneTodayClass = "text-muted";
+    if ($doneTime > 0) {
+        if ($doneTime < 4) {
+            $doneTodayClass = "text-success";
+        } else {
+            $doneTodayClass = "text-info";
+        }
+    }
+    return $doneTodayClass;
+}
 ?>
 <div class="row">
     <div class="col">
@@ -52,6 +66,7 @@ $customer = $timeTracking->task->service->project->customer;
         </div>
         <div class="row">
             <div class="col"><?= $this->Form->control('duration') ?></div>
+            <div class="col-auto <?= doneClass($doneToday) ?>" style="margin-top: 1.8rem">Done today: <?= $this->Number->format($doneToday, ["places" => 2]) ?></div>
         </div>
     </fieldset>
     <fieldset>
@@ -60,7 +75,7 @@ $customer = $timeTracking->task->service->project->customer;
         ?>
     </fieldset>
     <div class="mb-3">
-        <button class="btn btn-secondary">Submit</button>
+        <!-- <button class="btn btn-secondary">Submit</button> -->
         <button class="btn btn-primary" onclick="window.stopAndAdd(); return false;">
             Add Stopwatch and Submit
         </button>
@@ -74,19 +89,24 @@ $customer = $timeTracking->task->service->project->customer;
     const stopwatchOutput = document.getElementById("stopwatch")
     const durationInput = document.getElementById("duration")
     const form = document.getElementById("time-tracking-form")
-    let notificationShown = false
+    let notificationPomodoro = false
+    let notificationHour = false
+    const pomodoroMinutes = 25
+    const hourMinutes = 60
     const notifications = new Notifications()
     const progressBar = document.getElementById("progress-bar")
-    const pomodoroMinutes = 25
     const title = document.title
     let additionalMinutes = 0
-
     function updateTimerOutput() {
         const minutesExpired = stopwatch.secondsExpired() / 60 + additionalMinutes
         document.title = title + " ⏱️ " + (Math.round(minutesExpired * 100) / 100).toFixed(2)
-        if (minutesExpired >= pomodoroMinutes && !notificationShown) {
-            notificationShown = true
+        if (minutesExpired >= pomodoroMinutes && !notificationPomodoro) {
+            notificationPomodoro = true
             notifications.show(pomodoroMinutes + " Minutes expired", "<?= h($timeTracking->task->name) ?>")
+        }
+        if (minutesExpired >= hourMinutes && !notificationHour) {
+            notificationHour = true
+            notifications.show(hourMinutes + " Minutes expired", "<?= h($timeTracking->task->name) ?>")
         }
         progressBar.style.width = minutesExpired / pomodoroMinutes * 100 + "%"
         stopwatchOutput.value = (Math.round(minutesExpired * 100) / 100).toFixed(2)
@@ -146,7 +166,7 @@ $customer = $timeTracking->task->service->project->customer;
         } catch (e) {
             console.log(e)
         }
-        notificationShown = false
+        notificationPomodoro = false
         window.stopwatch.start()
     }
 

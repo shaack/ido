@@ -8,26 +8,10 @@ function doneClass($doneTime)
 {
     $doneTodayClass = "text-muted";
     if ($doneTime > 0) {
-        if ($doneTime < 1) {
-            // $doneTodayClass = "text-danger";
-        } else if ($doneTime < 2) {
-            // $doneTodayClass = "text-warning";
-        } else if ($doneTime < 3) {
-            // $doneTodayClass = "text-warning";
-        } else if ($doneTime < 4) {
+        if ($doneTime < 4) {
             $doneTodayClass = "text-success";
-        } else if ($doneTime < 5) {
-            $doneTodayClass = "text-info";
-        } else if ($doneTime < 6) {
-            $doneTodayClass = "text-info fs-5";
-        } else if ($doneTime < 7) {
-            $doneTodayClass = "text-info fs-4";
-        } else if ($doneTime < 8) {
-            $doneTodayClass = "text-info fs-3";
-        } else if ($doneTime < 9) {
-            $doneTodayClass = "text-info fs-2";
         } else {
-            $doneTodayClass = "text-info fs-1";
+            $doneTodayClass = "text-info";
         }
     }
     return $doneTodayClass;
@@ -44,11 +28,11 @@ function doneClass($doneTime)
         $done3 = $this->get('done3');
         ?>
         <div class="col-auto"><span class="text-muted">today's hrs:</span> <span
-                class="<?= doneClass($doneToday) ?>"><?= $this->Number->format($doneToday) ?></span></div>
+                class="<?= doneClass($doneToday) ?>"><?= $this->Number->format($doneToday, ["places" => 2]) ?></span></div>
         <div class="col-auto text-muted">
-            <span class="me-2 <?= doneClass($done1) ?>"><?= $this->Number->format($done1) ?></span>
-            <span class="me-2 <?= doneClass($done2) ?>"><?= $this->Number->format($done2) ?></span>
-            <span class="<?= doneClass($done3) ?>"><?= $this->Number->format($done3) ?></span>
+            <span class="me-2 <?= doneClass($done1) ?>"><?= $this->Number->format($done1, ["places" => 2]) ?></span>
+            <span class="me-2 <?= doneClass($done2) ?>"><?= $this->Number->format($done2, ["places" => 2]) ?></span>
+            <span class="<?= doneClass($done3) ?>"><?= $this->Number->format($done3, ["places" => 2]) ?></span>
         </div>
         <div
             class="col-auto text-end"><?= $this->Html->link(__('New Task'), ['action' => 'add'], ['class' => 'btn btn-primary btn-sm float-right']) ?></div>
