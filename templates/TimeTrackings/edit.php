@@ -118,6 +118,7 @@ function doneClass($doneTime)
             }
         }
         stopwatchOutput.value = (Math.round(minutesExpired * 100) / 100).toFixed(2)
+
     }
 
     window.stopwatch = new Stopwatch({
