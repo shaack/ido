@@ -89,8 +89,8 @@ function doneClass($doneTime)
     const stopwatchOutput = document.getElementById("stopwatch")
     const durationInput = document.getElementById("duration")
     const form = document.getElementById("time-tracking-form")
-    let notificationPomodoro = false
-    let notificationHour = false
+    let pomodoroExpired = false
+    let hourExpired = false
     const pomodoroMinutes = 25
     const hourMinutes = 60
     const notifications = new Notifications()
@@ -100,15 +100,23 @@ function doneClass($doneTime)
     function updateTimerOutput() {
         const minutesExpired = stopwatch.secondsExpired() / 60 + additionalMinutes
         document.title = title + " ⏱️ " + (Math.round(minutesExpired * 100) / 100).toFixed(2)
-        if (minutesExpired >= pomodoroMinutes && !notificationPomodoro) {
-            notificationPomodoro = true
+        if (minutesExpired >= pomodoroMinutes && !pomodoroExpired) {
+            pomodoroExpired = true
             notifications.show(pomodoroMinutes + " Minutes expired", "<?= h($timeTracking->task->name) ?>")
         }
-        if (minutesExpired >= hourMinutes && !notificationHour) {
-            notificationHour = true
+        if (minutesExpired >= hourMinutes && !hourExpired) {
+            hourExpired = true
             notifications.show(hourMinutes + " Minutes expired", "<?= h($timeTracking->task->name) ?>")
         }
-        progressBar.style.width = minutesExpired / pomodoroMinutes * 100 + "%"
+        if(!pomodoroExpired) {
+            progressBar.style.width = minutesExpired / pomodoroMinutes * 100 + "%"
+        } else {
+            progressBar.style.width = minutesExpired / hourMinutes * 100 + "%"
+            if(stopwatch.running()) {
+                progressBar.classList.remove("bg-primary")
+                progressBar.classList.add("bg-success")
+            }
+        }
         stopwatchOutput.value = (Math.round(minutesExpired * 100) / 100).toFixed(2)
     }
 
@@ -118,18 +126,19 @@ function doneClass($doneTime)
         },
         onStateChanged: (running) => {
             if (running) {
-                if (!progressBar.classList.contains("bg-primary")) {
-                    progressBar.classList.add("bg-primary")
+                if (!progressBar.classList.contains("progress-bar-striped")) {
+                    if(!pomodoroExpired) {
+                        progressBar.classList.add("bg-primary")
+                    } else {
+                        progressBar.classList.add("bg-success")
+                    }
                     progressBar.classList.add("progress-bar-striped")
                     progressBar.classList.add("progress-bar-animated")
                     progressBar.classList.remove("bg-secondary")
-                    progressBar.classList.remove("bg-secondary")
                 }
             } else {
-                if (progressBar.classList.contains("bg-primary")) {
-                    progressBar.classList.remove("bg-primary")
-                    progressBar.classList.remove("progress-bar-striped")
-                    progressBar.classList.remove("progress-bar-animated")
+                if (progressBar.classList.contains("progress-bar-striped")) {
+                    progressBar.className = ""
                     progressBar.classList.add("bg-secondary")
                 }
             }
@@ -166,7 +175,7 @@ function doneClass($doneTime)
         } catch (e) {
             console.log(e)
         }
-        notificationPomodoro = false
+        pomodoroExpired = false
         window.stopwatch.start()
     }
 
