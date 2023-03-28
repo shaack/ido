@@ -17,7 +17,7 @@ $this->assign('title', h($project->name));
     </aside>
     <div class="column-responsive column-80">
         <div class="projects view content">
-            <h3><?= __('Project') ?> <?= h($project->name) ?></h3>
+            <h3><?= h($project->name) ?></h3>
             <div class="related">
                 <h4><?= __('Related Services') ?></h4>
                 <div class="actions">
