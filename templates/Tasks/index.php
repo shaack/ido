@@ -6,11 +6,12 @@
 
 function doneClass($doneTime)
 {
-    $doneTodayClass = "text-muted";
+    $doneTodayClass = "text-muted opacity-50";
     if ($doneTime > 0) {
-        if ($doneTime < 4) {
+        $doneTodayClass = "text-muted";
+        if ($doneTime >=3 && $doneTime < 4) {
             $doneTodayClass = "text-success";
-        } else {
+        } else  if ($doneTime >= 4) {
             $doneTodayClass = "text-info";
         }
     }
