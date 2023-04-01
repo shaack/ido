@@ -1,4 +1,4 @@
-# ido, the really working todo app for freelancers
+# ido, the really working todo app for self employed
 
 ## Add a field in CakePHP
 
