@@ -1,1 +1,1 @@
-# ido, project management,todos, billing for self employed
+# ido, project management, todos, billing for self employed
