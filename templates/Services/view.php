@@ -80,7 +80,7 @@ $this->assign('title', h($service->name));
                             <!-- <th><?= __('Duration Est') ?></th> -->
                             <!-- <th><?= __('Link') ?></th> -->
                             <!-- <th><?= __('Service Id') ?></th> -->
-                            <!-- <th><?= __('Created') ?></th> -->
+                            <th><?= __('Created') ?></th>
                             <!-- <th><?= __('Notes') ?></th> -->
                             <!-- <th><?= __('Done At') ?></th> -->
                             <th><?= __('Duration') ?></th>
@@ -96,10 +96,10 @@ $this->assign('title', h($service->name));
                             <td><?= h($task->start_est) ?></td>
                             <!-- <td><?= h($task->deadline) ?></td> -->
                             <!-- <td><?= h($task->duration_est) ?></td> -->
-                            <!-- <td><?= h($task->link) ?></td>
-                            <td><?= h($task->service_id) ?></td>
+                            <!-- <td><?= h($task->link) ?></td> -->
+                            <!-- <td><?= h($task->service_id) ?></td> -->
                             <td><?= h($task->created) ?></td>
-                            <td><?= h($task->notes) ?></td> -->
+                            <!-- <td><?= h($task->notes) ?></td> -->
                             <!-- <td><?= h($task->done_at) ?></td> -->
                             <td>
                                 <?php
