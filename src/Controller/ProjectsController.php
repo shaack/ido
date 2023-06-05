@@ -71,9 +71,6 @@ class ProjectsController extends AppController
         $this->set(compact('project'));
     }
 
-    /**
-     *
-     */
     public function invoice($id) {
         $project = $this->Projects->get($id, [
             'contain' => ['Customers', 'ParentProjects', 'ProjectStatuses', 'ChildProjects',
@@ -81,6 +78,7 @@ class ProjectsController extends AppController
         ]);
         if ($this->request->is(['post', 'patch', 'put'])) {
             $project = $this->Projects->patchEntity($project, $this->request->getData());
+            $project->project_status = $this->Projects->ProjectStatuses->get(25);
             if ($this->Projects->save($project)) {
                 $this->Flash->success(__('The Invoice has been saved.'));
             } else {
