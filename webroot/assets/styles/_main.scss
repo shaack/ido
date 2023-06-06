@@ -9,32 +9,15 @@ main {
         @extend .table;
         border-bottom: 4px solid $gray-200;
 
-        thead {
-            background-color: $gray-200;
-
-            tr {
-                th {
-                    color: $gray-600;
-
-                    a {
-                        color: $gray-800;
-                    }
-                }
-            }
-        }
-
         tbody {
             tr {
                 &.task-marked {
-                    // background-color: mix($yellow-100, $white, 5);
-                    // font-weight: bold;
                     a {
                         color: $info;
                     }
                 }
                 &.done-true {
                     a {
-                        // color: $text-muted;
                         opacity: 0.5;
                         text-decoration: line-through;
                         &.no-line-through {
@@ -135,12 +118,6 @@ main {
 
             a {
                 @extend .page-link;
-            }
-        }
-
-        li.active {
-            a {
-                background-color: $gray-200;
             }
         }
     }

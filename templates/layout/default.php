@@ -17,7 +17,7 @@
 $controller = $this->request->getParam('controller')
 ?>
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" data-bs-theme="light">
 <head>
     <?= $this->Html->charset() ?>
     <meta name="viewport" content="width=device-width, initial-scale=1">
@@ -31,10 +31,7 @@ $controller = $this->request->getParam('controller')
     <link href="/assets/fontawesome-subset/css/regular.min.css" rel="stylesheet">
     <link href="/node_modules/simplemde/dist/simplemde.min.css" rel="stylesheet">
     <link href="/assets/styles/simplemde-theme-dark.css" rel="stylesheet">
-    <!--
-    <script defer src="/assets/fontawesome-subset/js/solid.min.js"></script>
-    <script defer src="/assets/fontawesome-subset/js/regular.min.js"></script>
-    -->
+
     <link href="/assets/styles/screen.css" rel="stylesheet">
 
     <script src="/node_modules/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
@@ -48,7 +45,7 @@ $controller = $this->request->getParam('controller')
 <body>
 <header>
     <?php if (!$this->get('hideNavigation')) : ?>
-        <nav class="navbar navbar-expand-sm navbar-light bg-light">
+        <nav class="navbar navbar-expand-sm">
             <div class="container-fluid">
                 <a class="navbar-brand" href="<?= $this->Url->build('/tasks') ?>"><span class="char-1">I</span><span
                         class="char-2">d</span><span class="char-3">o</span></a>

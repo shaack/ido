@@ -6,7 +6,7 @@
 // 2. Include any default variable overrides here
 @import "config/colors"; // set values for the colors
 @import "config/variables"; // set values for further bootstrap variables
-@import "config/dark";
+// @import "config/dark";
 
 // 3. Include remainder of required Bootstrap stylesheets
 @import "../../node_modules/bootstrap/scss/variables";
@@ -23,3 +23,4 @@
 @import "header"; // css for the navigation and header
 @import "footer"; // css for the page footer
 @import "blocks"; // one scss file for every "block" (aka section or module) in your layout or CMS
+
