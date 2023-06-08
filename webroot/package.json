@@ -3,13 +3,13 @@
     "version": "1.0.0",
     "private": true,
     "main": "",
-    "scripts": {
-    },
+    "scripts": {},
     "author": "",
     "license": "MIT",
     "description": "",
     "dependencies": {
         "bootstrap": "^5.3.0",
+        "bootstrap-auto-dark-mode": "^1.0.0",
         "bootstrap-input-spinner": "^3.3.2",
         "bootstrap-show-toast": "^1.1.4",
         "cm-web-modules": "^2.0.6",

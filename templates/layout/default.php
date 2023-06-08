@@ -40,8 +40,8 @@ $controller = $this->request->getParam('controller')
             "cm-web-modules/": "/node_modules/cm-web-modules/"
         }
     }
-</script>
-
+    </script>
+    <script src="/node_modules/bootstrap-auto-dark-mode/src/bootstrap-auto-dark-mode.js"></script>
     <script src="/node_modules/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
     <script src="/node_modules/bootstrap-show-toast/src/bootstrap-show-toast.js"></script>
     <script src="/node_modules/simplemde/dist/simplemde.min.js"></script>
@@ -101,13 +101,6 @@ $controller = $this->request->getParam('controller')
     let editors = document.querySelectorAll("textarea.markdown")
     for (const editor of editors) {
         editor.simpleMDE = new SimpleMDE({element: editor, promptURLs: true, spellChecker: false})
-    }
-</script>
-<script type="module">
-    import {DomUtils} from "cm-web-modules/src/utils/DomUtils.js";
-
-    if(DomUtils.isBrowserDarkMode()) {
-        document.documentElement.setAttribute("data-bs-theme", "dark");
     }
 </script>
 </body>
