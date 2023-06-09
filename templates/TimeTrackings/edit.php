@@ -87,8 +87,8 @@ function doneClass($doneTime)
     <?= $this->Form->end() ?>
 </div>
 <script type="module">
-    import {Stopwatch} from "/lib/cm-web-modules/stopwatch/Stopwatch.js";
-    import {Notifications} from "../../webroot/lib/cm-web-modules/notifications/Notifications.js";
+    import {Stopwatch} from "cm-web-modules/src/stopwatch/Stopwatch.js";
+    import {Notifications} from "cm-web-modules/src/notifications/Notifications.js";
 
     const stopwatchOutput = document.getElementById("stopwatch")
     const durationInput = document.getElementById("duration")
