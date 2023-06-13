@@ -7,7 +7,6 @@ main {
 
     table {
         @extend .table;
-        border-bottom: 4px solid $gray-200;
 
         tbody {
             tr {
