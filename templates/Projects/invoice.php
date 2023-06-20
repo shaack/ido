@@ -33,8 +33,24 @@ $this->assign('title', $fileName);
         <?php endif ?>
     </address>
 </div>
-<h1 class="mb-1"><?= ($lang == "de" ? "Rechnung" : "Invoice") ?></h1>
-<h2 class="mb-4"><?= $project->name ?></h2>
+<?php
+if ($project->invoice_type == "permanent") {
+    echo("<h1 class='mb-4'>Dauerrechnung im Sinne des § 14 UStG</h1>");
+} else {
+    echo "<h1 class='mb-1'>" . ($lang == "de" ? "Rechnung" : "Invoice") . "</h1>";
+}
+?>
+<?php if ($project->invoice_type == "permanent") { ?>
+    <p>
+        Dauerrechnung zum "Wartungsvertrag für Websites" vom 19.6.2023.</p>
+    <p>
+        Diese Rechnung gilt ab <?= $project->start->format("d.m.Y") ?> bis zum <?= $project->end->format("d.m.Y") ?>
+        und erlischt, wenn die vorliegende Rechnung durch eine neue
+        ersetzt oder das Vertragsverhältnis beendet wird.
+    </p>
+<?php } else { ?>
+    <h2 class="mb-4"><?= $project->name ?></h2>
+<?php } ?>
 <?= $this->Form->create($project) ?>
 <div class="row">
     <div class="col-7">
@@ -57,9 +73,10 @@ $this->assign('title', $fileName);
     <div class="col-5">
         <table class="data m-0">
             <tr>
-                <th><label for="invoice_number"><?= ($lang == "de" ? "Rechnungsnummer" : "Invoice number") ?></label></th>
+                <th><label for="invoice_number"><?= ($lang == "de" ? "Rechnungsnummer" : "Invoice number") ?></label>
+                </th>
                 <td>
-                    <?= $invoiceStored ? $project->invoice_number : $this->Form->control('invoice_number'); ?>
+                    SH/<?= $invoiceStored ? $project->invoice_number : $this->Form->control('invoice_number'); ?>
                 </td>
             </tr>
             <tr>
@@ -74,12 +91,14 @@ $this->assign('title', $fileName);
 
 <?= !$invoiceStored ? $this->Form->button(__('Submit')) : "" ?>
 <?= $this->Form->end() ?>
+<?php if ($project->invoice_type != "permanent") { ?>
 <p><?= ($lang == "de" ? "Vielen Dank für Ihren Auftrag, den wir wie folgt abrechnen." : "Thank you for your order, which we will invoice as follows.") ?></p>
+<?php } ?>
 <table class="mb-2">
     <thead>
     <tr>
         <th><?= ($lang == "de" ? "Leistung" : "Service") ?></th>
-        <?php if(!$project->fixed_price) { ?>
+        <?php if (!$project->fixed_price) { ?>
             <th class="text-end"><?= ($lang == "de" ? "Aufwand" : "Effort") ?></th>
         <?php } else {
             echo "<th></th>";
@@ -93,9 +112,9 @@ $this->assign('title', $fileName);
             <td class="w-100"><?= h($service->name) ?></td>
             <td class="text-end code ps-4">
                 <?php
-                    if(!$service->estimation_or_fixed_price) {
-                        echo $this->Number->precision($service->effort(), 2);
-                    }
+                if (!$service->estimation_or_fixed_price) {
+                    echo $this->Number->precision($service->effort(), 2);
+                }
                 ?>
             </td>
             <td class="text-end code ps-4"><?= $this->Number->currency($service->costs()) ?></td>
@@ -104,7 +123,7 @@ $this->assign('title', $fileName);
     </tbody>
 </table>
 <table class="sum">
-    <?php if($foreign): ?>
+    <?php if ($foreign): ?>
         <tr>
             <td class="text-end w-100"><b>Total invoice amount</b></td>
             <td class="text-end code ps-4"><b><?= $this->Number->currency($project->costs()) ?></b></td>
@@ -132,8 +151,12 @@ $this->assign('title', $fileName);
 </table>
 <p>
     <?php if ($lang == "de"): ?>
-        Zahlbar sofort nach Rechnungserhalt ohne Abzug. Bitte überweisen Sie den Betrag unter Angabe der Rechnungsnummer auf
-        folgendes Konto.
+        <?php if ($project->invoice_type == "permanent") { ?>
+            Zahlungsbedingungen: Zahlung innerhalb von 14 Tagen ab Rechnungseingang ohne Abzüge.
+        <?php } else { ?>
+            Zahlbar sofort nach Rechnungserhalt ohne Abzug. Bitte überweisen Sie den Betrag unter Angabe der Rechnungsnummer auf
+            folgendes Konto.
+        <?php } ?>
     <?php else: ?>
         Payable immediately upon receipt of invoice without deduction. Please transfer the amount to the following account stating the invoice number.
     <?php endif ?>
