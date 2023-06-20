@@ -66,7 +66,7 @@ class TasksController extends AppController
     public function view($id = null)
     {
         $task = $this->Tasks->get($id, [
-            'contain' => ['Services', 'TimeTrackings' => [
+            'contain' => ['Services.Projects.Customers', 'Services.Projects', 'Services', 'TimeTrackings' => [
                 'sort' => ['id' => 'DESC']
             ]],
         ]);

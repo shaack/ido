@@ -17,7 +17,7 @@
 $controller = $this->request->getParam('controller')
 ?>
 <!DOCTYPE html>
-<html lang="en" data-bs-theme="light">
+<html lang="en" data-bs-theme="auto">
 <head>
     <?= $this->Html->charset() ?>
     <meta name="viewport" content="width=device-width, initial-scale=1">
@@ -25,7 +25,6 @@ $controller = $this->request->getParam('controller')
         <?= $this->fetch('title') ?>
     </title>
     <?= $this->Html->meta('icon') ?>
-
     <link href="/assets/fontawesome-subset/css/fontawesome.min.css" rel="stylesheet">
     <link href="/assets/fontawesome-subset/css/solid.min.css" rel="stylesheet">
     <link href="/assets/fontawesome-subset/css/regular.min.css" rel="stylesheet">
@@ -90,13 +89,51 @@ $controller = $this->request->getParam('controller')
 </header>
 <main class="main">
     <div class="container-fluid">
+        <div class="breadcrumb">
+            <?php
+            if(@$timeTracking) {
+                $task = $timeTracking->task;
+                $service = $task->service;
+                $project = $service->project;
+                $customer = $project->customer;
+            } else if(@$task) {
+                $service = $task->service;
+                $project = $service->project;
+                $customer = $project->customer;
+            } else if(@$service) {
+                $project = $service->project;
+                $customer = $project->customer;
+            } else if(@$project) {
+                $customer = $project->customer;
+            }
+            if(@$customer) {
+                echo $this->Html->link($customer->shortcut, ['controller' => 'Customers', 'action' => 'view', $customer->id],
+                    ["class" => "breadcrumb-item"]);
+            }
+            if(@$project) {
+                echo $this->Html->link($project->name, ['controller' => 'Projects', 'action' => 'view', $project->id],
+                    ["class" => "breadcrumb-item"]);
+            }
+            if(@$service) {
+                echo $this->Html->link($service->name, ['controller' => 'Services', 'action' => 'view', $service->id],
+                    ["class" => "breadcrumb-item"]);
+            }
+            if(@$task) {
+                echo $this->Html->link($task->name, ['controller' => 'Tasks', 'action' => 'view', $task->id],
+                    ["class" => "breadcrumb-item"]);
+            }
+            if(@$timeTracking) {
+                echo $this->Html->link($timeTracking->name, ['controller' => 'TimeTrackings', 'action' => 'view', $timeTracking->id],
+                    ["class" => "breadcrumb-item"]);
+            }
+            ?>
+        </div>
         <?= $this->Flash->render() ?>
         <?= $this->fetch('content') ?>
     </div>
 </main>
 <footer>
 </footer>
-<!-- <script src="/node_modules/bootstrap-input-spinner/src/bootstrap-input-spinner.js"></script> -->
 <script>
     let editors = document.querySelectorAll("textarea.markdown")
     for (const editor of editors) {

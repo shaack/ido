@@ -94,6 +94,10 @@ $this->assign('title', h($project->name));
                             <td><?= h($project->invoice_number) ?></td>
                         </tr>
                         <tr>
+                            <th><?= __('Invoice Type') ?></th>
+                            <td><?= h($project->invoice_type) ?></td>
+                        </tr>
+                        <tr>
                             <th><?= __('Parent Project') ?></th>
                             <td><?= $project->has('parent_project') ? $this->Html->link($project->parent_project->name, ['controller' => 'Projects', 'action' => 'view', $project->parent_project->id]) : '' ?></td>
                         </tr>
