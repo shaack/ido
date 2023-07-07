@@ -107,9 +107,14 @@ if ($project->invoice_type == "permanent") {
     </tr>
     </thead>
     <tbody>
-    <?php foreach ($project->services as $service) : ?>
+    <?php foreach ($project->services as $service) :
+        $name = $service->name;
+        if(!$name) {
+            $name = $service->project->name;
+        }
+        ?>
         <tr>
-            <td class="w-100"><?= h($service->name) ?></td>
+            <td class="w-100"><?= h($name) ?></td>
             <td class="text-end code ps-4">
                 <?php
                 if (!$service->estimation_or_fixed_price) {
