@@ -52,4 +52,6 @@ nbproject/*
 yarn-debug.log
 yarn-error.log
 
+# shaack specific
 /webroot/node_modules
+/templates/Projects/invoice.php

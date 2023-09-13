@@ -2,6 +2,8 @@
 /** @var $project \App\Model\Entity\Project */
 /** @var $invoiceStored boolean */
 
+use Cake\Core\Configure;
+
 $type = $this->request->getQuery('type', 'default');
 $latestInvoiceNumber = $this->get('latestInvoiceNumber');
 $asNumber = intval($latestInvoiceNumber);
@@ -169,15 +171,15 @@ if ($project->invoice_type == "permanent") {
 <table class="data">
     <tr>
         <th><?= ($lang == "de" ? "Inhaber" : "Owner") ?></th>
-        <td class="code">Stefan Haack</td>
+        <td class="code"><?= Configure::consume('BankData.name') ?></td>
     </tr>
     <tr>
         <th>IBAN</th>
-        <td class="code">DE71100100100537918109</td>
+        <td class="code"><?= Configure::consume('BankData.iban') ?></td>
     </tr>
     <tr>
         <th>BIC</th>
-        <td class="code">PBNKDEFF100 (Postbank)</td>
+        <td class="code"><?= Configure::consume('BankData.bic') ?></td>
     </tr>
 </table>
 <p>
