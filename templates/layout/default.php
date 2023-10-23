@@ -85,10 +85,13 @@ $controller = $this->request->getParam('controller')
                 </div>
             </div>
         </nav>
+    <?php else: ?>
+        <div class="mb-2"></div>
     <?php endif ?>
     <div class="container-fluid">
         <div class="breadcrumb">
             <?php
+            /** @noinspection PhpUndefinedVariableInspection */
             if (@$timeTracking) {
                 $task = $timeTracking->task;
                 $service = $task->service;
@@ -113,15 +116,15 @@ $controller = $this->request->getParam('controller')
                     ["class" => "breadcrumb-item text-decoration-none"]);
             }
             if (@$service) {
-                echo $this->Html->link($service->name ? $service->name : "[Service]", ['controller' => 'Services', 'action' => 'view', $service->id],
+                echo $this->Html->link($service->name ?: "[Service]", ['controller' => 'Services', 'action' => 'view', $service->id],
                     ["class" => "breadcrumb-item text-decoration-none"]);
             }
             if (@$task) {
-                echo $this->Html->link($task->name ? $task->name : "[Task]", ['controller' => 'Tasks', 'action' => 'view', $task->id],
+                echo $this->Html->link($task->name ?: "[Task]", ['controller' => 'Tasks', 'action' => 'view', $task->id],
                     ["class" => "breadcrumb-item text-decoration-none"]);
             }
             if (@$timeTracking) {
-                echo $this->Html->link($timeTracking->name, ['controller' => 'TimeTrackings', 'action' => 'view', $timeTracking->id],
+                echo $this->Html->link($timeTracking->name ?: "[Tracking]", ['controller' => 'TimeTrackings', 'action' => 'view', $timeTracking->id],
                     ["class" => "breadcrumb-item text-decoration-none"]);
             }
             ?>

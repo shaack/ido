@@ -26,16 +26,17 @@ function doneClass($doneTime)
 ?>
 <div class="row">
     <div class="col">
-        <h2>
+        <h2 class="mb-3">
             <i class="fa-solid fa-stopwatch"></i>️ <?= $timeTracking->task->name ?: "<i>" . $timeTracking->task->smartName . "</i>" ?>
         </h2>
+        <?php /*
         <div class="mb-3">
             <span>
                 <?= $this->Html->link($customer->shortcut, ['controller' => 'Customers', 'action' => 'view', $customer->id], ['style' => 'color: ' . $customer->color, 'target' => '_blank']) ?> /
                 <?= $this->Html->link($timeTracking->task->service->project->name, ['controller' => 'Projects', 'action' => 'view', $timeTracking->task->service->project->id], ['target' => '_blank']) ?> /
                 <?= $this->Html->link($timeTracking->task->service->smartName, ['controller' => 'Services', 'action' => 'view', $timeTracking->task->service->id], ['target' => '_blank']) ?>
             </span>
-        </div>
+        </div> */ ?>
     </div>
     <div class="col-auto"><?= $this->Form->postLink(
             __('Delete'),
