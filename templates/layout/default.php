@@ -92,19 +92,19 @@ $controller = $this->request->getParam('controller')
         <div class="breadcrumb">
             <?php
             /** @noinspection PhpUndefinedVariableInspection */
-            if (@$timeTracking) {
+            if (@$timeTracking && $timeTracking->task) {
                 $task = $timeTracking->task;
                 $service = $task->service;
                 $project = $service->project;
                 $customer = $project->customer;
-            } else if (@$task) {
+            } else if (@$task && $task->service) {
                 $service = $task->service;
                 $project = $service->project;
                 $customer = $project->customer;
-            } else if (@$service) {
+            } else if (@$service && $service->project) {
                 $project = $service->project;
                 $customer = $project->customer;
-            } else if (@$project) {
+            } else if (@$project && $project->customer) {
                 $customer = $project->customer;
             }
             if (@$customer) {

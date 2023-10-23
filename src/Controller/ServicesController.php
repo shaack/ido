@@ -65,7 +65,8 @@ class ServicesController extends AppController
             $service->project_id = $this->request->getQuery("project_id"); // shaack patch
         }
         $projects = $this->Services->Projects->find('list', ['limit' => 1000, 'order' => ['id' => 'DESC']])->all();
-        $this->set(compact('service', 'projects'));
+        $project = $this->Services->Projects->get($this->request->getQuery("project_id"), ["contain" => ["Customers"]]);
+        $this->set(compact('service', 'project', 'projects'));
     }
 
     /**
