@@ -34,11 +34,11 @@ $controller = $this->request->getParam('controller')
     <link href="/assets/styles/screen.css" rel="stylesheet">
 
     <script type="importmap">
-    {
-        "imports": {
-            "cm-web-modules/": "/node_modules/cm-web-modules/"
+        {
+            "imports": {
+                "cm-web-modules/": "/node_modules/cm-web-modules/"
+            }
         }
-    }
     </script>
     <script src="/node_modules/bootstrap-auto-dark-mode/src/bootstrap-auto-dark-mode.js"></script>
     <script src="/node_modules/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
@@ -86,48 +86,50 @@ $controller = $this->request->getParam('controller')
             </div>
         </nav>
     <?php endif ?>
-</header>
-<main class="main">
     <div class="container-fluid">
         <div class="breadcrumb">
             <?php
-            if(@$timeTracking) {
+            if (@$timeTracking) {
                 $task = $timeTracking->task;
                 $service = $task->service;
                 $project = $service->project;
                 $customer = $project->customer;
-            } else if(@$task) {
+            } else if (@$task) {
                 $service = $task->service;
                 $project = $service->project;
                 $customer = $project->customer;
-            } else if(@$service) {
+            } else if (@$service) {
                 $project = $service->project;
                 $customer = $project->customer;
-            } else if(@$project) {
+            } else if (@$project) {
                 $customer = $project->customer;
             }
-            if(@$customer) {
+            if (@$customer) {
                 echo $this->Html->link($customer->shortcut, ['controller' => 'Customers', 'action' => 'view', $customer->id],
-                    ["class" => "breadcrumb-item"]);
+                    ["class" => "breadcrumb-item text-decoration-none"]);
             }
-            if(@$project) {
+            if (@$project) {
                 echo $this->Html->link($project->name, ['controller' => 'Projects', 'action' => 'view', $project->id],
-                    ["class" => "breadcrumb-item"]);
+                    ["class" => "breadcrumb-item text-decoration-none"]);
             }
-            if(@$service) {
-                echo $this->Html->link($service->name, ['controller' => 'Services', 'action' => 'view', $service->id],
-                    ["class" => "breadcrumb-item"]);
+            if (@$service) {
+                echo $this->Html->link($service->name ? $service->name : "[Service]", ['controller' => 'Services', 'action' => 'view', $service->id],
+                    ["class" => "breadcrumb-item text-decoration-none"]);
             }
-            if(@$task) {
-                echo $this->Html->link($task->name, ['controller' => 'Tasks', 'action' => 'view', $task->id],
-                    ["class" => "breadcrumb-item"]);
+            if (@$task) {
+                echo $this->Html->link($task->name ? $task->name : "[Task]", ['controller' => 'Tasks', 'action' => 'view', $task->id],
+                    ["class" => "breadcrumb-item text-decoration-none"]);
             }
-            if(@$timeTracking) {
+            if (@$timeTracking) {
                 echo $this->Html->link($timeTracking->name, ['controller' => 'TimeTrackings', 'action' => 'view', $timeTracking->id],
-                    ["class" => "breadcrumb-item"]);
+                    ["class" => "breadcrumb-item text-decoration-none"]);
             }
             ?>
         </div>
+    </div>
+</header>
+<main class="main">
+    <div class="container-fluid">
         <?= $this->Flash->render() ?>
         <?= $this->fetch('content') ?>
     </div>
