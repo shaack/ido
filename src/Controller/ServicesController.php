@@ -78,7 +78,7 @@ class ServicesController extends AppController
     public function edit($id = null)
     {
         $service = $this->Services->get($id, [
-            'contain' => [],
+            'contain' => ['Projects', 'Projects.Customers'],
         ]);
         if ($this->request->is(['patch', 'post', 'put'])) {
             $service = $this->Services->patchEntity($service, $this->request->getData());

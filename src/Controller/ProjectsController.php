@@ -136,10 +136,13 @@ class ProjectsController extends AppController
     public function edit($id = null)
     {
         $project = $this->Projects->get($id, [
-            'contain' => [],
+            'contain' => ['Customers'],
         ]);
         if ($this->request->is(['patch', 'post', 'put'])) {
             $project = $this->Projects->patchEntity($project, $this->request->getData());
+            if($this->request->getData()["paid_at"] && $project->project_status_id == 25) {
+                $project->project_status = $this->Projects->ProjectStatuses->get(40); // invoice paid
+            }
             if ($this->Projects->save($project)) {
                 $this->Flash->success(__('The project has been saved.'));
             } else {

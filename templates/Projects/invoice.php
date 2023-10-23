@@ -78,7 +78,7 @@ if ($project->invoice_type == "permanent") {
                 <th><label for="invoice_number"><?= ($lang == "de" ? "Rechnungsnummer" : "Invoice number") ?></label>
                 </th>
                 <td>
-                    SH/<?= $invoiceStored ? $project->invoice_number : $this->Form->control('invoice_number'); ?>
+                    <?= $invoiceStored ? $project->invoice_number : $this->Form->control('invoice_number'); ?>
                 </td>
             </tr>
             <tr>
