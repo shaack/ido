@@ -51,6 +51,7 @@ function doneClass($doneTime)
                 <th><?= $this->Paginator->sort('start') ?></th>
                 <th><?= $this->Paginator->sort('deadline') ?></th>
                 -->
+                <th><?= $this->Paginator->sort('due') ?></th>
                 <th><?= $this->Paginator->sort('service_id') ?></th>
                 <th><?= $this->Paginator->sort('project_id') ?></th>
                 <!-- <th><?= $this->Paginator->sort('prio') ?></th> -->
@@ -88,6 +89,7 @@ function doneClass($doneTime)
                         <td><?= h($task->start_est) ?></td>
                         <td><?= h($task->deadline) ?></td>
                         -->
+                    <td><?= h($task->deadline) ?></td>
                     <td><?= $this->Html->link($this->Text->truncate($task->service->smartName, 45), ['controller' => 'Services', 'action' => 'view', $task->service->id],
                             ['class' => $task->service->name ? '' : 'fst-italic']) ?></td>
                     <td><?= $this->Html->link($this->Text->truncate($task->service->project->name, 40), ['controller' => 'Projects', 'action' => 'view', $task->service->project->id]) ?></td>
