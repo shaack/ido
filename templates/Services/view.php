@@ -22,7 +22,8 @@ $this->assign('title', h($service->name));
     </aside>
     <div class="column-responsive column-80">
         <div class="services view content">
-            <h3><?= h($service->name) ?></h3>
+            <h3>Service: <?= h($service->name) ?></h3>
+            <!--
             <table>
                 <tr>
                     <th><?= __('Name') ?></th>
@@ -36,6 +37,7 @@ $this->assign('title', h($service->name));
                     <th><?= __('Effort Est') ?></th>
                     <td><?= $service->effort_est === null ? '' : $this->Number->format($service->effort_est) ?></td>
                 </tr>
+
                 <tr>
                     <th><?= __('Fixed Price') ?></th>
                     <td><?= $service->estimation_or_fixed_price === null ? '' : $this->Number->format($service->estimation_or_fixed_price) ?></td>
@@ -57,6 +59,7 @@ $this->assign('title', h($service->name));
                     <td><?= h($service->created) ?></td>
                 </tr>
             </table>
+            -->
             <div class="text">
                 <strong><?= __('Notes') ?></strong>
                 <blockquote>
@@ -72,15 +75,15 @@ $this->assign('title', h($service->name));
                         <tr>
                             <!-- <th><?= __('Id') ?></th> -->
                             <th><?= __('Done') ?></th>
-                            <th><?= __('Marked') ?></th>
+                            <!--<th><?= __('Marked') ?></th> -->
                             <th><?= __('Name') ?></th>
                             <!-- <th><?= __('Prio') ?></th> -->
-                            <th><?= __('Start Est') ?></th>
+                            <!-- <th><?= __('Start Est') ?></th> -->
                             <!-- <th><?= __('Deadline') ?></th> -->
                             <!-- <th><?= __('Duration Est') ?></th> -->
                             <!-- <th><?= __('Link') ?></th> -->
                             <!-- <th><?= __('Service Id') ?></th> -->
-                            <th><?= __('Created') ?></th>
+                            <!-- <th><?= __('Created') ?></th> -->
                             <!-- <th><?= __('Notes') ?></th> -->
                             <!-- <th><?= __('Done At') ?></th> -->
                             <th><?= __('Duration') ?></th>
@@ -90,21 +93,18 @@ $this->assign('title', h($service->name));
                         <tr>
                             <!-- <td><?= h($task->id) ?></td> -->
                             <td><?= h($task->done) ?></td>
-                            <td><?= h($task->marked) ?></td>
-                            <td><?= $this->Html->link($task->name, ['controller' => 'Tasks', 'action' => 'view', $task->id]) ?></td>
+                            <!--<td><?= h($task->marked) ?></td> -->
+                            <td><?= $this->Html->link($task->name ?: "[Task]", ['controller' => 'Tasks', 'action' => 'view', $task->id]) ?></td>
                             <!-- <td><?= h($task->prio) ?></td> -->
-                            <td><?= h($task->start_est) ?></td>
+                            <!-- <td><?= h($task->start_est) ?></td> -->
                             <!-- <td><?= h($task->deadline) ?></td> -->
                             <!-- <td><?= h($task->duration_est) ?></td> -->
                             <!-- <td><?= h($task->link) ?></td> -->
                             <!-- <td><?= h($task->service_id) ?></td> -->
-                            <td><?= h($task->created) ?></td>
+                            <!-- <td><?= h($task->created) ?></td> -->
                             <!-- <td><?= h($task->notes) ?></td> -->
                             <!-- <td><?= h($task->done_at) ?></td> -->
-                            <td>
-                                <?php
-                                print_r($task->duration());
-                                ?></td>
+                            <td><?= $task->duration() ?></td>
                             <td class="actions">
                                 <?= $this->Html->link(__('View'), ['controller' => 'Tasks', 'action' => 'view', $task->id]) ?>
                                 <?= $this->Html->link(__('Edit'), ['controller' => 'Tasks', 'action' => 'edit', $task->id]) ?>

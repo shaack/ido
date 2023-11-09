@@ -16,13 +16,13 @@ $this->assign('title', $task->name ? $task->name : $task->service->name);
 <div class="row">
     <div class="column-responsive column-80">
         <div class="tasks view content">
-            <h3><?= h($task->name) ?></h3>
-            <div class="row">
-                <div class="col-md-8">
+            <h3>Task: <?= h($task->name) ?: "[Task]" ?></h3>
+
+            <!--
                     <table>
                         <tr>
                             <th><?= __('Name') ?></th>
-                            <td><?= h($task->name) ?></td>
+                            <td><?= h($task->name) ?: "[Task]" ?></td>
                         </tr>
                         <tr>
                             <th><?= __('Service') ?></th>
@@ -49,22 +49,21 @@ $this->assign('title', $task->name ? $task->name : $task->service->name);
                             <td><?= $task->done ? __('Yes') : __('No'); ?></td>
                         </tr>
                     </table>
-                </div>
-                <div class="col">
-                    <div class="text">
-                        <strong><?= __('Notes') ?></strong>
-                        <?php if ($task->notes) { ?>
-                            <blockquote>
-                                <?php
-                                $text = h($task->notes);
-                                $text = preg_replace('/(?:^|\s)#(\w+)/', ' <span class="text-info">#$1</span>', $text);
-                                ?>
-                                <?= $parsedown->parse($text); ?>
-                            </blockquote>
-                        <?php } ?>
-                    </div>
-                </div>
+                    -->
+
+            <div class="text">
+                <strong><?= __('Notes') ?></strong>
+                <?php if ($task->notes) { ?>
+                    <blockquote>
+                        <?php
+                        $text = h($task->notes);
+                        $text = preg_replace('/(?:^|\s)#(\w+)/', ' <span class="text-info">#$1</span>', $text);
+                        ?>
+                        <?= $parsedown->parse($text); ?>
+                    </blockquote>
+                <?php } ?>
             </div>
+
             <div class="related">
                 <h4><?= __('Related Time Trackings') ?></h4>
                 <div class="actions">
@@ -86,7 +85,7 @@ $this->assign('title', $task->name ? $task->name : $task->service->name);
                                     <td><?= h($timeTrackings->created) ?></td>
                                     <td><?= h($timeTrackings->duration) ?></td>
                                     <td class="actions">
-                                        <?= $this->Html->link(__('View'), ['controller' => 'TimeTrackings', 'action' => 'view', $timeTrackings->id]) ?>
+                                        <!-- <?= $this->Html->link(__('View'), ['controller' => 'TimeTrackings', 'action' => 'view', $timeTrackings->id]) ?> -->
                                         <?= $this->Html->link(__('Edit'), ['controller' => 'TimeTrackings', 'action' => 'edit', $timeTrackings->id]) ?>
                                         <?= $this->Form->postLink(__('Delete'), ['controller' => 'TimeTrackings', 'action' => 'delete', $timeTrackings->id], ['confirm' => __('Are you sure you want to delete # {0}?', $timeTrackings->id)]) ?>
                                     </td>
