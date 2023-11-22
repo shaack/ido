@@ -39,6 +39,7 @@ $controller = $this->request->getParam('controller')
             }
         }
     </script>
+
     <script src="/node_modules/bootstrap-auto-dark-mode/src/bootstrap-auto-dark-mode.js"></script>
     <script src="/node_modules/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
     <script src="/node_modules/bootstrap-show-toast/src/bootstrap-show-toast.js"></script>
@@ -143,6 +144,7 @@ $controller = $this->request->getParam('controller')
     let editors = document.querySelectorAll("textarea.markdown")
     for (const editor of editors) {
         editor.classList.add("font-monospace")
+        editor.style.tabSize = 4
         new MdEditor(editor)
     }
 </script>
