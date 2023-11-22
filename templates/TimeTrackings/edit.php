@@ -76,7 +76,7 @@ function doneClass($doneTime)
     </fieldset>
     <fieldset>
         <?php
-        echo $this->Form->control('task.notes', ['label' => 'Task Notes', 'rows' => 15, 'class' => 'font-monospace']);
+        echo $this->Form->control('task.notes', ['label' => 'Task Notes', 'rows' => 15, 'class' => 'markdown']);
         ?>
     </fieldset>
     <div class="mb-3">

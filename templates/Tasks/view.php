@@ -17,40 +17,38 @@ $this->assign('title', $task->name ? $task->name : $task->service->name);
     <div class="column-responsive column-80">
         <div class="tasks view content">
             <h3>Task: <?= h($task->name) ?: "[Task]" ?></h3>
-
             <!--
-                    <table>
-                        <tr>
-                            <th><?= __('Name') ?></th>
-                            <td><?= h($task->name) ?: "[Task]" ?></td>
-                        </tr>
-                        <tr>
-                            <th><?= __('Service') ?></th>
-                            <td><?= $task->has('service') ? $this->Html->link($task->service->name, ['controller' => 'Services', 'action' => 'view', $task->service->id]) : '' ?></td>
-                        </tr>
-                        <tr>
-                            <th><?= __('Prio') ?></th>
-                            <td><?= $task->prio === null ? '' : $this->Number->format($task->prio) ?></td>
-                        </tr>
-                        <tr>
-                            <th><?= __('Start Est') ?></th>
-                            <td><?= h($task->start_est) ?></td>
-                        </tr>
-                        <tr>
-                            <th><?= __('Deadline') ?></th>
-                            <td><?= h($task->deadline) ?></td>
-                        </tr>
-                        <tr>
-                            <th><?= __('Marked') ?></th>
-                            <td><?= $task->marked ? __('Yes') : __('No'); ?></td>
-                        </tr>
-                        <tr>
-                            <th><?= __('Done') ?></th>
-                            <td><?= $task->done ? __('Yes') : __('No'); ?></td>
-                        </tr>
-                    </table>
-                    -->
-
+            <table>
+                <tr>
+                    <th><?= __('Name') ?></th>
+                    <td><?= h($task->name) ?: "[Task]" ?></td>
+                </tr>
+                <tr>
+                    <th><?= __('Service') ?></th>
+                    <td><?= $task->has('service') ? $this->Html->link($task->service->name, ['controller' => 'Services', 'action' => 'view', $task->service->id]) : '' ?></td>
+                </tr>
+                <tr>
+                    <th><?= __('Prio') ?></th>
+                    <td><?= $task->prio === null ? '' : $this->Number->format($task->prio) ?></td>
+                </tr>
+                <tr>
+                    <th><?= __('Start Est') ?></th>
+                    <td><?= h($task->start_est) ?></td>
+                </tr>
+                <tr>
+                    <th><?= __('Deadline') ?></th>
+                    <td><?= h($task->deadline) ?></td>
+                </tr>
+                <tr>
+                    <th><?= __('Marked') ?></th>
+                    <td><?= $task->marked ? __('Yes') : __('No'); ?></td>
+                </tr>
+                <tr>
+                    <th><?= __('Done') ?></th>
+                    <td><?= $task->done ? __('Yes') : __('No'); ?></td>
+                </tr>
+            </table>
+            -->
             <div class="text">
                 <strong><?= __('Notes') ?></strong>
                 <?php if ($task->notes) { ?>

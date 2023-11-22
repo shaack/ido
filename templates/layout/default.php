@@ -28,22 +28,20 @@ $controller = $this->request->getParam('controller')
     <link href="/assets/fontawesome-subset/css/fontawesome.min.css" rel="stylesheet">
     <link href="/assets/fontawesome-subset/css/solid.min.css" rel="stylesheet">
     <link href="/assets/fontawesome-subset/css/regular.min.css" rel="stylesheet">
-    <link href="/node_modules/simplemde/dist/simplemde.min.css" rel="stylesheet">
-    <link href="/assets/styles/simplemde-theme-dark.css" rel="stylesheet">
 
     <link href="/assets/styles/screen.css" rel="stylesheet">
 
     <script type="importmap">
         {
             "imports": {
-                "cm-web-modules/": "/node_modules/cm-web-modules/"
+                "cm-web-modules/": "/node_modules/cm-web-modules/",
+                "cm-md-editor/": "/node_modules/cm-md-editor/"
             }
         }
     </script>
     <script src="/node_modules/bootstrap-auto-dark-mode/src/bootstrap-auto-dark-mode.js"></script>
     <script src="/node_modules/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
     <script src="/node_modules/bootstrap-show-toast/src/bootstrap-show-toast.js"></script>
-    <script src="/node_modules/simplemde/dist/simplemde.min.js"></script>
 
     <?= $this->fetch('meta') ?>
     <?= $this->fetch('css') ?>
@@ -139,10 +137,13 @@ $controller = $this->request->getParam('controller')
 </main>
 <footer>
 </footer>
-<script>
+<script type="module">
+    import {MdEditor} from "cm-md-editor/src/MdEditor.js";
+
     let editors = document.querySelectorAll("textarea.markdown")
     for (const editor of editors) {
-        editor.simpleMDE = new SimpleMDE({element: editor, promptURLs: true, spellChecker: false})
+        editor.classList.add("font-monospace")
+        new MdEditor(editor)
     }
 </script>
 </body>
