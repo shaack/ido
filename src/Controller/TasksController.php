@@ -96,7 +96,7 @@ class TasksController extends AppController
         $services = $this->Tasks->Services->find('list', ['limit' => 1000, 'order' => ['id' => 'DESC']])->all();
         $service = $this->Tasks->Services->get($this->request->getQuery("service_id"), ["contain" => ["Projects", "Projects.Customers"]]);
         // $task->prio = 1;
-        $task->marked = 1;
+        // $task->marked = 1;
         $this->set(compact('task', 'service', 'services'));
     }
 

@@ -30,7 +30,7 @@ class ProjectsController extends AppController
             ['Projects.project_status_id' => 30],
             ['Projects.project_status_id' => 35]
         ]]];
-        if($current) {
+        if ($current) {
             $this->paginate = [
                 'contain' => ['Customers', 'ParentProjects', 'ProjectStatuses', 'Services', 'Services.Tasks', 'Services.Tasks.TimeTrackings'],
                 'order' => ['invoice_number' => 'asc', 'project_status_id' => 'asc', 'id' => 'asc']
@@ -62,7 +62,8 @@ class ProjectsController extends AppController
         $this->set(compact('project'));
     }
 
-    public function offer($id) {
+    public function offer($id)
+    {
         $project = $this->Projects->get($id, [
             'contain' => ['Customers', 'ParentProjects', 'ProjectStatuses', 'ChildProjects',
                 'Services' => ['sort' => ['sort desc', 'Services.id asc']], 'Services.Projects.Customers', 'Services.Tasks', 'Services.Tasks.TimeTrackings'],
@@ -71,7 +72,8 @@ class ProjectsController extends AppController
         $this->set(compact('project'));
     }
 
-    public function invoice($id) {
+    public function invoice($id)
+    {
         $project = $this->Projects->get($id, [
             'contain' => ['Customers', 'ParentProjects', 'ProjectStatuses', 'ChildProjects',
                 'Services' => ['sort' => ['sort desc', 'Services.id asc']], 'Services.Projects.Customers', 'Services.Tasks', 'Services.Tasks.TimeTrackings'],
@@ -86,14 +88,14 @@ class ProjectsController extends AppController
             }
         }
         $invoiceStored = true;
-        if($project && !$project->invoice_number) {
+        if ($project && !$project->invoice_number) {
             $latestInvoiceNumber = $this->Projects->find('all', [
                 'fields' => ['amount' => 'MAX(Projects.invoice_number)']
             ])->first()->amount;
             $project->invoice_number = $latestInvoiceNumber + 1;
             $project->invoice_date = new FrozenDate();
             $invoiceStored = false;
-            if(!$project->end) {
+            if (!$project->end) {
                 $project->end = new FrozenDate();
             }
         }
@@ -113,7 +115,6 @@ class ProjectsController extends AppController
             $project = $this->Projects->patchEntity($project, $this->request->getData());
             if ($this->Projects->save($project)) {
                 $this->Flash->success(__('The project has been saved.'));
-
                 return $this->redirect(['action' => 'index']);
             }
             $this->Flash->error(__('The project could not be saved. Please, try again.'));
@@ -121,6 +122,8 @@ class ProjectsController extends AppController
             $project->customer_id = $this->request->getQuery("customer_id");
         }
         $customers = $this->Projects->Customers->find('list', ['limit' => 1000])->all();
+        $project->hourly_rate = $project->customer->hourly_rate;
+        $project->project_status = $this->Projects->ProjectStatuses->get(15); // runs
         $parentProjects = $this->Projects->ParentProjects->find('list', ['limit' => 1000, 'order' => ['id' => 'DESC']])->all();
         $projectStatuses = $this->Projects->ProjectStatuses->find('list', ['limit' => 200])->all();
         $this->set(compact('project', 'customers', 'parentProjects', 'projectStatuses'));
@@ -140,7 +143,7 @@ class ProjectsController extends AppController
         ]);
         if ($this->request->is(['patch', 'post', 'put'])) {
             $project = $this->Projects->patchEntity($project, $this->request->getData());
-            if($this->request->getData()["paid_at"] && $project->project_status_id == 25) {
+            if ($this->request->getData()["paid_at"] && $project->project_status_id == 25) {
                 $project->project_status = $this->Projects->ProjectStatuses->get(40); // invoice paid
             }
             if ($this->Projects->save($project)) {
