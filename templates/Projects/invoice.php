@@ -114,6 +114,9 @@ if ($project->invoice_type == "permanent") {
         if(!$name) {
             $name = $service->project->name;
         }
+        if ($service->estimation_or_fixed_price) {
+            $name .= " (Festpreis)";
+        }
         ?>
         <tr>
             <td class="w-100"><?= h($name) ?></td>
