@@ -3,4 +3,6 @@ FROM time_trackings tt
          LEFT JOIN tasks ts ON ts.id = tt.task_id
          LEFT JOIN services sv ON ts.service_id = sv.id
         LEFT JOIN projects pr ON sv.project_id = pr.id
-WHERE pr.id = 365 ORDER by start
+WHERE pr.id = 374 ORDER by start
+
+# Dateiname "FUZ-Zeiterfassung 2023-12.xlsx"
