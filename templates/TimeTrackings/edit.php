@@ -4,6 +4,7 @@
  * @var \App\Model\Entity\TimeTracking $timeTracking
  * @var string[]|\Cake\Collection\CollectionInterface $tasks
  * @var double $doneToday
+ * @var double $doneTask
  */
 
 $this->assign('title', $this->Text->truncate($timeTracking->task->smartName, 20));
@@ -38,11 +39,12 @@ function doneClass($doneTime)
             </span>
         </div> */ ?>
     </div>
+    <!--
     <div class="col-auto"><?= $this->Form->postLink(
             __('Delete'),
             ['action' => 'delete', $timeTracking->id],
             ['confirm' => __('Are you sure you want to delete #{0}?', $timeTracking->id), 'class' => 'text-danger']
-        ) ?></div>
+        ) ?></div>-->
 </div>
 <div class="timeTrackings form content">
     <?= $this->Form->create($timeTracking, ["id" => "time-tracking-form"]) ?>
@@ -70,8 +72,11 @@ function doneClass($doneTime)
         </div>
         <div class="row">
             <div class="col"><?= $this->Form->control('duration') ?></div>
-            <div class="col-auto <?= doneClass($doneToday) ?>" style="margin-top: 1.9rem">Done
-                today: <?= $this->Number->format($doneToday, ["places" => 2]) ?></div>
+            <div class="col-auto" style="margin-top: 1.9rem">
+                <span class="<?= doneClass($doneToday) ?> me-2">
+                Day <?= $this->Number->format($doneToday, ["places" => 2]) ?></span>
+                Task <?= $this->Number->format($doneTask, ["places" => 2]) ?>
+            </div>
         </div>
     </fieldset>
     <fieldset>

@@ -5,4 +5,4 @@ FROM time_trackings tt
         LEFT JOIN projects pr ON sv.project_id = pr.id
 WHERE pr.id = 379 AND tt.duration > 0 ORDER by start
 
-# Dateiname "FUZ-Zeiterfassung 2023-12.xlsx"
+# Dateiname "FUZ Tracking 2023-12.xlsx"

@@ -93,7 +93,9 @@ class TimeTrackingsController extends AppController
         $tasks = $this->TimeTrackings->Tasks->find('list', ['limit' => 1000, 'order' => ['id' => 'DESC']])->all();
         $hideNavigation = true;
         $doneToday = $this->TimeTrackings->find()->where(["created >" => FrozenDate::now()])->sumOf('duration');
-        $this->set(compact('timeTracking', 'tasks', 'hideNavigation', 'doneToday'));
+        $doneTask = $this->TimeTrackings->find()->where(["task_id" => $timeTracking->task_id])->sumOf('duration');
+        $this->set(compact('timeTracking', 'tasks', 'hideNavigation',
+            'doneToday', 'doneTask'));
     }
 
     /**
