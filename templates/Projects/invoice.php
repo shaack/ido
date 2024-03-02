@@ -111,6 +111,9 @@ if ($project->invoice_type == "permanent") {
     <tbody>
     <?php foreach ($project->services as $service) :
         $name = $service->name;
+        if($project->fixed_price && !$service->estimation_or_fixed_price) {
+            continue;
+        }
         if(!$name) {
             $name = $service->project->name;
         }
