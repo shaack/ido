@@ -64,7 +64,7 @@ class Task extends Entity
         foreach ($timeTrackings as $timeTracking) {
             $sum += $timeTracking->duration;
         }
-        return round($sum * 4) / 4;
+        return $sum;
     }
 
     function _getSmartName() {

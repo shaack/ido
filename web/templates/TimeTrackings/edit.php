@@ -172,11 +172,13 @@ function doneClass($doneTime)
     document.getElementById("btn-pause").addEventListener("click", (event) => {
         event.preventDefault()
         window.stopwatch.stop()
+        window.resetNotRunningAlert()
     })
     document.getElementById("btn-reset").addEventListener("click", (event) => {
         event.preventDefault()
         additionalMinutes = 0
         window.stopwatch.reset()
+        window.resetNotRunningAlert()
     })
     document.getElementById("btn-minus").addEventListener("click", (event) => {
         event.preventDefault()
@@ -213,10 +215,15 @@ function doneClass($doneTime)
         form.submit()
     }
     updateTimerOutput()
-    // stopwatch.start()
-    /*
-    if (<?= $timeTracking->duration > 0 ? "false" : "true" ?>) {
-        stopwatch.start()
+    // if no timer is running for 5 minutes, show a notification
+    window.resetNotRunningAlert =  () => {
+        clearTimeout(window.notRunningInterval)
+        window.notRunningInterval = setTimeout(() => {
+            if (!stopwatch.running()) {
+                notifications.show("No timer running", "<?= h($timeTracking->task->name) ?>")
+            }
+        }, 1000 * 60 * 5)
     }
-    */
+    notifications.requestPermission()
+    window.resetNotRunningAlert()
 </script>

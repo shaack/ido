@@ -73,37 +73,18 @@ $this->assign('title', h($service->name));
                 <div class="table-responsive">
                     <table>
                         <tr>
-                            <!-- <th><?= __('Id') ?></th> -->
                             <th><?= __('Done') ?></th>
-                            <!--<th><?= __('Marked') ?></th> -->
                             <th><?= __('Name') ?></th>
-                            <!-- <th><?= __('Prio') ?></th> -->
-                            <!-- <th><?= __('Start Est') ?></th> -->
-                            <!-- <th><?= __('Deadline') ?></th> -->
-                            <!-- <th><?= __('Duration Est') ?></th> -->
-                            <!-- <th><?= __('Link') ?></th> -->
-                            <!-- <th><?= __('Service Id') ?></th> -->
-                            <!-- <th><?= __('Created') ?></th> -->
-                            <!-- <th><?= __('Notes') ?></th> -->
-                            <!-- <th><?= __('Done At') ?></th> -->
                             <th><?= __('Duration') ?></th>
                             <th class="actions"><?= __('Actions') ?></th>
                         </tr>
-                        <?php foreach ($service->tasks as $task) : ?>
+                        <?php $durationSum = 0 ?>
+                        <?php foreach ($service->tasks as $task) :
+                            $durationSum += $task->duration();
+                            ?>
                         <tr>
-                            <!-- <td><?= h($task->id) ?></td> -->
                             <td><?= h($task->done) ?></td>
-                            <!--<td><?= h($task->marked) ?></td> -->
                             <td><?= $this->Html->link($task->name ?: "[Task]", ['controller' => 'Tasks', 'action' => 'view', $task->id]) ?></td>
-                            <!-- <td><?= h($task->prio) ?></td> -->
-                            <!-- <td><?= h($task->start_est) ?></td> -->
-                            <!-- <td><?= h($task->deadline) ?></td> -->
-                            <!-- <td><?= h($task->duration_est) ?></td> -->
-                            <!-- <td><?= h($task->link) ?></td> -->
-                            <!-- <td><?= h($task->service_id) ?></td> -->
-                            <!-- <td><?= h($task->created) ?></td> -->
-                            <!-- <td><?= h($task->notes) ?></td> -->
-                            <!-- <td><?= h($task->done_at) ?></td> -->
                             <td><?= $task->duration() ?></td>
                             <td class="actions">
                                 <?= $this->Html->link(__('View'), ['controller' => 'Tasks', 'action' => 'view', $task->id]) ?>
@@ -112,6 +93,15 @@ $this->assign('title', h($service->name));
                             </td>
                         </tr>
                         <?php endforeach; ?>
+                        <tr>
+                            <td class="text-end border-top border-2">
+                            </td>
+                            <td class="text-end border-top border-2">Summe
+                            </td>
+                            <td class="border-top border-2"><b><?= $durationSum ?></b></td>
+                            <td class="text-end border-top border-2">
+                            </td>
+                        </tr>
                     </table>
                 </div>
                 <?php endif; ?>

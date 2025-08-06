@@ -1,0 +1,5 @@
+/share/tmp/*
+/share/certificate/*
+/log/*
+/data/*
+/*.zip

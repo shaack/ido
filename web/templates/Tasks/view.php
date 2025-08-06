@@ -65,7 +65,7 @@ $this->assign('title', $task->name ? $task->name : $task->service->name);
             <div class="related">
                 <h4><?= __('Related Time Trackings') ?></h4>
                 <div class="actions">
-                    <a target="_blank" href="/timeTrackings/add?task_id=<?= $task->id ?>">Start Tracking</a>
+                    <a target="_blank" href="/timeTrackings/add?task_id=<?= $task->id ?>">Start a new tracking</a>
                 </div>
                 <?php if (!empty($task->time_trackings)) : ?>
                     <div class="table-responsive">
@@ -83,17 +83,16 @@ $this->assign('title', $task->name ? $task->name : $task->service->name);
                                     <td><?= h($timeTrackings->created) ?></td>
                                     <td><?= h($timeTrackings->duration) ?></td>
                                     <td class="actions">
-                                        <!-- <?= $this->Html->link(__('View'), ['controller' => 'TimeTrackings', 'action' => 'view', $timeTrackings->id]) ?> -->
-                                        <?= $this->Html->link(__('Edit'), ['controller' => 'TimeTrackings', 'action' => 'edit', $timeTrackings->id]) ?>
+                                        <?= $this->Html->link(__('Continue tracking'), ['controller' => 'TimeTrackings', 'action' => 'edit', $timeTrackings->id]) ?>
                                         <?= $this->Form->postLink(__('Delete'), ['controller' => 'TimeTrackings', 'action' => 'delete', $timeTrackings->id], ['confirm' => __('Are you sure you want to delete # {0}?', $timeTrackings->id)]) ?>
                                     </td>
                                 </tr>
                             <?php endforeach; ?>
                             <tr>
-                                <td class="text-end border-top border-2"
+                                <td class="text-end border-top border-2">
                                 </td>
                                 <td class="border-top border-2"><b><?= $durationSum ?></b></td>
-                                <td class="text-end border-top border-2"
+                                <td class="text-end border-top border-2">
                                 </td>
                             </tr>
                         </table>
