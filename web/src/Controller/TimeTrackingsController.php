@@ -117,4 +117,59 @@ class TimeTrackingsController extends AppController
 
         return $this->redirect(['action' => 'index']);
     }
+
+    /**
+     * Export method for customer WAD
+     *
+     * @param string|null $customerShortcut Customer shortcut.
+     * @param string|null $month Month in format YYYY-MM.
+     * @return \Cake\Http\Response|null|void Renders view
+     */
+    public function export($customerShortcut = null, $month = null)
+    {
+        /*
+        if ($customerShortcut !== 'WAD') {
+            return $this->redirect(['action' => 'index']);
+        }
+        */
+
+        $query = $this->TimeTrackings->find()
+            ->contain(['Tasks', 'Tasks.Services', 'Tasks.Services.Projects', 'Tasks.Services.Projects.Customers'])
+            ->where(['Customers.shortcut' => $customerShortcut]);
+
+        $showPagination = true;
+        $totalDuration = null;
+
+        // If month is provided in YYYY-MM format
+        if ($month && preg_match('/^\d{4}-\d{2}$/', $month)) {
+            // Extract year and month
+            list($year, $monthNum) = explode('-', $month);
+
+            // Create start and end dates for the month
+            $startDate = new FrozenDate("$year-$monthNum-01");
+            $endDate = $startDate->modify('last day of this month');
+
+            // Add date range condition to query
+            $query->where([
+                'TimeTrackings.created >=' => $startDate,
+                'TimeTrackings.created <=' => $endDate->modify('+1 day')->subSecond(1)
+            ]);
+
+            // Calculate total duration
+            $totalDuration = $query->sumOf('duration');
+
+            // Don't use pagination for monthly view
+            $showPagination = false;
+            $timeTrackings = $query->order(['TimeTrackings.created' => 'desc'])->all();
+        } else {
+            // Use pagination for regular view
+            $this->paginate = [
+                'order' => ['TimeTrackings.created' => 'desc']
+            ];
+            $timeTrackings = $this->paginate($query);
+        }
+
+        $this->set(compact('timeTrackings', 'showPagination', 'totalDuration', 'month'));
+        $this->render('index');
+    }
 }

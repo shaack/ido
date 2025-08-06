@@ -5,17 +5,31 @@
  */
 ?>
 <div class="timeTrackings index content">
-    <h3><?= __('Time Trackings') ?></h3>
+    <h3>
+        <?= __('Time Trackings') ?>
+        <?php if (isset($month) && $month): ?>
+            - <?= h($month) ?>
+        <?php endif; ?>
+    </h3>
     <div class="table-responsive">
         <table>
             <thead>
                 <tr>
-                    <th><?= $this->Paginator->sort('created') ?></th>
-                    <th><?= $this->Paginator->sort('task_id') ?></th>
-                    <th><?= $this->Paginator->sort('customer_id') ?></th>
-                    <th><?= $this->Paginator->sort('service_id') ?></th>
-                    <th><?= $this->Paginator->sort('project_id') ?></th>
-                    <th class="text-end"><?= $this->Paginator->sort('duration') ?></th>
+                    <?php if (isset($showPagination) && $showPagination): ?>
+                        <th><?= $this->Paginator->sort('created') ?></th>
+                        <th><?= $this->Paginator->sort('task_id') ?></th>
+                        <th><?= $this->Paginator->sort('customer_id') ?></th>
+                        <th><?= $this->Paginator->sort('service_id') ?></th>
+                        <th><?= $this->Paginator->sort('project_id') ?></th>
+                        <th class="text-end"><?= $this->Paginator->sort('duration') ?></th>
+                    <?php else: ?>
+                        <th><?= __('Created') ?></th>
+                        <th><?= __('Task') ?></th>
+                        <th><?= __('Customer') ?></th>
+                        <th><?= __('Service') ?></th>
+                        <th><?= __('Project') ?></th>
+                        <th class="text-end"><?= __('Duration') ?></th>
+                    <?php endif; ?>
                 </tr>
             </thead>
             <tbody>
@@ -31,9 +45,18 @@
                     <td class="text-end"><?= $timeTracking->duration === null ? '' : $this->Number->format($timeTracking->duration) ?></td>
                 </tr>
                 <?php endforeach; ?>
+
+                <?php if (isset($totalDuration) && $totalDuration !== null): ?>
+                <tr>
+                    <td colspan="5" class="text-end"><strong><?= __('Total') ?></strong></td>
+                    <td class="text-end"><strong><?= $this->Number->format($totalDuration) ?></strong></td>
+                </tr>
+                <?php endif; ?>
             </tbody>
         </table>
     </div>
+
+    <?php if (isset($showPagination) && $showPagination): ?>
     <div class="paginator">
         <?php if ($this->Paginator->hasPage(2)) { ?>
             <ul class="pagination">
@@ -46,4 +69,5 @@
         <?php } ?>
         <p><?= $this->Paginator->counter(__('Page {{page}} of {{pages}}, showing {{current}} record(s) out of {{count}} total')) ?></p>
     </div>
+    <?php endif; ?>
 </div>
