@@ -46,6 +46,15 @@ class ServicesController extends AppController
         $this->set(compact('service'));
     }
 
+    public function timesheet($id = null)
+    {
+        $service = $this->Services->get($id, [
+            'contain' => ['Projects.Customers', 'Projects', 'Tasks' => ['sort' => ['done ASC', 'id DESC']], 'Tasks.TimeTrackings']
+        ]);
+        $this->viewBuilder()->setLayout('print');
+        $this->set(compact('service'));
+    }
+
     /**
      * Add method
      *

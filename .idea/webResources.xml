@@ -6,6 +6,7 @@
         <entryData>
           <resourceRoots>
             <path value="file://$PROJECT_DIR$/webroot" />
+            <path value="file://$PROJECT_DIR$/web/webroot" />
           </resourceRoots>
         </entryData>
       </entry>

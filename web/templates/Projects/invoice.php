@@ -16,7 +16,7 @@ $fileName = $project->invoice_date->i18nFormat('yyyy-MM-dd') .
 $this->assign('title', $fileName);
 ?>
 
-<div class="">
+<div>
     <address class="font-monospace mb-5 small">
         Stefan Haack<br/>
         Wittinger Str. 140L<br/>
