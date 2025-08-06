@@ -47,11 +47,6 @@ function doneClass($doneTime)
                 <th class="text-end"><?= $this->Paginator->sort('Track') ?></th>
                 <th><?= $this->Paginator->sort('') ?></th>
                 <th><?= $this->Paginator->sort('cst') ?></th>
-                <!--
-                <th><?= $this->Paginator->sort('start') ?></th>
-                <th><?= $this->Paginator->sort('deadline') ?></th>
-                -->
-                <th><?= $this->Paginator->sort('due') ?></th>
                 <th><?= $this->Paginator->sort('service_id') ?></th>
                 <th><?= $this->Paginator->sort('project_id') ?></th>
                 <!-- <th><?= $this->Paginator->sort('prio') ?></th> -->
@@ -84,12 +79,6 @@ function doneClass($doneTime)
                     <td><a class="no-line-through"
                            href="/tasks/marked/<?= $task->id ?>?marked=<?= $task->marked ? "0" : "1" ?>"><?= $task->marked ? '<i class="fa-solid fa-flag"></i>' : '<i class="fa-regular fa-flag"></i>' ?></a>
                     <td><?= $this->Html->link($customer->shortcut, ['controller' => 'Customers', 'action' => 'view', $customer->id], ['style' => 'color: ' . $customer->color]) ?></td>
-                    </td>
-                    <!--
-                        <td><?= h($task->start_est) ?></td>
-                        <td><?= h($task->deadline) ?></td>
-                        -->
-                    <td><?= h($task->deadline) ?></td>
                     <td><?= $this->Html->link($this->Text->truncate($task->service->smartName, 45), ['controller' => 'Services', 'action' => 'view', $task->service->id],
                             ['class' => $task->service->name ? '' : 'fst-italic']) ?></td>
                     <td><?= $this->Html->link($this->Text->truncate($task->service->project->name, 40), ['controller' => 'Projects', 'action' => 'view', $task->service->project->id]) ?></td>
