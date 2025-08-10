@@ -91,7 +91,7 @@ class TimeTrackingsController extends AppController
             }
         }
         $tasks = $this->TimeTrackings->Tasks->find('list', ['limit' => 1000, 'order' => ['id' => 'DESC']])->all();
-        $hideNavigation = true;
+        // $hideNavigation = true;
         $doneToday = $this->TimeTrackings->find()->where(["created >" => FrozenDate::now()])->sumOf('duration');
         $doneTask = $this->TimeTrackings->find()->where(["task_id" => $timeTracking->task_id])->sumOf('duration');
         $this->set(compact('timeTracking', 'tasks', 'hideNavigation',
@@ -127,12 +127,6 @@ class TimeTrackingsController extends AppController
      */
     public function export($customerShortcut = null, $month = null)
     {
-        /*
-        if ($customerShortcut !== 'WAD') {
-            return $this->redirect(['action' => 'index']);
-        }
-        */
-
         $query = $this->TimeTrackings->find()
             ->contain(['Tasks', 'Tasks.Services', 'Tasks.Services.Projects', 'Tasks.Services.Projects.Customers'])
             ->where(['Customers.shortcut' => $customerShortcut]);
@@ -169,7 +163,8 @@ class TimeTrackingsController extends AppController
             $timeTrackings = $this->paginate($query);
         }
 
-        $this->set(compact('timeTrackings', 'showPagination', 'totalDuration', 'month'));
-        $this->render('index');
+        $this->viewBuilder()->setLayout('print');
+        $this->set(compact('timeTrackings', 'showPagination', 'totalDuration', 'month', 'customerShortcut'));
+        $this->render('export');
     }
 }

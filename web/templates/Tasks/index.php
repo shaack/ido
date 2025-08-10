@@ -9,9 +9,9 @@ function doneClass($doneTime)
     $doneTodayClass = "text-muted opacity-50";
     if ($doneTime > 0) {
         $doneTodayClass = "text-muted";
-        if ($doneTime >=3 && $doneTime < 4) {
+        if ($doneTime >= 3 && $doneTime < 4) {
             $doneTodayClass = "text-success";
-        } else  if ($doneTime >= 4) {
+        } else if ($doneTime >= 4) {
             $doneTodayClass = "text-info";
         }
     }
@@ -29,7 +29,8 @@ function doneClass($doneTime)
         $done3 = $this->get('done3');
         ?>
         <div class="col-auto"><span class="text-muted">today's hrs:</span> <span
-                class="<?= doneClass($doneToday) ?>"><?= $this->Number->format($doneToday, ["places" => 2]) ?></span></div>
+                class="<?= doneClass($doneToday) ?>"><?= $this->Number->format($doneToday, ["places" => 2]) ?></span>
+        </div>
         <div class="col-auto text-muted">
             <span class="me-2 <?= doneClass($done1) ?>"><?= $this->Number->format($done1, ["places" => 2]) ?></span>
             <span class="me-2 <?= doneClass($done2) ?>"><?= $this->Number->format($done2, ["places" => 2]) ?></span>
@@ -55,7 +56,7 @@ function doneClass($doneTime)
             <tbody>
             <script>
                 function showTracking(taskId) {
-                    window.open("/timeTrackings/add?task_id=" + taskId, "_blank", "popup,width=640,height=800,left=500,top=200")
+                    window.open("/timeTrackings/add?task_id=" + taskId, "_self", "popup,width=640,height=800,left=500,top=200")
                 }
             </script>
             <?php foreach ($tasks as $task): ?>
@@ -71,10 +72,8 @@ function doneClass($doneTime)
                     <td class="text-end">
                         <!-- /timeTrackings/add?task_id=<?= $task->id ?> -->
                         <a class="text-nowrap hover-bg"
-                           target="_blank" <?php /*onclick="showTracking(<?= $task->id ?>)" */ ?>
                            href="/timeTrackings/add?task_id=<?= $task->id ?>"><?= $task->duration() > 0 ? $this->Number->format($task->duration()) : ''; ?>
-                            <i
-                                class="fa-solid fa-stopwatch"></i>️</a>
+                            <i class="fa-solid fa-stopwatch"></i>️</a>
                     </td>
                     <td><a class="no-line-through"
                            href="/tasks/marked/<?= $task->id ?>?marked=<?= $task->marked ? "0" : "1" ?>"><?= $task->marked ? '<i class="fa-solid fa-flag"></i>' : '<i class="fa-regular fa-flag"></i>' ?></a>
@@ -84,20 +83,20 @@ function doneClass($doneTime)
                     <td><?= $this->Html->link($this->Text->truncate($task->service->project->name, 40), ['controller' => 'Projects', 'action' => 'view', $task->service->project->id]) ?></td>
                     <!--
                     <td class="text-end"><?php
-                        $icon = "";
-                        switch ($task->prio) {
-                            case 0:
-                                $icon = "<a href='tasks/prio/$task->id?prio=1'><i class=\"fa-solid fa-plus\"></i></a> <a href='tasks/prio/$task->id?prio=-1'><i class=\"fa-solid fa-minus\"></i></a>";
-                                break;
-                            case 1:
-                                $icon = "<a href='tasks/prio/$task->id?prio=-1' class='text-warning'><i class=\"fa-solid fa-plus\"></i></a>";
-                                break;
-                            case -1:
-                                $icon = "<a href='tasks/prio/$task->id?prio=1' class='text-muted'><i class=\"fa-solid fa-minus\"></i></a>";
-                                break;
-                        }
-                        echo $icon;
-                        ?></td>-->
+                    $icon = "";
+                    switch ($task->prio) {
+                        case 0:
+                            $icon = "<a href='tasks/prio/$task->id?prio=1'><i class=\"fa-solid fa-plus\"></i></a> <a href='tasks/prio/$task->id?prio=-1'><i class=\"fa-solid fa-minus\"></i></a>";
+                            break;
+                        case 1:
+                            $icon = "<a href='tasks/prio/$task->id?prio=-1' class='text-warning'><i class=\"fa-solid fa-plus\"></i></a>";
+                            break;
+                        case -1:
+                            $icon = "<a href='tasks/prio/$task->id?prio=1' class='text-muted'><i class=\"fa-solid fa-minus\"></i></a>";
+                            break;
+                    }
+                    echo $icon;
+                    ?></td>-->
                 </tr>
             <?php endforeach; ?>
             </tbody>

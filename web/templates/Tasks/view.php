@@ -65,7 +65,7 @@ $this->assign('title', $task->name ? $task->name : $task->service->name);
             <div class="related">
                 <h4><?= __('Related Time Trackings') ?></h4>
                 <div class="actions">
-                    <a target="_blank" href="/timeTrackings/add?task_id=<?= $task->id ?>">Start a new tracking</a>
+                    <a href="/timeTrackings/add?task_id=<?= $task->id ?>">Start a new tracking</a>
                 </div>
                 <?php if (!empty($task->time_trackings)) : ?>
                     <div class="table-responsive">
