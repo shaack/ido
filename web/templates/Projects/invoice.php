@@ -18,11 +18,10 @@ $this->assign('title', $fileName);
 
 <div>
     <address class="font-monospace mb-5 small">
-        Stefan Haack<br/>
-        Wittinger Str. 140L<br/>
-        29223 Celle<br/>
-        Tel. +49 (0)5141 403 95 11<br/>
-        shaack.com<br/>
+        <?= Configure::read('Company.name') ?><br/>
+        <?= Configure::read('Company.street') ?><br/>
+        <?= Configure::read('Company.zip') ?> <?= Configure::read('Company.city') ?><br/>
+        <?= Configure::read('Company.website') ?>
     </address>
     <div class="mb-1"><?= ($lang == "de" ? "An" : "To") ?>:</div>
     <address class="mb-5">
@@ -190,5 +189,5 @@ if ($project->invoice_type == "permanent") {
 </table>
 <p>
     <?= ($lang == "de" ? "Viele Grüße" : "Kind regards,") ?><br/>
-    Stefan Haack
+    <?= Configure::read('Company.name') ?>
 </p>

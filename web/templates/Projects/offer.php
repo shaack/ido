@@ -2,6 +2,7 @@
 /** @var $project \App\Model\Entity\Project */
 /** @var $invoiceStored boolean */
 
+use Cake\Core\Configure;
 use Cake\I18n\FrozenDate;
 
 $parsedown = new Parsedown();
@@ -21,9 +22,10 @@ $this->assign('title', $fileName);
 <div class="">
     <div class="mb-1"><?= ($lang == "de" ? "Von" : "From") ?>:</div>
     <address class="mb-3">
-        Stefan Haack<br/>
-        Wittinger Str. 140L<br/>
-        29223 Celle
+        <?= Configure::read('Company.name') ?><br/>
+        <?= Configure::read('Company.street') ?><br/>
+        <?= Configure::read('Company.zip') ?> <?= Configure::read('Company.city') ?><br/>
+        <?= Configure::read('Company.website') ?>
     </address>
     <div class="mb-1"><?= ($lang == "de" ? "An" : "To") ?>:</div>
     <address class="mb-2">
@@ -71,5 +73,5 @@ $this->assign('title', $fileName);
 </p>
 <p>
     Vielen Dank für Ihr Interesse an meinen Dienstleistungen<br/>
-    Stefan Haack, Celle <?= FrozenDate::now()->i18nFormat('dd.MM.yyyy') ?>
+    <?= Configure::read('Company.name') ?>, <?= Configure::read('Company.city') ?> <?= FrozenDate::now()->i18nFormat('dd.MM.yyyy') ?>
 </p>

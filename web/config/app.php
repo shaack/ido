@@ -19,6 +19,19 @@ return [
     'debug' => filter_var(env('DEBUG', false), FILTER_VALIDATE_BOOLEAN),
 
     /*
+     * Absender für Rechnungen und Angebote (templates/Projects/invoice.php
+     * und offer.php). Zentral hier, damit die Adresse nur an einer Stelle
+     * gepflegt wird und mit deployt wird.
+     */
+    'Company' => [
+        'name' => 'Stefan Haack',
+        'street' => 'Mariendorfer Damm 91',
+        'zip' => '12109',
+        'city' => 'Berlin',
+        'website' => 'shaack.com',
+    ],
+
+    /*
      * Configure basic information about the application.
      *
      * - namespace - The namespace to find app classes under.
