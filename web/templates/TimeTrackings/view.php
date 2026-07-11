@@ -28,7 +28,7 @@
                 </tr>
                 <tr>
                     <th><?= __('Duration') ?></th>
-                    <td><?= $timeTracking->duration === null ? '' : $this->Number->format($timeTracking->duration) ?></td>
+                    <td><?= $this->Effort->hours($timeTracking->duration) ?></td>
                 </tr>
                 <tr>
                     <th><?= __('Created') ?></th>

@@ -3,6 +3,7 @@ declare(strict_types=1);
 
 namespace App\Controller;
 
+use Cake\Http\Exception\NotFoundException;
 use Cake\I18n\Date;
 use Cake\I18n\DateTime;
 
@@ -119,54 +120,39 @@ class TimeTrackingsController extends AppController
     }
 
     /**
-     * Export method for customer WAD
+     * Stundennachweis für ein Projekt, als Beleg zur Rechnung.
      *
-     * @param string|null $customerShortcut Customer shortcut.
-     * @param string|null $month Month in format YYYY-MM.
+     * Früher lief der Export über Kundenkürzel und Monat. Das warf zwei
+     * gleichzeitig laufende Projekte desselben Kunden in einen Topf. Der
+     * Zuschnitt aufs Projekt trennt sie und braucht keine Datumsgrenzen mehr.
+     *
+     * @param string|null $projectId Project id.
      * @return \Cake\Http\Response|null|void Renders view
      */
-    public function export($customerShortcut = null, $month = null)
+    public function export($projectId = null)
     {
-        $query = $this->TimeTrackings->find()
-            ->contain(['Tasks', 'Tasks.Services', 'Tasks.Services.Projects', 'Tasks.Services.Projects.Customers'])
-            ->where(['Customers.shortcut' => $customerShortcut]);
-
-        $showPagination = false;
-        $totalDuration = null;
-
-        // Extract year and month
-        list($year, $monthNum) = explode('-', $month);
-
-        // Halboffenes Intervall: ab dem Monatsersten bis zum Ersten des
-        // Folgemonats, dieser ausschliesslich. Unter CakePHP 4 stand hier
-        // "letzter Tag + 2 Tage - 1 Sekunde". Das war ein Workaround, weil
-        // FrozenDate nach jeder Rechnung die Uhrzeit wieder auf Mitternacht
-        // zurücksetzte, und ergab effektiv dieselbe Grenze.
-        $startDate = new Date("$year-$monthNum-01");
-        $endDate = $startDate->addMonths(1);
-
-        // Add date range condition to query
-        $query->where([
-            'TimeTrackings.created >=' => $startDate,
-            'TimeTrackings.created <' => $endDate
-        ]);
-/*
-        print_r($query->sql());
-        $params = $query->getValueBinder()->bindings();
-        foreach ($params as $param) {
-            echo $param['value'] . "\n";
+        // Die Route lief früher über Kundenkürzel und Monat. Ein altes
+        // Lesezeichen wie /export/FUZ/2026-02 soll einen sauberen 404 liefern
+        // statt am Typcast der Id zu zerschellen.
+        if (!is_numeric($projectId)) {
+            throw new NotFoundException(__('Project not found.'));
         }
-*/
 
-        // Calculate total duration
-        $totalDuration = $query->all()->sumOf('duration');
+        $project = $this->TimeTrackings->Tasks->Services->Projects->get($projectId, [
+            'contain' => ['Customers']
+        ]);
 
-        // Don't use pagination for monthly view
+        $timeTrackings = $this->TimeTrackings->find()
+            ->contain(['Tasks', 'Tasks.Services', 'Tasks.Services.Projects', 'Tasks.Services.Projects.Customers'])
+            ->where(['Projects.id' => $project->id])
+            ->orderBy(['TimeTrackings.created' => 'asc'])
+            ->all();
+
+        $totalDuration = $timeTrackings->sumOf('duration');
         $showPagination = false;
-        $timeTrackings = $query->orderBy(['TimeTrackings.created' => 'asc'])->all();
 
         $this->viewBuilder()->setLayout('print');
-        $this->set(compact('timeTrackings', 'showPagination', 'totalDuration', 'month', 'customerShortcut'));
+        $this->set(compact('timeTrackings', 'showPagination', 'totalDuration', 'project'));
         $this->render('export');
     }
 }

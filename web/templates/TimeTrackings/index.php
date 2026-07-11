@@ -42,14 +42,14 @@
                     <td><?php if ($customer): ?><?= $this->Html->link($customer->shortcut, ['controller' => 'Customers', 'action' => 'view', $customer->id], ['style' => 'color: ' . $customer->color]) ?><?php endif ?></td>
                     <td><?= $this->Html->link($this->Text->truncate($timeTracking->task->service->name, 32), ['controller' => 'Services', 'action' => 'view', $timeTracking->task->service->id]) ?></td>
                     <td><?= $this->Html->link($this->Text->truncate($timeTracking->task->service->project->name, 32), ['controller' => 'Projects', 'action' => 'view', $timeTracking->task->service->project->id]) ?></td>
-                    <td class="text-end"><?= $timeTracking->duration === null ? '' : $this->Number->format($timeTracking->duration) ?></td>
+                    <td class="text-end"><?= $this->Effort->hours($timeTracking->duration) ?></td>
                 </tr>
                 <?php endforeach; ?>
 
                 <?php if (isset($totalDuration) && $totalDuration !== null): ?>
                 <tr>
                     <td colspan="5" class="text-end"><strong><?= __('Total') ?></strong></td>
-                    <td class="text-end"><strong><?= $this->Number->format($totalDuration) ?></strong></td>
+                    <td class="text-end"><strong><?= $this->Effort->hours($totalDuration) ?></strong></td>
                 </tr>
                 <?php endif; ?>
             </tbody>

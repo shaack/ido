@@ -2,17 +2,19 @@
 /**
  * @var \App\View\AppView $this
  * @var iterable<\App\Model\Entity\TimeTracking> $timeTrackings
+ * @var \App\Model\Entity\Project $project
  */
-$fileName = "Time Trackings " . $customerShortcut ." " . $month;
+$shortcut = $project->customer ? $project->customer->shortcut : '';
+$fileName = trim("Time Trackings " . $shortcut . " " . $project->name);
 $this->assign('title', $fileName);
 ?>
 <div class="timeTrackings index content">
     <h3 class="mt-5">
         <?= __('Time Trackings') ?>
-        <?= $customerShortcut ?>
-        <?php if (isset($month) && $month): ?>
-            - <?= h($month) ?>
+        <?php if ($shortcut): ?>
+            <?= h($shortcut) ?> -
         <?php endif; ?>
+        <?= h($project->name) ?>
     </h3>
     <p>Stefan Haack</p>
     <div class="table-responsive">
@@ -38,14 +40,14 @@ $this->assign('title', $fileName);
                     <td class="<?= $timeTracking->task->name ? "" : "fst-italic" ?>"><?= $timeTracking->hasValue('task') ? $this->Html->link($timeTracking->task->name ?: 'Diverses', ['controller' => 'Tasks', 'action' => 'view', $timeTracking->task->id]) : '' ?></td>
                     <td><?= $this->Html->link($timeTracking->task->service->name, ['controller' => 'Services', 'action' => 'view', $timeTracking->task->service->id]) ?></td>
                     <td><?= $this->Html->link($timeTracking->task->service->project->name, ['controller' => 'Projects', 'action' => 'view', $timeTracking->task->service->project->id]) ?></td>
-                    <td class="text-end"><?= $timeTracking->duration === null ? '' : $this->Number->format($timeTracking->duration) ?></td>
+                    <td class="text-end"><?= $this->Effort->hours($timeTracking->duration) ?></td>
                 </tr>
                 <?php endforeach; ?>
 
                 <?php if (isset($totalDuration) && $totalDuration !== null): ?>
                 <tr>
                     <td colspan="4" class="text-end"><strong><?= __('Total') ?></strong></td>
-                    <td class="text-end"><strong><?= $this->Number->format($totalDuration) ?></strong></td>
+                    <td class="text-end"><strong><?= $this->Effort->hours($totalDuration) ?></strong></td>
                 </tr>
                 <?php endif; ?>
             </tbody>
