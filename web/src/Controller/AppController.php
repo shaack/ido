@@ -17,6 +17,8 @@ declare(strict_types=1);
 namespace App\Controller;
 
 use Cake\Controller\Controller;
+use Cake\Event\EventInterface;
+use Cake\Http\Exception\NotFoundException;
 
 /**
  * Application Controller
@@ -24,10 +26,22 @@ use Cake\Controller\Controller;
  * Add your application-wide methods in the class below, your controllers
  * will inherit them.
  *
- * @link https://book.cakephp.org/4/en/controllers.html#the-app-controller
+ * @link https://book.cakephp.org/5/en/controllers.html#the-app-controller
  */
 class AppController extends Controller
 {
+    /**
+     * Actions, die ohne Id in der URL sinnlos sind. Sie liefen alle in
+     * $table->get(null) und damit in eine InvalidPrimaryKeyException, also einen
+     * 500er. Richtig ist ein 404.
+     *
+     * @var array<string>
+     */
+    private const REQUIRES_ID = [
+        'view', 'edit', 'delete', 'track', 'timesheet', 'invoice', 'offer',
+        'export', 'done', 'marked',
+    ];
+
     /**
      * Initialization hook method.
      *
@@ -48,5 +62,23 @@ class AppController extends Controller
          * see https://book.cakephp.org/5/en/controllers/components/form-protection.html
          */
         //$this->loadComponent('FormProtection');
+    }
+
+    /**
+     * Kein Rückgabetyp: ErrorController::beforeFilter() hat auch keinen, und eine
+     * abweichende Signatur ist in PHP ein Fatal Error. Der schlug beim Rendern
+     * jeder Fehlerseite zu und machte aus jedem 404 einen 500.
+     *
+     * @param \Cake\Event\EventInterface $event The beforeFilter event.
+     * @return \Cake\Http\Response|null|void
+     */
+    public function beforeFilter(EventInterface $event)
+    {
+        parent::beforeFilter($event);
+
+        $action = $this->request->getParam('action');
+        if (in_array($action, self::REQUIRES_ID, true) && !$this->request->getParam('pass')) {
+            throw new NotFoundException();
+        }
     }
 }

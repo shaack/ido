@@ -58,18 +58,31 @@ class TimeTrackingsController extends AppController
      */
     public function add()
     {
-        $timeTracking = $this->TimeTrackings->newEmptyEntity();
-        $timeTracking->task_id = $this->request->getQuery("task_id"); // shaack patch
-        $timeTracking->duration = 0;
-        if ($this->TimeTrackings->save($timeTracking)) {
-            $this->Flash->success(__('The time tracking has been saved.'));
-        } else {
-            $this->Flash->error(__('Error saving time tracking.'));
+        // Eine Erfassung ohne Task gibt es nicht. Die Validierung verhindert das
+        // zwar, aber der Redirect lief danach trotzdem auf track() mit leerer Id
+        // und damit in einen 500er.
+        $taskId = $this->request->getQuery("task_id");
+        if (!$taskId) {
+            $this->Flash->error(__('A time tracking needs a task.'));
+
+            return $this->redirect(['controller' => 'Tasks', 'action' => 'index']);
         }
+
+        $timeTracking = $this->TimeTrackings->newEmptyEntity();
+        $timeTracking->task_id = (int)$taskId;
+        $timeTracking->duration = 0;
+        if (!$this->TimeTrackings->save($timeTracking)) {
+            $this->Flash->error(__('Error saving time tracking.'));
+
+            return $this->redirect(['controller' => 'Tasks', 'action' => 'index']);
+        }
+        $this->Flash->success(__('The time tracking has been saved.'));
+
         $this->TimeTrackings->deleteAll([ // delete old trackings
             "duration" => 0,
             "created <" => Date::now()->subDays(3)
         ]);
+
         return $this->redirect(['action' => 'track', $timeTracking->id]);
     }
 

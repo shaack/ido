@@ -30,7 +30,7 @@
                     echo $this->Form->control('done');
                     echo $this->Form->control('marked');
                     echo $this->Form->control('name');
-                    echo $this->Form->control('service_id', ['options' => $services, 'empty' => true]);
+                    echo $this->Form->control('service_id', ['options' => $services]);
                 ?>
             </fieldset>
             <?= $this->Form->button(__('Submit')) ?>

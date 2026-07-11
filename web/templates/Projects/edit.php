@@ -32,7 +32,7 @@
                 <div class="row">
                     <div class="col-md-6"><?php
                         echo $this->Form->control('name');
-                        echo $this->Form->control('customer_id', ['options' => $customers, 'empty' => true]);
+                        echo $this->Form->control('customer_id', ['options' => $customers]);
                         echo $this->Form->control('start', ['empty' => true]);
                         echo $this->Form->control('end', ['empty' => true]);
                         echo $this->Form->control('hourly_rate');
