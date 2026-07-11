@@ -34,24 +34,8 @@ $this->assign('title', $fileName);
         <?php endif ?>
     </address>
 </div>
-<?php
-if ($project->invoice_type == "permanent") {
-    echo("<h1 class='mb-4'>Dauerrechnung im Sinne des § 14 UStG</h1>");
-} else {
-    echo "<h1 class='mb-1'>" . ($lang == "de" ? "Rechnung" : "Invoice") . "</h1>";
-}
-?>
-<?php if ($project->invoice_type == "permanent") { ?>
-    <p>
-        Dauerrechnung zum "Wartungsvertrag für Websites" vom 19.6.2023.</p>
-    <p>
-        Diese Rechnung gilt ab <?= $project->start->format("d.m.Y") ?> bis zum <?= $project->end->format("d.m.Y") ?>
-        und erlischt, wenn die vorliegende Rechnung durch eine neue
-        ersetzt oder das Vertragsverhältnis beendet wird.
-    </p>
-<?php } else { ?>
-    <h2 class="mb-4"><?= $project->name ?></h2>
-<?php } ?>
+<h1 class="mb-1"><?= ($lang == "de" ? "Rechnung" : "Invoice") ?></h1>
+<h2 class="mb-4"><?= $project->name ?></h2>
 <?= $this->Form->create($project) ?>
 <div class="row">
     <div class="col-7">
@@ -92,9 +76,7 @@ if ($project->invoice_type == "permanent") {
 
 <?= !$invoiceStored ? $this->Form->button(__('Submit')) : "" ?>
 <?= $this->Form->end() ?>
-<?php if ($project->invoice_type != "permanent") { ?>
 <p><?= ($lang == "de" ? "Vielen Dank für Ihren Auftrag, den wir wie folgt abrechnen." : "Thank you for your order, which we will invoice as follows.") ?></p>
-<?php } ?>
 <table class="mb-2">
     <thead>
     <tr>
@@ -163,12 +145,8 @@ if ($project->invoice_type == "permanent") {
 </table>
 <p>
     <?php if ($lang == "de"): ?>
-        <?php if ($project->invoice_type == "permanent") { ?>
-            Zahlungsbedingungen: Zahlung innerhalb von 14 Tagen ab Rechnungseingang ohne Abzüge.
-        <?php } else { ?>
-            Zahlbar sofort nach Rechnungserhalt ohne Abzug. Bitte überweisen Sie den Betrag unter Angabe der Rechnungsnummer auf
-            folgendes Konto.
-        <?php } ?>
+        Zahlbar sofort nach Rechnungserhalt ohne Abzug. Bitte überweisen Sie den Betrag unter Angabe der Rechnungsnummer auf
+        folgendes Konto.
     <?php else: ?>
         Payable immediately upon receipt of invoice without deduction. Please transfer the amount to the following account stating the invoice number.
     <?php endif ?>

@@ -106,15 +106,18 @@ $controller = $this->request->getParam('controller')
             } else if (@$project && $project->customer) {
                 $customer = $project->customer;
             }
-            if (@$customer) {
-                echo $this->Html->link($customer->shortcut, ['controller' => 'Customers', 'action' => 'view', $customer->id],
+            // Auf den Anlege-Formularen liegt eine leere Entity vor. Die ist
+            // truthy, hat aber weder Name noch Id, und CakePHP 5 lässt kein
+            // null mehr als Linktext zu. Deshalb wird auf die Id geprüft.
+            if (@$customer && $customer->id) {
+                echo $this->Html->link((string)$customer->shortcut, ['controller' => 'Customers', 'action' => 'view', $customer->id],
                     ["class" => "breadcrumb-item text-decoration-none"]);
             }
-            if (@$project) {
-                echo $this->Html->link($project->name, ['controller' => 'Projects', 'action' => 'view', $project->id],
+            if (@$project && $project->id) {
+                echo $this->Html->link((string)$project->name, ['controller' => 'Projects', 'action' => 'view', $project->id],
                     ["class" => "breadcrumb-item text-decoration-none"]);
             }
-            if (@$service) {
+            if (@$service && $service->id) {
                 echo $this->Html->link($service->name ?: "[Service]", ['controller' => 'Services', 'action' => 'view', $service->id],
                     ["class" => "breadcrumb-item text-decoration-none"]);
             }

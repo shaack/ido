@@ -34,13 +34,11 @@
                         echo $this->Form->control('name');
                         echo $this->Form->control('customer_id', ['options' => $customers, 'empty' => true]);
                         echo $this->Form->control('start', ['empty' => true]);
-                        echo $this->Form->control('end_est', ['empty' => true]);
                         echo $this->Form->control('end', ['empty' => true]);
                         echo $this->Form->control('fixed_price');
                         echo $this->Form->control('hourly_rate');
                         echo $this->Form->control('invoice_number');
                         echo $this->Form->control('invoice_date', ['empty' => true]);
-                        echo $this->Form->control('invoice_type');
                         echo $this->Form->control('paid_at', ['empty' => true]);
                         echo $this->Form->control('parent_id', ['options' => $parentProjects, 'empty' => true]);
                         echo $this->Form->control('project_status_id', ['options' => $projectStatuses, 'empty' => true]);

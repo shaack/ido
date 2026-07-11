@@ -12,7 +12,6 @@ use Cake\ORM\Entity;
  * @property string $name
  * @property int|null $customer_id
  * @property \Cake\I18n\Date|null $start
- * @property \Cake\I18n\Date|null $end_est
  * @property \Cake\I18n\Date|null $end
  * @property bool|null $fixed_price
  * @property float $hourly_rate
@@ -24,7 +23,6 @@ use Cake\ORM\Entity;
  * @property int|null $parent_id
  * @property int|null $project_status_id
  * @property \Cake\I18n\DateTime|null $created
- * @property string|null $invoice_type
  *
  * @property \App\Model\Entity\Customer $customer
  * @property \App\Model\Entity\Project $parent_project
@@ -47,7 +45,6 @@ class Project extends Entity
         'name' => true,
         'customer_id' => true,
         'start' => true,
-        'end_est' => true,
         'end' => true,
         'fixed_price' => true,
         'hourly_rate' => true,
@@ -55,7 +52,6 @@ class Project extends Entity
         'description' => true,
         'invoice_number' => true,
         'invoice_date' => true,
-        'invoice_type' => true,
         'paid_at' => true,
         'parent_id' => true,
         'project_status_id' => true,

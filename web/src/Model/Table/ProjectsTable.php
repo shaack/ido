@@ -92,10 +92,6 @@ class ProjectsTable extends Table
             ->date('start');
 
         $validator
-            ->date('end_est')
-            ->allowEmptyDate('end_est');
-
-        $validator
             ->date('end')
             ->allowEmptyDate('end');
 

@@ -75,7 +75,10 @@ class ServicesController extends AppController
             $service->project_id = $this->request->getQuery("project_id"); // shaack patch
         }
         $projects = $this->Services->Projects->find('list', ['limit' => 1000, 'order' => ['id' => 'DESC']])->all();
-        $project = $this->Services->Projects->get($this->request->getQuery("project_id"), ["contain" => ["Customers"]]);
+        // $project wird nur für die Breadcrumb im Layout gebraucht. Ohne
+        // project_id in der URL lief get(null) bisher in einen 500er.
+        $projectId = $this->request->getQuery("project_id");
+        $project = $projectId ? $this->Services->Projects->get($projectId, ["contain" => ["Customers"]]) : null;
         $this->set(compact('service', 'project', 'projects'));
     }
 

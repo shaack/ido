@@ -94,10 +94,6 @@ $this->assign('title', h($project->name));
                             <td><?= h($project->invoice_number) ?></td>
                         </tr>
                         <tr>
-                            <th><?= __('Invoice Type') ?></th>
-                            <td><?= h($project->invoice_type) ?></td>
-                        </tr>
-                        <tr>
                             <th><?= __('Parent Project') ?></th>
                             <td><?= $project->hasValue('parent_project') ? $this->Html->link($project->parent_project->name, ['controller' => 'Projects', 'action' => 'view', $project->parent_project->id]) : '' ?></td>
                         </tr>
@@ -118,10 +114,6 @@ $this->assign('title', h($project->name));
                         <tr>
                             <th><?= __('Start') ?></th>
                             <td><?= h($project->start) ?></td>
-                        </tr>
-                        <tr>
-                            <th><?= __('End Est') ?></th>
-                            <td><?= h($project->end_est) ?></td>
                         </tr>
                         <tr>
                             <th><?= __('End') ?></th>
@@ -173,7 +165,6 @@ $this->assign('title', h($project->name));
                                 <th><?= __('Name') ?></th>
                                 <th><?= __('Customer Id') ?></th>
                                 <th><?= __('Start') ?></th>
-                                <th><?= __('End Est') ?></th>
                                 <th><?= __('End') ?></th>
                                 <th><?= __('Fixed Price') ?></th>
                                 <th><?= __('Hourly Rate') ?></th>
@@ -193,7 +184,6 @@ $this->assign('title', h($project->name));
                                     <td><?= h($childProjects->name) ?></td>
                                     <td><?= h($childProjects->customer_id) ?></td>
                                     <td><?= h($childProjects->start) ?></td>
-                                    <td><?= h($childProjects->end_est) ?></td>
                                     <td><?= h($childProjects->end) ?></td>
                                     <td><?= h($childProjects->fixed_price) ?></td>
                                     <td><?= $childProjects->hourly_rate === null ? "" : $this->Number->format($childProjects->hourly_rate) ?></td>

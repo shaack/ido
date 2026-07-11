@@ -37,7 +37,6 @@
                             <th><?= __('Name') ?></th>
                             <th><?= __('Customer Id') ?></th>
                             <th><?= __('Start') ?></th>
-                            <th><?= __('End Est') ?></th>
                             <th><?= __('End') ?></th>
                             <th><?= __('Fixed Price') ?></th>
                             <th><?= __('Hourly Rate') ?></th>
@@ -57,7 +56,6 @@
                             <td><?= h($projects->name) ?></td>
                             <td><?= h($projects->customer_id) ?></td>
                             <td><?= h($projects->start) ?></td>
-                            <td><?= h($projects->end_est) ?></td>
                             <td><?= h($projects->end) ?></td>
                             <td><?= h($projects->fixed_price) ?></td>
                             <td><?= $projects->hourly_rate === null ? "" : $this->Number->format($projects->hourly_rate) ?></td>
