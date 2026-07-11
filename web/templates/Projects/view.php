@@ -94,10 +94,6 @@ $this->assign('title', h($project->name));
                             <td><?= h($project->invoice_number) ?></td>
                         </tr>
                         <tr>
-                            <th><?= __('Parent Project') ?></th>
-                            <td><?= $project->hasValue('parent_project') ? $this->Html->link($project->parent_project->name, ['controller' => 'Projects', 'action' => 'view', $project->parent_project->id]) : '' ?></td>
-                        </tr>
-                        <tr>
                             <th><?= __('Project Status') ?></th>
                             <td><?= $project->hasValue('project_status') ? $this->Html->link($project->project_status->name, ['controller' => 'ProjectStatuses', 'action' => 'view', $project->project_status->id]) : '' ?></td>
                         </tr>
@@ -155,57 +151,6 @@ $this->assign('title', h($project->name));
                     <?php } ?>
                 </div>
             </div>
-            <?php if (!empty($project->child_projects)) : ?>
-                <div class="related">
-                    <h4><?= __('Related Projects') ?></h4>
-                    <div class="table-responsive">
-                        <table>
-                            <tr>
-                                <th><?= __('Id') ?></th>
-                                <th><?= __('Name') ?></th>
-                                <th><?= __('Customer Id') ?></th>
-                                <th><?= __('Start') ?></th>
-                                <th><?= __('End') ?></th>
-                                <th><?= __('Fixed Price') ?></th>
-                                <th><?= __('Hourly Rate') ?></th>
-                                <th><?= __('Notes') ?></th>
-                                <th><?= __('Description') ?></th>
-                                <th><?= __('Invoice Number') ?></th>
-                                <th><?= __('Invoice Date') ?></th>
-                                <th><?= __('Paid At') ?></th>
-                                <th><?= __('Parent Id') ?></th>
-                                <th><?= __('Project Status Id') ?></th>
-                                <th><?= __('Created') ?></th>
-                                <th class="actions"><?= __('Actions') ?></th>
-                            </tr>
-                            <?php foreach ($project->child_projects as $childProjects) : ?>
-                                <tr>
-                                    <td><?= h($childProjects->id) ?></td>
-                                    <td><?= h($childProjects->name) ?></td>
-                                    <td><?= h($childProjects->customer_id) ?></td>
-                                    <td><?= h($childProjects->start) ?></td>
-                                    <td><?= h($childProjects->end) ?></td>
-                                    <td><?= h($childProjects->fixed_price) ?></td>
-                                    <td><?= $childProjects->hourly_rate === null ? "" : $this->Number->format($childProjects->hourly_rate) ?></td>
-                                    <td><?= h($childProjects->notes) ?></td>
-                                    <td><?= h($childProjects->description) ?></td>
-                                    <td><?= h($childProjects->invoice_number) ?></td>
-                                    <td><?= h($childProjects->invoice_date) ?></td>
-                                    <td><?= h($childProjects->paid_at) ?></td>
-                                    <td><?= h($childProjects->parent_id) ?></td>
-                                    <td><?= h($childProjects->project_status_id) ?></td>
-                                    <td><?= h($childProjects->created) ?></td>
-                                    <td class="actions">
-                                        <?= $this->Html->link(__('View'), ['controller' => 'Projects', 'action' => 'view', $childProjects->id]) ?>
-                                        <?= $this->Html->link(__('Edit'), ['controller' => 'Projects', 'action' => 'edit', $childProjects->id]) ?>
-                                        <?= $this->Form->postLink(__('Delete'), ['controller' => 'Projects', 'action' => 'delete', $childProjects->id], ['confirm' => __('Are you sure you want to delete # {0}?', $childProjects->id)]) ?>
-                                    </td>
-                                </tr>
-                            <?php endforeach; ?>
-                        </table>
-                    </div>
-                </div>
-            <?php endif; ?>
         </div>
     </div>
 </div>

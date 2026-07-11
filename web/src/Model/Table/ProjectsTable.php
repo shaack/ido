@@ -11,9 +11,7 @@ use Cake\Validation\Validator;
  * Projects Model
  *
  * @property \App\Model\Table\CustomersTable&\Cake\ORM\Association\BelongsTo $Customers
- * @property \App\Model\Table\ProjectsTable&\Cake\ORM\Association\BelongsTo $ParentProjects
  * @property \App\Model\Table\ProjectStatusesTable&\Cake\ORM\Association\BelongsTo $ProjectStatuses
- * @property \App\Model\Table\ProjectsTable&\Cake\ORM\Association\HasMany $ChildProjects
  * @property \App\Model\Table\ServicesTable&\Cake\ORM\Association\HasMany $Services
  *
  * @method \App\Model\Entity\Project newEmptyEntity()
@@ -54,16 +52,8 @@ class ProjectsTable extends Table
         $this->belongsTo('Customers', [
             'foreignKey' => 'customer_id',
         ]);
-        $this->belongsTo('ParentProjects', [
-            'className' => 'Projects',
-            'foreignKey' => 'parent_id',
-        ]);
         $this->belongsTo('ProjectStatuses', [
             'foreignKey' => 'project_status_id',
-        ]);
-        $this->hasMany('ChildProjects', [
-            'className' => 'Projects',
-            'foreignKey' => 'parent_id',
         ]);
         $this->hasMany('Services', [
             'foreignKey' => 'project_id',
@@ -126,10 +116,6 @@ class ProjectsTable extends Table
             ->allowEmptyDate('paid_at');
 
         $validator
-            ->integer('parent_id')
-            ->allowEmptyString('parent_id');
-
-        $validator
             ->integer('project_status_id');
             // ->allowEmptyString('project_status_id');
 
@@ -146,7 +132,6 @@ class ProjectsTable extends Table
     public function buildRules(RulesChecker $rules): RulesChecker
     {
         $rules->add($rules->existsIn('customer_id', 'Customers'), ['errorField' => 'customer_id']);
-        $rules->add($rules->existsIn('parent_id', 'ParentProjects'), ['errorField' => 'parent_id']);
         $rules->add($rules->existsIn('project_status_id', 'ProjectStatuses'), ['errorField' => 'project_status_id']);
 
         return $rules;

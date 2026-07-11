@@ -129,9 +129,11 @@ return [
          * Duration will be set to '+2 minutes' in bootstrap.php when debug = true
          * If you set 'className' => 'Null' core cache will be disabled.
          */
-        '_cake_core_' => [
+        // Hieß bis CakePHP 5.0 '_cake_core_'. Der alte Name löst seit 5.1 eine
+        // Deprecation aus. Er cacht die Übersetzungen, daher der neue Name.
+        '_cake_translations_' => [
             'className' => FileEngine::class,
-            'prefix' => 'myapp_cake_core_',
+            'prefix' => 'myapp_cake_translations_',
             'path' => CACHE . 'persistent' . DS,
             'serialize' => true,
             'duration' => '+1 years',

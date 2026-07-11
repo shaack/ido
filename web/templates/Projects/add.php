@@ -31,7 +31,6 @@
                     echo $this->Form->control('invoice_number');
                     echo $this->Form->control('invoice_date', ['empty' => true]);
                     echo $this->Form->control('paid_at', ['empty' => true]);
-                    echo $this->Form->control('parent_id', ['options' => $parentProjects, 'empty' => true]);
                     echo $this->Form->control('project_status_id', ['options' => $projectStatuses, 'empty' => true]);
                 ?>
             </fieldset>

@@ -45,7 +45,6 @@
                             <th><?= __('Invoice Number') ?></th>
                             <th><?= __('Invoice Date') ?></th>
                             <th><?= __('Paid At') ?></th>
-                            <th><?= __('Parent Id') ?></th>
                             <th><?= __('Project Status Id') ?></th>
                             <th><?= __('Created') ?></th>
                             <th class="actions"><?= __('Actions') ?></th>
@@ -64,7 +63,6 @@
                             <td><?= h($projects->invoice_number) ?></td>
                             <td><?= h($projects->invoice_date) ?></td>
                             <td><?= h($projects->paid_at) ?></td>
-                            <td><?= h($projects->parent_id) ?></td>
                             <td><?= h($projects->project_status_id) ?></td>
                             <td><?= h($projects->created) ?></td>
                             <td class="actions">

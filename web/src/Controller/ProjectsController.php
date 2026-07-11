@@ -22,7 +22,7 @@ class ProjectsController extends AppController
     {
         $current = $this->request->getQuery("current", false);
         $query = $this->Projects->find()->contain([
-            'Customers', 'ParentProjects', 'ProjectStatuses', 'Services', 'Services.Tasks', 'Services.Tasks.TimeTrackings'
+            'Customers', 'ProjectStatuses', 'Services', 'Services.Tasks', 'Services.Tasks.TimeTrackings'
         ]);
         if ($current) {
             $query->where(['Projects.project_status_id IN' => [5, 10, 15, 20, 25, 30, 35]]);
@@ -49,7 +49,7 @@ class ProjectsController extends AppController
     public function view($id = null)
     {
         $project = $this->Projects->get($id, [
-            'contain' => ['Customers', 'ParentProjects', 'ProjectStatuses', 'ChildProjects',
+            'contain' => ['Customers', 'ProjectStatuses',
                 'Services' => ['sort' => ['sort desc', 'Services.id asc']], 'Services.Projects.Customers', 'Services.Tasks', 'Services.Tasks.TimeTrackings'],
         ]);
         $this->set(compact('project'));
@@ -58,7 +58,7 @@ class ProjectsController extends AppController
     public function offer($id)
     {
         $project = $this->Projects->get($id, [
-            'contain' => ['Customers', 'ParentProjects', 'ProjectStatuses', 'ChildProjects',
+            'contain' => ['Customers', 'ProjectStatuses',
                 'Services' => ['sort' => ['sort desc', 'Services.id asc']], 'Services.Projects.Customers', 'Services.Tasks', 'Services.Tasks.TimeTrackings'],
         ]);
         $this->viewBuilder()->setLayout('print');
@@ -68,7 +68,7 @@ class ProjectsController extends AppController
     public function invoice($id)
     {
         $project = $this->Projects->get($id, [
-            'contain' => ['Customers', 'ParentProjects', 'ProjectStatuses', 'ChildProjects',
+            'contain' => ['Customers', 'ProjectStatuses',
                 'Services' => ['sort' => ['sort desc', 'Services.id asc']], 'Services.Projects.Customers', 'Services.Tasks', 'Services.Tasks.TimeTrackings'],
         ]);
         if ($this->request->is(['post', 'patch', 'put'])) {
@@ -117,9 +117,8 @@ class ProjectsController extends AppController
         $customers = $this->Projects->Customers->find('list', ['limit' => 1000])->all();
         $project->hourly_rate = $project->customer->hourly_rate;
         $project->project_status = $this->Projects->ProjectStatuses->get(15); // runs
-        $parentProjects = $this->Projects->ParentProjects->find('list', ['limit' => 1000, 'order' => ['id' => 'DESC']])->all();
         $projectStatuses = $this->Projects->ProjectStatuses->find('list', ['limit' => 200])->all();
-        $this->set(compact('project', 'customers', 'parentProjects', 'projectStatuses'));
+        $this->set(compact('project', 'customers', 'projectStatuses'));
     }
 
     /**
@@ -146,9 +145,8 @@ class ProjectsController extends AppController
             }
         }
         $customers = $this->Projects->Customers->find('list', ['limit' => 1000])->where(['Customers.current =' => true]);
-        $parentProjects = $this->Projects->ParentProjects->find('list', ['limit' => 1000, 'order' => ['id' => 'DESC']])->all();
         $projectStatuses = $this->Projects->ProjectStatuses->find('list', ['limit' => 200])->all();
-        $this->set(compact('project', 'customers', 'parentProjects', 'projectStatuses'));
+        $this->set(compact('project', 'customers', 'projectStatuses'));
     }
 
     /**

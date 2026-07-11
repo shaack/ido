@@ -25,9 +25,7 @@ use Cake\ORM\Entity;
  * @property \Cake\I18n\DateTime|null $created
  *
  * @property \App\Model\Entity\Customer $customer
- * @property \App\Model\Entity\Project $parent_project
  * @property \App\Model\Entity\ProjectStatus $project_status
- * @property \App\Model\Entity\Project[] $child_projects
  * @property \App\Model\Entity\Service[] $services
  */
 class Project extends Entity
@@ -53,13 +51,10 @@ class Project extends Entity
         'invoice_number' => true,
         'invoice_date' => true,
         'paid_at' => true,
-        'parent_id' => true,
         'project_status_id' => true,
         'created' => true,
         'customer' => true,
-        'parent_project' => true,
         'project_status' => true,
-        'child_projects' => true,
         'services' => true,
     ];
 
