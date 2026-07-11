@@ -4,7 +4,6 @@
  * @var \App\Model\Entity\Customer $customer
  */
 $this->assign('title', h($customer->shortcut));
-$parsedown = new Parsedown();
 ?>
 <div class="row">
     <aside class="column">
@@ -164,7 +163,7 @@ $parsedown = new Parsedown();
                         <div class="text">
                             <strong><?= __('Notes') ?></strong>
                             <blockquote>
-                                <?= $parsedown->parse(h($customer->notes)); ?>
+                                <?= $this->Markdown->toHtml($customer->notes); ?>
                             </blockquote>
                         </div>
                     <?php } ?>

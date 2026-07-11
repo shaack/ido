@@ -5,8 +5,6 @@
 use Cake\Core\Configure;
 use Cake\I18n\FrozenDate;
 
-$parsedown = new Parsedown();
-
 $type = $this->request->getQuery('type', 'default');
 $latestInvoiceNumber = $this->get('latestInvoiceNumber');
 $asNumber = intval($latestInvoiceNumber);
@@ -39,7 +37,7 @@ $this->assign('title', $fileName);
     </address>
 </div>
 <h2 class="mb-3">Angebotene Leistungen</h2>
-<?= $parsedown->parse($project->description); ?>
+<?= $this->Markdown->toHtml($project->description); ?>
 
 <h2 class="mb-2 mt-4">Kostenkalkulation</h2>
 <table class="mb-2">

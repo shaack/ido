@@ -4,7 +4,6 @@
  * @var \App\Model\Entity\Task $task
  */
 
-$parsedown = new Parsedown();
 $this->assign('title', $task->name ? $task->name : $task->service->name);
 ?>
 <div class="actions">
@@ -53,11 +52,7 @@ $this->assign('title', $task->name ? $task->name : $task->service->name);
                 <strong><?= __('Notes') ?></strong>
                 <?php if ($task->notes) { ?>
                     <blockquote>
-                        <?php
-                        $text = h($task->notes);
-                        $text = preg_replace('/(?:^|\s)#(\w+)/', ' <span class="text-info">#$1</span>', $text);
-                        ?>
-                        <?= $parsedown->parse($text); ?>
+                        <?= $this->Markdown->toHtmlWithHashtags($task->notes); ?>
                     </blockquote>
                 <?php } ?>
             </div>

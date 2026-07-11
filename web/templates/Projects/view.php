@@ -4,7 +4,6 @@
  * @var \App\Model\Entity\Project $project
  */
 
-$parsedown = new Parsedown();
 $this->assign('title', h($project->name));
 ?>
 <div class="row">
@@ -150,20 +149,14 @@ $this->assign('title', h($project->name));
                     <div class="text">
                         <strong><?= __('Notes') ?></strong>
                         <blockquote>
-                            <?php
-                            if ($project->notes) {
-                                $text = h($project->notes);
-                                $text = preg_replace('/(?:^|\s)#(\w+)/', ' <span class="text-info">#$1</span>', $text);
-                                ?>
-                                <?= $parsedown->parse($text); ?>
-                            <?php } ?>
+                            <?= $this->Markdown->toHtmlWithHashtags($project->notes); ?>
                         </blockquote>
                     </div>
                     <?php if ($project->description) { ?>
                         <div class="text">
                             <strong><?= __('Description') ?></strong>
                             <blockquote>
-                                <?= $parsedown->parse(h($project->description)); ?>
+                                <?= $this->Markdown->toHtml($project->description); ?>
                             </blockquote>
                         </div>
                     <?php } ?>
