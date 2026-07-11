@@ -100,7 +100,7 @@ class TasksController extends AppController
         } else {
             $task->service_id = $this->request->getQuery("service_id"); // shaack patch
         }
-        $services = $this->Tasks->Services->find('list', ['limit' => 1000, 'order' => ['id' => 'DESC']])->all();
+        $services = $this->serviceList($task->service_id !== null ? (int)$task->service_id : null);
         // $service wird nur für die Breadcrumb im Layout gebraucht. Ohne
         // service_id in der URL lief get(null) bisher in einen 500er.
         $serviceId = $this->request->getQuery("service_id");
@@ -131,7 +131,7 @@ class TasksController extends AppController
                 $this->Flash->error(__('The task could not be saved. Please, try again.'));
             }
         }
-        $services = $this->Tasks->Services->find('list', ['limit' => 1000, 'order' => ['id' => 'DESC']])->all();
+        $services = $this->serviceList($task->service_id !== null ? (int)$task->service_id : null);
         $this->set(compact('task', 'services'));
     }
 
@@ -172,5 +172,60 @@ class TasksController extends AppController
         }
 
         return $this->redirect(['action' => 'view', 'controller' => 'services', $task->service_id]);
+    }
+
+    /**
+     * Leistungsliste fürs Auswahlfeld, als "KÜRZEL / Projektname / Leistung",
+     * beschränkt auf die letzten 500 Leistungen aktueller Kunden.
+     *
+     * @param int|null $ensureId Leistung, die auf jeden Fall enthalten sein muss.
+     * @return array<int, string>
+     */
+    private function serviceList(?int $ensureId = null): array
+    {
+        // 71 Leistungen haben keinen Namen. Für die bleibt es bei zwei Segmenten,
+        // ein leeres " / " am Ende wäre nur Rauschen.
+        $label = function ($service) {
+            $project = $service->project;
+            $teile = [];
+            if ($project && $project->customer) {
+                $teile[] = $project->customer->shortcut;
+            }
+            if ($project) {
+                $teile[] = $project->name;
+            }
+            if ($service->name) {
+                $teile[] = $service->name;
+            }
+
+            return implode(' / ', $teile);
+        };
+
+        $services = $this->Tasks->Services->find('list', [
+            'keyField' => 'id',
+            'valueField' => $label,
+        ])
+            ->contain(['Projects', 'Projects.Customers'])
+            ->where(['Customers.current' => true])
+            ->orderBy(['Services.id' => 'DESC'])
+            ->limit(500)
+            ->toArray();
+
+        // Die Leistung des bearbeiteten Tasks muss in der Liste stehen, auch wenn
+        // sie älter ist oder zu einem inaktiven Kunden gehört. Sonst wäre im
+        // Select nichts ausgewählt, und ein Speichern würde den Task
+        // stillschweigend der ersten Leistung zuschlagen. Das beträfe 848 von
+        // 1949 Tasks.
+        if ($ensureId !== null && !isset($services[$ensureId])) {
+            $service = $this->Tasks->Services->find()
+                ->contain(['Projects', 'Projects.Customers'])
+                ->where(['Services.id' => $ensureId])
+                ->first();
+            if ($service) {
+                $services = [$ensureId => $label($service)] + $services;
+            }
+        }
+
+        return $services;
     }
 }
