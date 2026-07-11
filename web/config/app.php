@@ -66,7 +66,13 @@ return [
         // deutsche Zahlen (3,5) und Euro. Das hier ist die verlässliche Quelle,
         // config/.env ist gitignored und darf dafür nicht der einzige Ort sein.
         'defaultLocale' => env('APP_DEFAULT_LOCALE', 'de_DE'),
-        'defaultTimezone' => env('APP_DEFAULT_TIMEZONE', 'UTC'),
+        // Zeitstempel werden als naive Wanduhrzeit gespeichert, ohne Umrechnung
+        // beim Lesen oder Schreiben. Bestehende Einträge stammen daher aus der
+        // UTC-Zeit und bleiben unangetastet, sie zeigen weiterhin denselben
+        // Wert. Neue Einträge entstehen ab jetzt in Berliner Zeit, liegen also
+        // gegenüber den alten um 1 bis 2 Stunden versetzt. Die Dauern und damit
+        // die Abrechnungssummen sind davon nicht betroffen.
+        'defaultTimezone' => env('APP_DEFAULT_TIMEZONE', 'Europe/Berlin'),
         'base' => false,
         'dir' => 'src',
         'webroot' => 'webroot',
