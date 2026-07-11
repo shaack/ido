@@ -175,17 +175,42 @@ class TasksController extends AppController
     }
 
     /**
-     * Leistungsliste fürs Auswahlfeld, als "KÜRZEL / Projektname / Leistung",
-     * beschränkt auf die letzten 500 Leistungen aktueller Kunden.
+     * Leistungsliste fürs Auswahlfeld.
      *
-     * @param int|null $ensureId Leistung, die auf jeden Fall enthalten sein muss.
+     * Einen Task in ein anderes Projekt zu verschieben ergibt keinen Sinn. Steht
+     * das Projekt fest, zeigt die Liste deshalb nur dessen Leistungen, und der
+     * Leistungsname allein genügt. Das größte Projekt hat 16 Leistungen.
+     *
+     * @param int|null $serviceId Leistung des Tasks, daraus folgt das Projekt.
      * @return array<int, string>
      */
-    private function serviceList(?int $ensureId = null): array
+    private function serviceList(?int $serviceId = null): array
     {
-        // 71 Leistungen haben keinen Namen. Für die bleibt es bei zwei Segmenten,
-        // ein leeres " / " am Ende wäre nur Rauschen.
-        $label = function ($service) {
+        // Kein Projekt hat mehr als eine namenlose Leistung, der Platzhalter ist
+        // innerhalb eines Projekts also eindeutig.
+        $nameOnly = fn($service) => $service->name ?: '[ohne Namen]';
+
+        $current = $serviceId !== null
+            ? $this->Tasks->Services->find()
+                ->contain(['Projects', 'Projects.Customers'])
+                ->where(['Services.id' => $serviceId])
+                ->first()
+            : null;
+
+        if ($current && $current->project_id !== null) {
+            return $this->Tasks->Services->find('list', [
+                'keyField' => 'id',
+                'valueField' => $nameOnly,
+            ])
+                ->where(['Services.project_id' => $current->project_id])
+                ->orderBy(['Services.id' => 'DESC'])
+                ->toArray();
+        }
+
+        // Kein Projekt bekannt, also beim Anlegen ohne service_id. Dann die
+        // letzten 500 Leistungen aktueller Kunden, und hier hilft der volle Pfad
+        // sehr wohl, weil Leistungsnamen projektübergreifend nichtssagend sind.
+        $fullPath = function ($service) {
             $project = $service->project;
             $teile = [];
             if ($project && $project->customer) {
@@ -203,7 +228,7 @@ class TasksController extends AppController
 
         $services = $this->Tasks->Services->find('list', [
             'keyField' => 'id',
-            'valueField' => $label,
+            'valueField' => $fullPath,
         ])
             ->contain(['Projects', 'Projects.Customers'])
             ->where(['Customers.current' => true])
@@ -211,19 +236,11 @@ class TasksController extends AppController
             ->limit(500)
             ->toArray();
 
-        // Die Leistung des bearbeiteten Tasks muss in der Liste stehen, auch wenn
-        // sie älter ist oder zu einem inaktiven Kunden gehört. Sonst wäre im
-        // Select nichts ausgewählt, und ein Speichern würde den Task
-        // stillschweigend der ersten Leistung zuschlagen. Das beträfe 848 von
-        // 1949 Tasks.
-        if ($ensureId !== null && !isset($services[$ensureId])) {
-            $service = $this->Tasks->Services->find()
-                ->contain(['Projects', 'Projects.Customers'])
-                ->where(['Services.id' => $ensureId])
-                ->first();
-            if ($service) {
-                $services = [$ensureId => $label($service)] + $services;
-            }
+        // Die Leistung des bearbeiteten Tasks muss in der Liste stehen, sonst wäre
+        // im Select nichts ausgewählt und ein Speichern würde den Task
+        // stillschweigend der ersten Leistung zuschlagen.
+        if ($current && !isset($services[$serviceId])) {
+            $services = [$serviceId => $fullPath($current)] + $services;
         }
 
         return $services;
