@@ -71,6 +71,10 @@ class ServicesTable extends Table
 
         $validator
             ->integer('project_id')
+            // Pflicht. Eine Leistung ohne Projekt hängt an keinem Kunden.
+            // requirePresence, weil notEmptyString allein nur greift, wenn das
+            // Feld überhaupt in den Daten steht.
+            ->requirePresence('project_id', 'create')
             ->notEmptyString('project_id');
 
         $validator

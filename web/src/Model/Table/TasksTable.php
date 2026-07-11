@@ -75,7 +75,11 @@ class TasksTable extends Table
 
         $validator
             ->integer('service_id')
-            ->allowEmptyString('service_id');
+            // Pflicht. Ein Task ohne Leistung taucht in keinem Stundennachweis auf.
+            // requirePresence, weil notEmptyString allein nur greift, wenn das
+            // Feld überhaupt in den Daten steht.
+            ->requirePresence('service_id', 'create')
+            ->notEmptyString('service_id');
 
         $validator
             ->boolean('done')

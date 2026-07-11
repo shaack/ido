@@ -3,6 +3,87 @@
 Das Projekt nutzt keine Migrationen. Schemaänderungen werden hier als SQL
 festgehalten und von Hand auf der Produktivdatenbank ausgeführt.
 
+## 2026-07-11: Datenbereinigung, die Kette wird lückenlos
+
+Die Kette lautet Kunde → Projekt → Leistung → Task → Erfassung. Zwei Glieder
+waren in der Validierung optional, entsprechend gab es Waisen: Projekte ohne
+Kunden fielen aus jeder Abrechnung heraus, Tasks ohne Leistung tauchten in
+keinem Stundennachweis auf.
+
+`ProjectsTable` verlangt jetzt `customer_id`, `TasksTable` verlangt
+`service_id`. Damit das nicht bestehende Datensätze unbearbeitbar macht, müssen
+die Waisen weg.
+
+### Erst schauen, was es auf dem Server überhaupt trifft
+
+Die Zahlen unten stammen aus der Entwicklungsdatenbank. Auf dem Server können sie
+abweichen, deshalb vorher zählen:
+
+```sql
+SELECT 'Projekte ohne Kunde' AS fall, COUNT(*) AS n FROM projects WHERE customer_id IS NULL
+UNION ALL SELECT 'Tasks ohne Leistung', COUNT(*) FROM tasks WHERE service_id IS NULL
+UNION ALL SELECT 'Erfassungen daran', COUNT(*) FROM time_trackings tt
+  JOIN tasks t ON t.id = tt.task_id WHERE t.service_id IS NULL
+UNION ALL SELECT 'Leistungen unter Projekten ohne Kunde', COUNT(*) FROM services s
+  JOIN projects p ON p.id = s.project_id WHERE p.customer_id IS NULL;
+```
+
+In der Entwicklungsdatenbank waren es 2 Projekte, 4 Tasks, 2 Erfassungen daran,
+und unter den kundenlosen Projekten nochmal 2 Leistungen, 2 Tasks und 3
+Erfassungen mit zusammen 1,87 Stunden. Alle betroffenen Projekte waren
+abgeschlossen, eines kostenlos, eines storniert, keine Leistung trug einen
+Festpreis. Es wurde also nichts Abgerechnetes gelöscht.
+
+### Bereinigung
+
+**Vorher ein Backup ziehen.** Das Löschen ist unumkehrbar.
+
+Die Reihenfolge ist zwingend, von unten nach oben durch die Kette.
+
+```sql
+-- 1. Tasks ohne Leistung, samt ihrer Erfassungen
+DELETE tt FROM time_trackings tt
+  JOIN tasks t ON t.id = tt.task_id
+  WHERE t.service_id IS NULL;
+
+DELETE FROM tasks WHERE service_id IS NULL;
+
+-- 2. Alles, was unter Projekten ohne Kunden hängt
+DELETE tt FROM time_trackings tt
+  JOIN tasks t ON t.id = tt.task_id
+  JOIN services s ON s.id = t.service_id
+  JOIN projects p ON p.id = s.project_id
+  WHERE p.customer_id IS NULL;
+
+DELETE t FROM tasks t
+  JOIN services s ON s.id = t.service_id
+  JOIN projects p ON p.id = s.project_id
+  WHERE p.customer_id IS NULL;
+
+DELETE s FROM services s
+  JOIN projects p ON p.id = s.project_id
+  WHERE p.customer_id IS NULL;
+
+DELETE FROM projects WHERE customer_id IS NULL;
+```
+
+### Kontrolle, muss überall 0 ergeben
+
+```sql
+SELECT
+  (SELECT COUNT(*) FROM projects WHERE customer_id IS NULL) AS projekt_ohne_kunde,
+  (SELECT COUNT(*) FROM services s LEFT JOIN projects p ON p.id = s.project_id
+     WHERE p.id IS NULL) AS leistung_ohne_projekt,
+  (SELECT COUNT(*) FROM tasks t LEFT JOIN services s ON s.id = t.service_id
+     WHERE s.id IS NULL) AS task_ohne_leistung,
+  (SELECT COUNT(*) FROM time_trackings tt LEFT JOIN tasks t ON t.id = tt.task_id
+     WHERE t.id IS NULL) AS erfassung_ohne_task;
+```
+
+Das SQL kann **vor** dem Deploy laufen, der alte Code kommt damit auch klar. Ohne
+die Bereinigung wären die Waisen nach dem Deploy nicht mehr speicherbar, weil die
+Validierung sie ablehnt.
+
 ## 2026-07-11: Contacts entfernt (Tabelle optional)
 
 Kontakte werden nicht mehr gebraucht. Controller, Entity, Table, Templates und

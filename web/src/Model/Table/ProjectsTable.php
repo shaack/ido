@@ -76,7 +76,12 @@ class ProjectsTable extends Table
 
         $validator
             ->integer('customer_id')
-            ->allowEmptyString('customer_id');
+            // Pflicht. Ein Projekt ohne Kunden ergibt keinen Sinn und fiele aus jeder
+            // Abrechnung heraus.
+            // requirePresence, weil notEmptyString allein nur greift, wenn das
+            // Feld überhaupt in den Daten steht.
+            ->requirePresence('customer_id', 'create')
+            ->notEmptyString('customer_id');
 
         $validator
             ->date('start');

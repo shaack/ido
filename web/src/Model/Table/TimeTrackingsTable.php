@@ -60,6 +60,10 @@ class TimeTrackingsTable extends Table
     {
         $validator
             ->integer('task_id')
+            // Pflicht. Eine Erfassung ohne Task ist nicht zuzuordnen.
+            // requirePresence, weil notEmptyString allein nur greift, wenn das
+            // Feld überhaupt in den Daten steht.
+            ->requirePresence('task_id', 'create')
             ->notEmptyString('task_id');
 
         $validator

@@ -132,17 +132,40 @@ class ServicesController extends AppController
     }
 
     /**
-     * Projektliste fürs Auswahlfeld, als "KÜRZEL / Projektname", beschränkt auf
-     * die letzten 100 Projekte aktueller Kunden. Der Name allein sagt zu wenig,
-     * "Leistungen 2026-07" gibt es bei mehreren Kunden.
+     * Projektliste fürs Auswahlfeld.
      *
-     * @param int|null $ensureId Projekt, das auf jeden Fall enthalten sein muss.
+     * Eine Leistung von einem Kunden zu einem anderen zu verschieben ergibt
+     * keinen Sinn. Steht der Kunde fest, zeigt die Liste deshalb nur dessen
+     * Projekte, und der Projektname allein genügt. Der größte Kunde hat 154
+     * Projekte, das passt.
+     *
+     * @param int|null $projectId Projekt der Leistung, daraus folgt der Kunde.
      * @return array<int, string>
      */
-    private function projectList(?int $ensureId = null): array
+    private function projectList(?int $projectId = null): array
     {
+        $current = $projectId !== null
+            ? $this->Services->Projects->find()
+                ->contain(['Customers'])
+                ->where(['Projects.id' => $projectId])
+                ->first()
+            : null;
+
+        if ($current && $current->customer_id !== null) {
+            return $this->Services->Projects->find('list', [
+                'keyField' => 'id',
+                'valueField' => 'name',
+            ])
+                ->where(['Projects.customer_id' => $current->customer_id])
+                ->orderBy(['Projects.id' => 'DESC'])
+                ->toArray();
+        }
+
+        // Kein Kunde bekannt: beim Anlegen ohne project_id, oder bei den zwei
+        // Projekten, die gar keinen Kunden haben. Dann die letzten 100 Projekte
+        // aktueller Kunden, und hier hilft das Kürzel sehr wohl, weil
+        // "Leistungen 2026-07" bei mehreren Kunden vorkommt.
         $label = fn($project) => $project->customer
-            // Ohne Kunde bliebe sonst ein führendes " / " stehen.
             ? $project->customer->shortcut . ' / ' . $project->name
             : $project->name;
 
@@ -156,19 +179,11 @@ class ServicesController extends AppController
             ->limit(100)
             ->toArray();
 
-        // Das Projekt der bearbeiteten Leistung muss in der Liste stehen, auch
-        // wenn es älter ist oder zu einem inaktiven Kunden gehört. Sonst wäre im
-        // Select nichts ausgewählt, und ein Speichern würde die Leistung
-        // stillschweigend dem ersten Eintrag zuschlagen. Das beträfe 843 von
-        // 1128 Leistungen.
-        if ($ensureId !== null && !isset($projects[$ensureId])) {
-            $project = $this->Services->Projects->find()
-                ->contain(['Customers'])
-                ->where(['Projects.id' => $ensureId])
-                ->first();
-            if ($project) {
-                $projects = [$ensureId => $label($project)] + $projects;
-            }
+        // Das Projekt der bearbeiteten Leistung muss in der Liste stehen, sonst
+        // wäre im Select nichts ausgewählt und ein Speichern würde die Leistung
+        // stillschweigend dem ersten Eintrag zuschlagen.
+        if ($current && !isset($projects[$projectId])) {
+            $projects = [$projectId => $label($current)] + $projects;
         }
 
         return $projects;
