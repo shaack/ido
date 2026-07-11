@@ -58,9 +58,15 @@ class Application extends BaseApplication
         /*
          * Only try to load DebugKit in development mode
          * Debug Kit should not be installed on a production system
+         *
+         * addOptionalPlugin, nicht addPlugin: deploy.sh baut vendor/ mit
+         * --no-dev, auf dem Server ist DebugKit also gar nicht vorhanden. Wird
+         * dort zum Debuggen einmal debug eingeschaltet, würde addPlugin eine
+         * MissingPluginException werfen und jede Anfrage mit 500 beantworten,
+         * ausgerechnet in dem Moment, in dem man einen Fehler sucht.
          */
         if (Configure::read('debug')) {
-            $this->addPlugin('DebugKit');
+            $this->addOptionalPlugin('DebugKit');
         }
 
         // Load more plugins here
