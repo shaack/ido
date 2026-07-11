@@ -71,11 +71,6 @@ function doneClass($doneTime)
             </div>
         </div>
     </fieldset>
-    <fieldset>
-        <?php
-        echo $this->Form->control('task.notes', ['label' => 'Task Notes', 'rows' => 4, 'class' => 'markdown']);
-        ?>
-    </fieldset>
     <div class="mb-3">
         <!-- <button class="btn btn-secondary">Submit</button> -->
         <button class="btn btn-primary" onclick="window.stopAndAdd(); return false;">
