@@ -78,7 +78,7 @@ class ServicesController extends AppController
         } else {
             $service->project_id = $this->request->getQuery("project_id"); // shaack patch
         }
-        $projects = $this->projectList();
+        $projects = $this->projectList($service->project_id !== null ? (int)$service->project_id : null);
         // $project wird nur für die Breadcrumb im Layout gebraucht. Ohne
         // project_id in der URL lief get(null) bisher in einen 500er.
         $projectId = $this->request->getQuery("project_id");
@@ -107,7 +107,7 @@ class ServicesController extends AppController
                 $this->Flash->error(__('The service could not be saved. Please, try again.'));
             }
         }
-        $projects = $this->projectList();
+        $projects = $this->projectList($service->project_id !== null ? (int)$service->project_id : null);
         $this->set(compact('service', 'projects'));
     }
 
@@ -132,26 +132,45 @@ class ServicesController extends AppController
     }
 
     /**
-     * Projektliste fürs Auswahlfeld, als "KÜRZEL / Projektname". Bei 491
-     * Projekten sagt der Name allein zu wenig, erst das Kundenkürzel macht die
-     * Einträge unterscheidbar.
+     * Projektliste fürs Auswahlfeld, als "KÜRZEL / Projektname", beschränkt auf
+     * die letzten 100 Projekte aktueller Kunden. Der Name allein sagt zu wenig,
+     * "Leistungen 2026-07" gibt es bei mehreren Kunden.
      *
-     * Die Reihenfolge bleibt wie gehabt, neueste zuerst.
-     *
-     * @return \Cake\Datasource\ResultSetInterface
+     * @param int|null $ensureId Projekt, das auf jeden Fall enthalten sein muss.
+     * @return array<int, string>
      */
-    private function projectList()
+    private function projectList(?int $ensureId = null): array
     {
-        return $this->Services->Projects->find('list', [
-            'keyField' => 'id',
+        $label = fn($project) => $project->customer
             // Ohne Kunde bliebe sonst ein führendes " / " stehen.
-            'valueField' => fn($project) => $project->customer
-                ? $project->customer->shortcut . ' / ' . $project->name
-                : $project->name,
+            ? $project->customer->shortcut . ' / ' . $project->name
+            : $project->name;
+
+        $projects = $this->Services->Projects->find('list', [
+            'keyField' => 'id',
+            'valueField' => $label,
         ])
             ->contain(['Customers'])
+            ->where(['Customers.current' => true])
             ->orderBy(['Projects.id' => 'DESC'])
-            ->limit(1000)
-            ->all();
+            ->limit(100)
+            ->toArray();
+
+        // Das Projekt der bearbeiteten Leistung muss in der Liste stehen, auch
+        // wenn es älter ist oder zu einem inaktiven Kunden gehört. Sonst wäre im
+        // Select nichts ausgewählt, und ein Speichern würde die Leistung
+        // stillschweigend dem ersten Eintrag zuschlagen. Das beträfe 843 von
+        // 1128 Leistungen.
+        if ($ensureId !== null && !isset($projects[$ensureId])) {
+            $project = $this->Services->Projects->find()
+                ->contain(['Customers'])
+                ->where(['Projects.id' => $ensureId])
+                ->first();
+            if ($project) {
+                $projects = [$ensureId => $label($project)] + $projects;
+            }
+        }
+
+        return $projects;
     }
 }
