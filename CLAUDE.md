@@ -5,7 +5,7 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 ## What this is
 
 **ido** is a personal project management, todo, time tracking and billing tool for the self-employed
-(see `web/README.md`). It is a **CakePHP 4.5** application (PHP 7.4+, targets 8.1 in the container).
+(see `web/README.md`). It is a **CakePHP 4.5** application running on **PHP 8.3**.
 All application code lives under `web/`; `compose/` holds the local Podman/Docker dev stack.
 
 ## Running the dev environment
@@ -17,13 +17,18 @@ From the repo root:
 ```
 
 This brings up two containers (`compose/docker-compose.yml`):
-- **web** — `php:8.1-apache` (see `compose/php.Dockerfile`), mounts `../web` to `/var/www/html`.
+- **web** — `php:8.3-apache` (see `compose/php.Dockerfile`), mounts `../web` to `/var/www/html`.
   Reachable at http://localhost:8080 and https://localhost:8443.
 - **db** — `mysql:8.0`, database `main`, root password `d3v_p455`, port 3306. Data persists in
-  `compose/volumes/data/` (committed to git, so the dev DB ships with the repo).
+  `compose/volumes/data/`, which is **gitignored** (`compose/volumes/.gitignore`) — the dev DB is
+  local only and is not backed up by the repo.
 
 The app's DB connection for the container is preconfigured in `web/config/app_local.php`
 (host `db`, database `main`). This file is normally gitignored in CakePHP but is present here.
+
+PHP 8.3 is the ceiling for CakePHP 4.5: from PHP 8.4 on, `DateTimeImmutable::createFromTimestamp()`
+collides with `Cake\Chronos\Chronos::createFromTimestamp()` and the framework dies with a fatal error
+on autoload. Going higher requires the upgrade to CakePHP 5.
 
 ## Common commands
 
@@ -42,8 +47,23 @@ vendor/bin/phpunit tests/TestCase/Controller/TasksControllerTest.php   # single 
 bin/cake <command>     # CakePHP console (bake, migrations, etc.)
 ```
 
-Tests run against SQLite in CI (`DATABASE_TEST_URL=sqlite://...`); the `test` datasource in
-`app_local.php` points at MySQL locally. Fixtures live in `tests/Fixture/`, schema in `tests/schema.sql`.
+### The test suite does not actually test anything
+
+Be aware of this before trusting a green run. The test classes under `tests/TestCase/` are unmodified
+`bake` stubs — nearly every method is a `markTestIncomplete()`. On top of that there is no test schema:
+`tests/schema.sql` is the untouched 146-byte skeleton placeholder with zero `CREATE TABLE`, and
+`tests/bootstrap.php` builds the schema via `(new Migrator())->run()` from `config/Migrations/`,
+which is empty. So every fixture-backed test errors with "table does not exist".
+
+Fixing this means dumping the schema out of the dev DB into `tests/schema.sql` and swapping the
+`Migrator` call in `tests/bootstrap.php` for `(new SchemaLoader())->loadSqlFiles('./tests/schema.sql', 'test')`
+(the line is already there, commented out). Until someone does that, **verify changes against the
+running app, not against the test suite**.
+
+PHPUnit is pinned to **9.6**: CakePHP 4 declares `phpunit ^8.5 || ^9.3`, and under PHPUnit 10
+`Cake\TestSuite\TestCase` fatals trying to override methods that PHPUnit made `final`. The failure is
+silent (Cake's error handler swallows it, you just get exit code 255). Do not bump PHPUnit before
+CakePHP 5.
 
 ## Domain model & architecture
 
@@ -76,6 +96,23 @@ CakePHP conventions. Routing is default `DashedRoute` fallbacks — no custom ro
   `duration`, and renders the `export` template with the `print` layout. Companion raw-SQL reports
   live in `web/scripts/reports/*.sql`.
 - **`AjaxView`** (`src/View/AjaxView.php`) — switches to the `ajax` layout for AJAX responses.
+- **`MarkdownHelper`** (`src/View/Helper/MarkdownHelper.php`) — the only place Markdown gets rendered.
+  Loaded in `AppView`, runs Parsedown in **safe mode**, so raw HTML in notes/descriptions is escaped.
+  Never instantiate `Parsedown` in a template. `toHtmlWithHashtags()` additionally highlights
+  `#hashtags`; it escapes the `#` *before* parsing (otherwise a hashtag opening a line would be read
+  as a heading) and wraps it in a `<span>` *after* parsing (safe mode would escape markup injected
+  into the source). A real heading is `# Titel` with a space and is left alone.
+
+## Deployment
+
+`./deploy.sh` mirrors `web/` to the Plesk host via SFTP (`lftp mirror --reverse`), excluding
+`config/app_local.php`, `config/.env`, `logs/`, `tmp/`. `--dry-run` shows what would happen.
+
+The upload includes the **locally built `web/vendor/`** — there is no `composer install` on the
+server. Composer must therefore resolve against the *server's* PHP version, not the local CLI's,
+which is what the `config.platform.php` pin in `web/composer.json` is for. Keep that pin in sync with
+the PHP version in Plesk and in `compose/php.Dockerfile`; if they drift, you ship a `vendor/` that
+cannot run on the server.
 
 ## Schema changes
 
