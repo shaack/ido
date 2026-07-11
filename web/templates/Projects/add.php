@@ -3,8 +3,8 @@
  * @var \App\View\AppView $this
  * @var \App\Model\Entity\Project $project
  * @var \Cake\Collection\CollectionInterface|string[] $customers
- * @var \Cake\Collection\CollectionInterface|string[] $parentProjects
  * @var \Cake\Collection\CollectionInterface|string[] $projectStatuses
+ * @var array<int, float|null> $customerRates
  */
 ?>
 <div class="row">
@@ -39,3 +39,20 @@
         </div>
     </div>
 </div>
+<script>
+    // Wechselt der Kunde, wird sein Stundensatz eingetragen. Ein danach von
+    // Hand geänderter Satz bleibt stehen, bis wieder ein anderer Kunde gewählt
+    // wird.
+    (function () {
+        const rates = <?= json_encode($customerRates, JSON_UNESCAPED_UNICODE) ?>;
+        const customerField = document.getElementById("customer-id");
+        const rateField = document.getElementById("hourly-rate");
+        if (!customerField || !rateField) {
+            return;
+        }
+        customerField.addEventListener("change", function () {
+            const rate = rates[this.value];
+            rateField.value = rate === undefined || rate === null ? "" : rate;
+        });
+    })();
+</script>

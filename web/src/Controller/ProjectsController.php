@@ -111,14 +111,30 @@ class ProjectsController extends AppController
                 return $this->redirect(['action' => 'index']);
             }
             $this->Flash->error(__('The project could not be saved. Please, try again.'));
-        } else {
-            $project->customer_id = $this->request->getQuery("customer_id");
         }
         $customers = $this->Projects->Customers->find('list', ['limit' => 1000])->all();
-        $project->hourly_rate = $project->customer->hourly_rate;
+
+        // Stundensatz je Kunde, damit das Formular ihn beim Wechsel des Kunden
+        // direkt einträgt. Hier stand vorher
+        // $project->hourly_rate = $project->customer->hourly_rate. Das war
+        // wirkungslos, denn geladen wurde nie der Kunde, nur customer_id
+        // gesetzt. Die Zeile las eine Eigenschaft auf null und schrieb null.
+        $customerRates = $this->Projects->Customers->find()
+            ->select(['id', 'hourly_rate'])
+            ->all()
+            ->combine('id', 'hourly_rate')
+            ->toArray();
+
+        if (!$this->request->is('post')) {
+            $project->customer_id = $this->request->getQuery("customer_id");
+            if ($project->customer_id) {
+                $project->hourly_rate = $customerRates[(int)$project->customer_id] ?? null;
+            }
+        }
+
         $project->project_status = $this->Projects->ProjectStatuses->get(15); // runs
         $projectStatuses = $this->Projects->ProjectStatuses->find('list', ['limit' => 200])->all();
-        $this->set(compact('project', 'customers', 'projectStatuses'));
+        $this->set(compact('project', 'customers', 'projectStatuses', 'customerRates'));
     }
 
     /**
