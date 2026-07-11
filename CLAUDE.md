@@ -5,8 +5,11 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 ## What this is
 
 **ido** is a personal project management, todo, time tracking and billing tool for the self-employed
-(see `web/README.md`). It is a **CakePHP 4.5** application running on **PHP 8.3**.
+(see `web/README.md`). It is a **CakePHP 5.3** application running on **PHP 8.4**.
 All application code lives under `web/`; `compose/` holds the local Podman/Docker dev stack.
+
+Single user, single tenant, behind HTTP basic auth on the server. There is no application-level
+authentication.
 
 ## Running the dev environment
 
@@ -17,119 +20,140 @@ From the repo root:
 ```
 
 This brings up two containers (`compose/docker-compose.yml`):
-- **web** — `php:8.3-apache` (see `compose/php.Dockerfile`), mounts `../web` to `/var/www/html`.
+- **web** — `php:8.4-apache` (see `compose/php.Dockerfile`), mounts `../web` to `/var/www/html`.
   Reachable at http://localhost:8080 and https://localhost:8443.
 - **db** — `mysql:8.0`, database `main`, root password `d3v_p455`, port 3306. Data persists in
-  `compose/volumes/data/`, which is **gitignored** (`compose/volumes/.gitignore`) — the dev DB is
-  local only and is not backed up by the repo.
+  `compose/volumes/data/`, which is **gitignored** — the dev DB is local only and is not backed up
+  by the repo.
 
 The app's DB connection for the container is preconfigured in `web/config/app_local.php`
 (host `db`, database `main`). This file is normally gitignored in CakePHP but is present here.
 
-PHP 8.3 is the ceiling for CakePHP 4.5: from PHP 8.4 on, `DateTimeImmutable::createFromTimestamp()`
-collides with `Cake\Chronos\Chronos::createFromTimestamp()` and the framework dies with a fatal error
-on autoload. Going higher requires the upgrade to CakePHP 5.
+Do not run PHP from the host: the local CLI is far newer than the container and the two disagree.
+Use `podman exec -w /var/www/html ido-web php ...`.
 
 ## Common commands
 
-Run these **inside `web/`** (or exec into the `ido-web` container):
-
 ```bash
-composer test          # PHPUnit (also: vendor/bin/phpunit)
-composer cs-check      # PHP_CodeSniffer against the CakePHP standard (src/ tests/)
-composer cs-fix        # phpcbf auto-fix
-composer stan          # PHPStan (level 8, src/ only) — requires phpstan installed
-composer check         # test + cs-check
-
-vendor/bin/phpunit --filter TimeTrackingsControllerTest        # single test class
-vendor/bin/phpunit tests/TestCase/Controller/TasksControllerTest.php   # single file
-
-bin/cake <command>     # CakePHP console (bake, migrations, etc.)
+cd web
+composer test          # PHPUnit — but see below, the suite tests nothing
+bin/cake <command>     # CakePHP console
 ```
+
+`bake` and the CodeSniffer were removed as unused. `composer cs-check` no longer exists.
 
 ### The test suite does not actually test anything
 
-Be aware of this before trusting a green run. The test classes under `tests/TestCase/` are unmodified
-`bake` stubs — nearly every method is a `markTestIncomplete()`. On top of that there is no test schema:
-`tests/schema.sql` is the untouched 146-byte skeleton placeholder with zero `CREATE TABLE`, and
-`tests/bootstrap.php` builds the schema via `(new Migrator())->run()` from `config/Migrations/`,
-which is empty. So every fixture-backed test errors with "table does not exist".
+Do not trust a green run. The classes under `tests/TestCase/` are unmodified `bake` stubs, nearly
+every method is a `markTestIncomplete()`. There is also no test schema: `tests/schema.sql` is the
+untouched skeleton placeholder with zero `CREATE TABLE`, and `tests/bootstrap.php` builds the schema
+via `(new Migrator())->run()` from `config/Migrations/`, which is empty.
 
-Fixing this means dumping the schema out of the dev DB into `tests/schema.sql` and swapping the
-`Migrator` call in `tests/bootstrap.php` for `(new SchemaLoader())->loadSqlFiles('./tests/schema.sql', 'test')`
-(the line is already there, commented out). Until someone does that, **verify changes against the
-running app, not against the test suite**.
-
-PHPUnit is pinned to **9.6**: CakePHP 4 declares `phpunit ^8.5 || ^9.3`, and under PHPUnit 10
-`Cake\TestSuite\TestCase` fatals trying to override methods that PHPUnit made `final`. The failure is
-silent (Cake's error handler swallows it, you just get exit code 255). Do not bump PHPUnit before
-CakePHP 5.
+**Verify changes against the running app, not against the test suite.** Drive the actual route with
+curl, compare numbers against the database, and check `web/logs/error.log`.
 
 ## Domain model & architecture
-
-The core is a strict **ownership hierarchy** wired through CakePHP ORM associations
-(`web/src/Model/Table/*Table.php`):
 
 ```
 Customer ──hasMany──> Contacts
     └────hasMany──> Project ──belongsTo──> ProjectStatus (lookup)
-                       ├──self-ref: ParentProjects / ChildProjects (sub-projects)
                        └──hasMany──> Service ──hasMany──> Task ──hasMany──> TimeTracking
 ```
 
-A **TimeTracking** (billable duration in hours) hangs off a Task; billing/reporting walks the whole
-chain back up to the Customer. Controllers therefore `contain` the full path, e.g.
+A **TimeTracking** (duration in hours) hangs off a Task. Billing walks the whole chain back up to the
+Customer, so controllers `contain` the full path, e.g.
 `['Tasks', 'Tasks.Services', 'Tasks.Services.Projects', 'Tasks.Services.Projects.Customers']`.
-The seven entities/tables (Customers, Contacts, Projects, ProjectStatuses, Services, Tasks,
-TimeTrackings) each have a matching Controller + `templates/<Name>/` directory following standard
-CakePHP conventions. Routing is default `DashedRoute` fallbacks — no custom routes
-(`config/routes.php`).
+Routing is default `DashedRoute` fallbacks, no custom routes.
+
+### Billing rules — read before touching any of this
+
+- **`Service::effortTracked()`** is the raw sum of tracked time. **`Service::effort()`** is that value
+  rounded to quarter hours, and it is what gets billed. `Service::costs()` multiplies it by the hourly
+  rate, so the rounding lands directly in the invoice amount.
+- **`Service::fixed_price`** (a euro amount, nullable) overrides the time calculation. If it is set,
+  `costs()` returns it and ignores the tracked time entirely. Tasks and time tracking on such a
+  service therefore do **not** raise the invoice, they only make the real effort and the margin
+  visible. Negative amounts are used as deduction lines for installments already paid.
+- The **Stundennachweis** (`TimeTrackingsController::export($projectId)`) is the document that backs
+  the invoice, so the two must agree. It lists the individual trackings and then reconciles per
+  service: tracked hours next to billed hours. The sum of the billed column times the hourly rate is
+  exactly the invoice net. Fixed-price services are labelled as such instead of showing hours.
+- **`Service::effort_est`** is the estimate in hours and feeds the **offer** only
+  (`Project::effortPlanned()` / `costsPlanned()`). It never touches the invoice.
 
 ### Project-specific pieces to know
 
-- **`PreserveNullBehavior`** (`src/Model/Behavior/PreserveNullBehavior.php`) — added to tables via
-  `$this->addBehavior('PreserveNull')`. On `beforeMarshal` it recursively converts empty-string form
-  values (`''`) to `null` for nullable columns, walking into associated data. Needed so blank form
-  fields don't overwrite nullable DB columns with empty strings.
-- **Time-tracking export** (`TimeTrackingsController::export($customerShortcut, $month)`) — the
-  billing feature. Filters TimeTrackings by `Customers.shortcut` and a `YYYY-MM` month range, sums
-  `duration`, and renders the `export` template with the `print` layout. Companion raw-SQL reports
-  live in `web/scripts/reports/*.sql`.
+- **`EffortHelper`** (`src/View/Helper/EffortHelper.php`) — renders hours with two decimals in the
+  current locale. Two methods on purpose: `effort()` rounds to quarter hours (for the billed values,
+  mirroring the entities), `hours()` does not round (for tracked time). Rounding tracked time would
+  misstate the billing basis.
+- **`MarkdownHelper`** (`src/View/Helper/MarkdownHelper.php`) — the only place Markdown gets
+  rendered. Loaded in `AppView`, runs Parsedown in **safe mode**, so raw HTML in notes is escaped.
+  Never instantiate `Parsedown` in a template. `toHtmlWithHashtags()` escapes the `#` *before*
+  parsing (otherwise a hashtag opening a line would become a heading) and wraps it in a `<span>`
+  *after* parsing.
+- **`PreserveNullBehavior`** (`src/Model/Behavior/PreserveNullBehavior.php`) — on `beforeMarshal` it
+  converts empty-string form values to `null` for nullable columns, so blank fields do not overwrite
+  nullable columns with `''`.
 - **`AjaxView`** (`src/View/AjaxView.php`) — switches to the `ajax` layout for AJAX responses.
-- **`MarkdownHelper`** (`src/View/Helper/MarkdownHelper.php`) — the only place Markdown gets rendered.
-  Loaded in `AppView`, runs Parsedown in **safe mode**, so raw HTML in notes/descriptions is escaped.
-  Never instantiate `Parsedown` in a template. `toHtmlWithHashtags()` additionally highlights
-  `#hashtags`; it escapes the `#` *before* parsing (otherwise a hashtag opening a line would be read
-  as a heading) and wraps it in a `<span>` *after* parsing (safe mode would escape markup injected
-  into the source). A real heading is `# Titel` with a space and is left alone.
+- Locale is **de_DE** and the timezone **Europe/Berlin**, both as committed defaults in
+  `config/app.php`. They used to depend on `config/.env`, which is gitignored — when that file went
+  missing the app silently fell back to `en_US` and rendered `3.5` and `$` on invoices.
+
+### CakePHP 5 traps this codebase already walked into
+
+- **`contain` in paginator settings is silently ignored.** `$this->paginate = ['contain' => [...]]`
+  no longer works. Build a query with `->contain()` and pass that to `paginate()`. When it broke, the
+  associations came back `null` and it looked like corrupt data.
+- **Sorting by an associated field needs `sortableFields`.** Without it CakePHP silently drops the
+  sort, and the column header becomes a link that does nothing. Ten such links existed. Fields that
+  are computed in PHP (`effort()`, `costs()`) cannot be sorted at all, they are not columns.
+- **`Entity::has()` returns true for a field set to `null`.** Use `hasValue()` for the old behaviour.
+- **`SelectQuery` is not a collection.** `$query->sumOf()` is gone, use `$query->all()->sumOf()`.
+- The global `h()`, `env()`, `__()` moved into namespaces. `composer.json` autoloads CakePHP's
+  `functions_global.php` files to keep the 574 existing call sites working.
+
+## Dead columns kept for their data
+
+These are gone from the code but still in the database, so historic values survive. Do not
+reintroduce them, and do not be surprised to find them in `SHOW COLUMNS`:
+
+`projects.parent_id`, `projects.notes`, `projects.fixed_price`, `projects.invoice_type`,
+`projects.end_est`, `services.effort`, `services.costs`, `services.notes`.
+
+`services.effort` and `services.costs` are the pre-time-tracking way of recording effort, last used
+in 2022. They disagree with the computed values for 478 of 618 services.
+
+Careful when reading SQL: there is a `services.fixed_price` (double, an amount, live) **and** a
+`projects.fixed_price` (tinyint, a dead flag). Same name, different tables, different meaning.
 
 ## Deployment
 
 `./deploy.sh` mirrors `web/` to the Plesk host via SFTP (`lftp mirror --reverse --delete`), excluding
 `config/app_local.php`, `config/.env`, `logs/`, `tmp/`. `--dry-run` shows what would happen,
-deletions included — use it whenever the diff is bigger than a few files.
+deletions included.
 
-The upload includes the **locally built `web/vendor/`** — there is no `composer install` on the
-server. Two consequences:
+The upload includes the **locally built `web/vendor/`**, there is no `composer install` on the
+server. Three consequences:
 
 - The script rebuilds `vendor/` with `composer install --no-dev` before uploading and restores the
-  dev state afterwards via an `EXIT` trap. Without this, DebugKit, PHPUnit, Bake and CodeSniffer end
-  up on the production server (they used to). All of `composer audit`'s advisories live in those dev
-  packages; `composer audit --no-dev` is clean.
+  dev state afterwards via an `EXIT` trap.
+- It then **boots the production build** in the container before uploading anything, with a
+  temporary `config/.env` in place, because the server has one. This catches packages that are needed
+  at runtime but sit in `require-dev`. That exact mistake once took the site down
+  (`josegonzalez/dotenv`).
 - Composer must resolve against the *server's* PHP version, not the local CLI's, which is what the
-  `config.platform.php` pin in `web/composer.json` is for. Keep that pin in sync with the PHP version
-  in Plesk and in `compose/php.Dockerfile`; if they drift, you ship a `vendor/` that cannot run on
-  the server.
+  `config.platform.php` pin in `web/composer.json` is for. Keep it in sync with Plesk and
+  `compose/php.Dockerfile`.
 
 `tmp/` is excluded, so the server keeps its old schema and routing cache across deploys. After a
 schema change or a framework update, clear `tmp/cache/models/` and `tmp/cache/persistent/` in Plesk.
 
 ## Schema changes
 
-There is **no migrations workflow in use** — `config/Migrations/` is empty and schema evolves via raw
-SQL. `web/docs/add_field.md` and `web/docs/migration.md` contain the hand-written SQL used for past
-column additions and data backfills (e.g. mapping old German string statuses to `project_status_id`,
-converting `'Ja'/'Nein'` to booleans). Follow that pattern and update those docs when altering schema.
+There is **no migrations workflow** — `config/Migrations/` is empty and the schema evolves via raw
+SQL. Record every change in `web/docs/schema_changes.md`, including the order it has to run in
+relative to the deploy. `web/docs/add_field.md` and `web/docs/migration.md` hold older notes.
 
 ## Writing style (German prose)
 
