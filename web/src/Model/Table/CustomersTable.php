@@ -10,7 +10,6 @@ use Cake\Validation\Validator;
 /**
  * Customers Model
  *
- * @property \App\Model\Table\ContactsTable&\Cake\ORM\Association\HasMany $Contacts
  * @property \App\Model\Table\ProjectsTable&\Cake\ORM\Association\HasMany $Projects
  *
  * @method \App\Model\Entity\Customer newEmptyEntity()
@@ -47,9 +46,6 @@ class CustomersTable extends Table
 
         $this->addBehavior('Timestamp');
 
-        $this->hasMany('Contacts', [
-            'foreignKey' => 'customer_id',
-        ]);
         $this->hasMany('Projects', [
             'foreignKey' => 'customer_id',
         ]);

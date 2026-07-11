@@ -24,7 +24,6 @@ use Cake\ORM\Entity;
  * @property \Cake\I18n\DateTime|null $created
  * @property bool $internal
  *
- * @property \App\Model\Entity\Contact[] $contacts
  * @property \App\Model\Entity\Project[] $projects
  */
 class Customer extends Entity
@@ -53,7 +52,6 @@ class Customer extends Entity
         'invoice_email' => true,
         'created' => true,
         'internal' => true,
-        'contacts' => true,
         'projects' => true
     ];
 }

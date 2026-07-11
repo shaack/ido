@@ -3,6 +3,23 @@
 Das Projekt nutzt keine Migrationen. Schemaänderungen werden hier als SQL
 festgehalten und von Hand auf der Produktivdatenbank ausgeführt.
 
+## 2026-07-11: Contacts entfernt (Tabelle optional)
+
+Kontakte werden nicht mehr gebraucht. Controller, Entity, Table, Templates und
+Tests sind gelöscht, ebenso die hasMany-Assoziation an Customers und der Block
+"Related Contacts" in der Kundenansicht.
+
+Die Tabelle `contacts` bleibt vorerst stehen. Der Code rührt sie nicht mehr an,
+sie stört also niemanden. Wer sie loswerden will, führt das hier aus. **Das ist
+unumkehrbar**, in der Entwicklungsdatenbank stehen 30 Kontakte mit 27
+E-Mail-Adressen, 15 Telefonnummern und 13 Notizen.
+
+```sql
+DROP TABLE contacts;
+```
+
+Nicht nötig für den Deploy. Der Code läuft mit und ohne die Tabelle.
+
 ## 2026-07-11: Festpreis wandert vom Projekt an die Leistung
 
 Der Festpreis gehört fachlich an die Leistung, nicht ans Projekt.

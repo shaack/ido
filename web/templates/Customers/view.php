@@ -67,45 +67,6 @@ $this->assign('title', h($customer->shortcut));
                     </div>
                 <?php endif; ?>
             </div>
-            <div class="related">
-                <h4><?= __('Related Contacts') ?></h4>
-                <div class="actions">
-                    <a class="button-clear" href="/contacts/add?customer_id=<?= $customer->id ?>">Add Contact</a>
-                </div>
-                <?php if (!empty($customer->contacts)) : ?>
-                    <div class="table-responsive">
-                        <table>
-                            <thead>
-                            <tr>
-                                <!-- <th><?= __('Id') ?></th> -->
-                                <th><?= __('Name') ?></th>
-                                <th><?= __('Role') ?></th>
-                                <th><?= __('Telephone') ?></th>
-                                <th><?= __('Email') ?></th>
-                                <!-- <th><?= __('Notes') ?></th>
-                            <th><?= __('Customer Id') ?></th> -->
-                                <th class="actions"><?= __('Actions') ?></th>
-                            </tr>
-                            </thead>
-                            <?php foreach ($customer->contacts as $contacts) : ?>
-                                <tr>
-                                    <!-- <td><?= h($contacts->id) ?></td> -->
-                                    <td><?= $this->Html->link($contacts->name, ['controller' => 'Contacts', 'action' => 'view', $contacts->id]) ?></td>
-                                    <td><?= h($contacts->role) ?></td>
-                                    <td><a href="tel:<?= h($contacts->telephone) ?>"><?= h($contacts->telephone) ?></a>
-                                    </td>
-                                    <td><a href="mailto:<?= h($contacts->email) ?>"><?= h($contacts->email) ?></a></td>
-                                    <!-- <td><?= h($contacts->notes) ?></td>
-                            <td><?= h($contacts->customer_id) ?></td> -->
-                                    <td class="actions">
-                                        <?= $this->Html->link(__('Edit'), ['controller' => 'Contacts', 'action' => 'edit', $contacts->id]) ?>
-                                    </td>
-                                </tr>
-                            <?php endforeach; ?>
-                        </table>
-                    </div>
-                <?php endif; ?>
-            </div>
             <div class="row">
                 <div class="col-md-6">
                     <h4><?= __('Data') ?></h4>
