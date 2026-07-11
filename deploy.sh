@@ -10,14 +10,23 @@
 # webroot/node_modules (Frontend-Assets), da beide zur Laufzeit
 # gebraucht werden.
 #
-# IMMER ausgenommen (serverseitig, dürfen NICHT überschrieben werden):
+# Vor dem Upload wird vendor/ ohne Dev-Abhängigkeiten neu gebaut
+# (composer install --no-dev), damit DebugKit, PHPUnit, Bake und
+# CodeSniffer nicht auf dem Produktivserver landen. Danach wird der
+# lokale Dev-Stand wiederhergestellt, auch bei Abbruch.
+#
+# IMMER ausgenommen (serverseitig, dürfen NICHT überschrieben oder
+# gelöscht werden):
 #   - config/app_local.php   Produktiv-DB-Zugang + Security-Salt
 #   - config/.env            serverseitige Umgebung
 #   - logs/, tmp/            Laufzeitdaten
 #   - .DS_Store
 #
-# Es werden neue und geänderte Dateien hochgeladen. Auf dem Server
-# verwaiste Dateien werden NICHT gelöscht (kein --delete).
+# Der Upload läuft mit --delete. Dateien, die es lokal nicht mehr gibt,
+# werden auch auf dem Server gelöscht. Die oben ausgenommenen Pfade sind
+# davon nicht betroffen, lftp nimmt sie komplett aus der Verarbeitung.
+# Im Zweifel vorher ./deploy.sh --dry-run laufen lassen, das listet jede
+# Löschung auf, ohne etwas anzufassen.
 #
 # Das SFTP-Passwort wird beim ersten Aufruf des Tages abgefragt und
 # bis Tagesende im macOS-Schlüsselbund gemerkt. Vergessen mit:
@@ -52,6 +61,10 @@ if ! command -v lftp >/dev/null 2>&1; then
   echo "Fehler: 'lftp' fehlt. Installieren mit:  brew install lftp" >&2
   exit 1
 fi
+if ! command -v composer >/dev/null 2>&1; then
+  echo "Fehler: 'composer' fehlt." >&2
+  exit 1
+fi
 
 # ---- Passwort: einmal pro Tag abfragen, dazwischen aus dem
 #      macOS-Schlüsselbund holen ----------------------------------
@@ -82,11 +95,12 @@ export LFTP_PASSWORD
 
 # ---- Bestätigung -------------------------------------------------
 echo
-echo "Quelle : ${LOCAL_DIR}/"
+echo "Quelle : ${LOCAL_DIR}/  (vendor/ wird vorher ohne Dev-Pakete gebaut)"
 echo "Ziel   : ${FTP_USER}@${FTP_HOST}:${REMOTE_DIR}"
 echo "Ausgenommen: config/app_local.php, config/.env, logs/, tmp/, .DS_Store"
+echo "Löschen: JA (--delete) — was lokal fehlt, verschwindet auch auf dem Server."
 if [ "$DRY_RUN" = true ]; then
-  echo "Modus  : DRY-RUN — es wird NICHTS übertragen, nur angezeigt."
+  echo "Modus  : DRY-RUN, es wird NICHTS übertragen und NICHTS gelöscht."
   DRY_FLAG="--dry-run"
 else
   DRY_FLAG=""
@@ -94,15 +108,36 @@ fi
 read -rp "$([ "$DRY_RUN" = true ] && echo 'Simulieren?' || echo 'Hochladen?') [j/N] " ANSWER
 [ "${ANSWER:-}" = "j" ] || { echo "Abgebrochen."; exit 0; }
 
+# ---- vendor/ für Produktion bauen --------------------------------
+# Der Dev-Stand wird in jedem Fall wiederhergestellt, auch wenn der
+# Upload abbricht oder das Skript per Ctrl-C beendet wird. Sonst stünde
+# die lokale Entwicklungsumgebung ohne PHPUnit und DebugKit da.
+restore_dev_vendor() {
+  echo
+  echo "› Lokales vendor/ wird wieder auf den Dev-Stand gebracht …"
+  ( cd "$LOCAL_DIR" && composer install --no-interaction --quiet )
+}
+trap restore_dev_vendor EXIT
+
+echo "› vendor/ wird ohne Dev-Pakete gebaut …"
+( cd "$LOCAL_DIR" && composer install --no-dev --optimize-autoloader --no-interaction --quiet )
+
 # ---- Upload ------------------------------------------------------
 echo "$([ "$DRY_RUN" = true ] && echo '› Dry-Run läuft …' || echo '› Upload läuft …')"
 lftp -u "$FTP_USER" --env-password "sftp://$FTP_HOST" <<EOF
 set sftp:auto-confirm yes
 set net:timeout 20
 set net:max-retries 3
-mirror --reverse --verbose ${DRY_FLAG} --parallel=4 --exclude ^config/app_local\.php\$ --exclude ^config/\.env\$ --exclude ^logs/ --exclude ^tmp/ --exclude \.DS_Store ${LOCAL_DIR}/ ${REMOTE_DIR}
+mirror --reverse --verbose --delete ${DRY_FLAG} --parallel=4 --exclude ^config/app_local\.php\$ --exclude ^config/\.env\$ --exclude ^logs/ --exclude ^tmp/ --exclude \.DS_Store ${LOCAL_DIR}/ ${REMOTE_DIR}
 bye
 EOF
 
 echo
 echo "✓ Deploy abgeschlossen."
+if [ "$DRY_RUN" = false ]; then
+  echo
+  echo "Denk an den Cache: tmp/ ist vom Upload ausgenommen, auf dem Server"
+  echo "liegt also weiter der alte Schema- und Routen-Cache. Nach Änderungen"
+  echo "am Schema oder nach einem Framework-Update in Plesk unter"
+  echo "${REMOTE_DIR}/tmp/cache/ die Unterordner models/ und persistent/ leeren."
+fi

@@ -105,14 +105,24 @@ CakePHP conventions. Routing is default `DashedRoute` fallbacks — no custom ro
 
 ## Deployment
 
-`./deploy.sh` mirrors `web/` to the Plesk host via SFTP (`lftp mirror --reverse`), excluding
-`config/app_local.php`, `config/.env`, `logs/`, `tmp/`. `--dry-run` shows what would happen.
+`./deploy.sh` mirrors `web/` to the Plesk host via SFTP (`lftp mirror --reverse --delete`), excluding
+`config/app_local.php`, `config/.env`, `logs/`, `tmp/`. `--dry-run` shows what would happen,
+deletions included — use it whenever the diff is bigger than a few files.
 
 The upload includes the **locally built `web/vendor/`** — there is no `composer install` on the
-server. Composer must therefore resolve against the *server's* PHP version, not the local CLI's,
-which is what the `config.platform.php` pin in `web/composer.json` is for. Keep that pin in sync with
-the PHP version in Plesk and in `compose/php.Dockerfile`; if they drift, you ship a `vendor/` that
-cannot run on the server.
+server. Two consequences:
+
+- The script rebuilds `vendor/` with `composer install --no-dev` before uploading and restores the
+  dev state afterwards via an `EXIT` trap. Without this, DebugKit, PHPUnit, Bake and CodeSniffer end
+  up on the production server (they used to). All of `composer audit`'s advisories live in those dev
+  packages; `composer audit --no-dev` is clean.
+- Composer must resolve against the *server's* PHP version, not the local CLI's, which is what the
+  `config.platform.php` pin in `web/composer.json` is for. Keep that pin in sync with the PHP version
+  in Plesk and in `compose/php.Dockerfile`; if they drift, you ship a `vendor/` that cannot run on
+  the server.
+
+`tmp/` is excluded, so the server keeps its old schema and routing cache across deploys. After a
+schema change or a framework update, clear `tmp/cache/models/` and `tmp/cache/persistent/` in Plesk.
 
 ## Schema changes
 
