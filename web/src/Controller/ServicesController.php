@@ -78,7 +78,7 @@ class ServicesController extends AppController
         } else {
             $service->project_id = $this->request->getQuery("project_id"); // shaack patch
         }
-        $projects = $this->Services->Projects->find('list', ['limit' => 1000, 'order' => ['id' => 'DESC']])->all();
+        $projects = $this->projectList();
         // $project wird nur für die Breadcrumb im Layout gebraucht. Ohne
         // project_id in der URL lief get(null) bisher in einen 500er.
         $projectId = $this->request->getQuery("project_id");
@@ -107,7 +107,7 @@ class ServicesController extends AppController
                 $this->Flash->error(__('The service could not be saved. Please, try again.'));
             }
         }
-        $projects = $this->Services->Projects->find('list', ['limit' => 1000, 'order' => ['id' => 'DESC']])->all();
+        $projects = $this->projectList();
         $this->set(compact('service', 'projects'));
     }
 
@@ -129,5 +129,29 @@ class ServicesController extends AppController
         }
 
         return $this->redirect(['action' => 'view', 'controller' => 'projects', $service->project_id]);
+    }
+
+    /**
+     * Projektliste fürs Auswahlfeld, als "KÜRZEL / Projektname". Bei 491
+     * Projekten sagt der Name allein zu wenig, erst das Kundenkürzel macht die
+     * Einträge unterscheidbar.
+     *
+     * Die Reihenfolge bleibt wie gehabt, neueste zuerst.
+     *
+     * @return \Cake\Datasource\ResultSetInterface
+     */
+    private function projectList()
+    {
+        return $this->Services->Projects->find('list', [
+            'keyField' => 'id',
+            // Ohne Kunde bliebe sonst ein führendes " / " stehen.
+            'valueField' => fn($project) => $project->customer
+                ? $project->customer->shortcut . ' / ' . $project->name
+                : $project->name,
+        ])
+            ->contain(['Customers'])
+            ->orderBy(['Projects.id' => 'DESC'])
+            ->limit(1000)
+            ->all();
     }
 }
