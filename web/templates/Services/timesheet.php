@@ -25,12 +25,12 @@ $this->assign('title', "Zeiterfassung " . h($service->name));
                             ?>
                         <tr>
                             <td><?= $this->Html->link($task->name ?: "[Task]", ['controller' => 'Tasks', 'action' => 'view', $task->id]) ?></td>
-                            <td class="text-end font-monospace"><?= $task->duration() ?></td>
+                            <td class="text-end font-monospace"><?= $this->Number->format($task->duration()) ?></td>
                         </tr>
                         <?php endforeach; ?>
                         <tr>
                             <td class="text-end fw-bold">Summe</td>
-                            <td class="text-end fw-bold font-monospace"><b><?= $durationSum ?></b></td>
+                            <td class="text-end fw-bold font-monospace"><b><?= $this->Number->format($durationSum) ?></b></td>
                         </tr>
                     </table>
                 </div>

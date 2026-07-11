@@ -76,7 +76,7 @@ $this->assign('title', $task->name ? $task->name : $task->service->name);
                                 ?>
                                 <tr>
                                     <td><?= h($timeTrackings->created) ?></td>
-                                    <td><?= h($timeTrackings->duration) ?></td>
+                                    <td><?= $timeTrackings->duration === null ? "" : $this->Number->format($timeTrackings->duration) ?></td>
                                     <td class="actions">
                                         <?= $this->Html->link(__('Continue tracking'), ['controller' => 'TimeTrackings', 'action' => 'edit', $timeTrackings->id]) ?>
                                         <?= $this->Form->postLink(__('Delete'), ['controller' => 'TimeTrackings', 'action' => 'delete', $timeTrackings->id], ['confirm' => __('Are you sure you want to delete # {0}?', $timeTrackings->id)]) ?>
@@ -86,7 +86,7 @@ $this->assign('title', $task->name ? $task->name : $task->service->name);
                             <tr>
                                 <td class="text-end border-top border-2">
                                 </td>
-                                <td class="border-top border-2"><b><?= $durationSum ?></b></td>
+                                <td class="border-top border-2"><b><?= $this->Number->format($durationSum) ?></b></td>
                                 <td class="text-end border-top border-2">
                                 </td>
                             </tr>

@@ -60,7 +60,7 @@
                             <td><?= h($projects->end_est) ?></td>
                             <td><?= h($projects->end) ?></td>
                             <td><?= h($projects->fixed_price) ?></td>
-                            <td><?= h($projects->hourly_rate) ?></td>
+                            <td><?= $projects->hourly_rate === null ? "" : $this->Number->format($projects->hourly_rate) ?></td>
                             <td><?= h($projects->notes) ?></td>
                             <td><?= h($projects->description) ?></td>
                             <td><?= h($projects->invoice_number) ?></td>
