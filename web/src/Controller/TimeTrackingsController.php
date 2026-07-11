@@ -95,10 +95,11 @@ class TimeTrackingsController extends AppController
                 $this->Flash->error(__('The time tracking could not be saved. Please, try again.'));
             }
         }
-        $tasks = $this->TimeTrackings->Tasks->find('list', ['limit' => 1000, 'order' => ['id' => 'DESC']])->all();
+        // Kein $tasks: Die Stoppuhr hat gar kein Auswahlfeld für den Task, sie
+        // lud die Liste bisher umsonst.
         $doneToday = $this->TimeTrackings->find()->where(["created >" => Date::now()])->all()->sumOf('duration');
         $doneTask = $this->TimeTrackings->find()->where(["task_id" => $timeTracking->task_id])->all()->sumOf('duration');
-        $this->set(compact('timeTracking', 'tasks', 'doneToday', 'doneTask'));
+        $this->set(compact('timeTracking', 'doneToday', 'doneTask'));
     }
 
     /**
@@ -126,8 +127,67 @@ class TimeTrackingsController extends AppController
             }
             $this->Flash->error(__('The time tracking could not be saved. Please, try again.'));
         }
-        $tasks = $this->TimeTrackings->Tasks->find('list', ['limit' => 1000, 'order' => ['id' => 'DESC']])->all();
+        $tasks = $this->taskList($timeTracking->task_id !== null ? (int)$timeTracking->task_id : null);
         $this->set(compact('timeTracking', 'tasks'));
+    }
+
+    /**
+     * Taskliste fürs Auswahlfeld, als "KÜRZEL / Projekt / Leistung / Task",
+     * beschränkt auf die letzten 500 Tasks aktueller Kunden.
+     *
+     * @param int|null $ensureId Task, der auf jeden Fall enthalten sein muss.
+     * @return array<int, string>
+     */
+    private function taskList(?int $ensureId = null): array
+    {
+        // 473 Tasks haben keinen Namen, 71 Leistungen ebenso. Leere Segmente
+        // werden weggelassen, statt " / / " zu erzeugen.
+        $label = function ($task) {
+            $service = $task->service;
+            $project = $service->project ?? null;
+            $teile = [];
+            if ($project && $project->customer) {
+                $teile[] = $project->customer->shortcut;
+            }
+            if ($project) {
+                $teile[] = $project->name;
+            }
+            if ($service && $service->name) {
+                $teile[] = $service->name;
+            }
+            if ($task->name) {
+                $teile[] = $task->name;
+            }
+
+            return implode(' / ', $teile);
+        };
+
+        $tasks = $this->TimeTrackings->Tasks->find('list', [
+            'keyField' => 'id',
+            'valueField' => $label,
+        ])
+            ->contain(['Services', 'Services.Projects', 'Services.Projects.Customers'])
+            ->where(['Customers.current' => true])
+            ->orderBy(['Tasks.id' => 'DESC'])
+            ->limit(500)
+            ->toArray();
+
+        // Der Task der bearbeiteten Erfassung muss in der Liste stehen, auch wenn
+        // er älter ist oder zu einem inaktiven Kunden gehört. Sonst wäre im
+        // Select nichts ausgewählt, und ein Speichern würde die Erfassung
+        // stillschweigend dem ersten Task zuschlagen. Das beträfe 1822 von 2867
+        // Erfassungen.
+        if ($ensureId !== null && !isset($tasks[$ensureId])) {
+            $task = $this->TimeTrackings->Tasks->find()
+                ->contain(['Services', 'Services.Projects', 'Services.Projects.Customers'])
+                ->where(['Tasks.id' => $ensureId])
+                ->first();
+            if ($task) {
+                $tasks = [$ensureId => $label($task)] + $tasks;
+            }
+        }
+
+        return $tasks;
     }
 
     /**

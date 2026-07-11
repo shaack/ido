@@ -2,7 +2,6 @@
 /**
  * @var \App\View\AppView $this
  * @var \App\Model\Entity\TimeTracking $timeTracking
- * @var string[]|\Cake\Collection\CollectionInterface $tasks
  * @var double $doneToday
  * @var double $doneTask
  */
