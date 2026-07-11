@@ -62,7 +62,10 @@ return [
     'App' => [
         'namespace' => 'App',
         'encoding' => env('APP_ENCODING', 'UTF-8'),
-        'defaultLocale' => env('APP_DEFAULT_LOCALE', 'en_US'),
+        // de_DE ist der Default, nicht en_US. Rechnungen und Angebote brauchen
+        // deutsche Zahlen (3,5) und Euro. Das hier ist die verlässliche Quelle,
+        // config/.env ist gitignored und darf dafür nicht der einzige Ort sein.
+        'defaultLocale' => env('APP_DEFAULT_LOCALE', 'de_DE'),
         'defaultTimezone' => env('APP_DEFAULT_TIMEZONE', 'UTC'),
         'base' => false,
         'dir' => 'src',
