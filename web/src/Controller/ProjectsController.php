@@ -181,7 +181,7 @@ class ProjectsController extends AppController
     }
 
     /**
-     * Kundenliste fürs Auswahlfeld, als "KÜRZEL Kundenname" und nach Kürzel
+     * Kundenliste fürs Auswahlfeld, als "KÜRZEL - Kundenname" und nach Kürzel
      * sortiert. Der displayField von Customers ist name, das Kürzel fehlte
      * deshalb, obwohl man in der ganzen App danach sucht.
      *
@@ -192,7 +192,10 @@ class ProjectsController extends AppController
     {
         $query = $this->Projects->Customers->find('list', [
             'keyField' => 'id',
-            'valueField' => fn($customer) => trim($customer->shortcut . ' ' . $customer->name),
+            // Ohne Kürzel bliebe sonst ein führendes " - " stehen.
+            'valueField' => fn($customer) => $customer->shortcut
+                ? $customer->shortcut . ' - ' . $customer->name
+                : $customer->name,
         ])->orderBy(['Customers.shortcut' => 'asc']);
 
         if ($onlyCurrent) {
