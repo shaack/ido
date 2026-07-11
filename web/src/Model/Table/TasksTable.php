@@ -69,10 +69,6 @@ class TasksTable extends Table
             ->notEmptyString('marked');
 
         $validator
-            ->integer('prio')
-            ->allowEmptyString('prio');
-
-        $validator
             ->scalar('name')
             ->maxLength('name', 256)
             ->allowEmptyString('name');
@@ -84,15 +80,6 @@ class TasksTable extends Table
         $validator
             ->date('deadline')
             ->allowEmptyDate('deadline');
-
-        $validator
-            ->integer('duration_est')
-            ->allowEmptyString('duration_est');
-
-        $validator
-            ->scalar('link')
-            ->maxLength('link', 256)
-            ->allowEmptyString('link');
 
         $validator
             ->integer('service_id')
@@ -110,10 +97,6 @@ class TasksTable extends Table
         $validator
             ->dateTime('done_at')
             ->allowEmptyDateTime('done_at');
-
-        $validator
-            ->numeric('duration')
-            ->allowEmptyString('duration');
 
         return $validator;
     }

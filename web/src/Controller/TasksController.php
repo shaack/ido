@@ -24,12 +24,12 @@ class TasksController extends AppController
     {
         $filter = $this->request->getQuery("filter");
         $this->paginate = [
-            'order' => ['marked' => 'desc', 'prio' => 'desc', 'id' => 'asc'],
+            'order' => ['marked' => 'desc', 'id' => 'asc'],
             'maxLimit' => 1000,
             'limit' => 1000,
             // Ohne diese Liste verwirft CakePHP die Sortierung nach Feldern aus
             // Assoziationen stillschweigend.
-            'sortableFields' => ['name', 'prio', 'marked', 'Customers.shortcut', 'Services.name', 'Projects.name'],
+            'sortableFields' => ['name', 'marked', 'Customers.shortcut', 'Services.name', 'Projects.name'],
         ];
         $now = DateTime::now();
         $conditions = ['OR' => [['start_est <=' => $now], ['start_est IS' => null]], ['OR' => [['done =' => false], ['done_at >' => $now->sub(new DateInterval("PT1H"))]]]];
@@ -99,9 +99,12 @@ class TasksController extends AppController
             $task->service_id = $this->request->getQuery("service_id"); // shaack patch
         }
         $services = $this->Tasks->Services->find('list', ['limit' => 1000, 'order' => ['id' => 'DESC']])->all();
-        $service = $this->Tasks->Services->get($this->request->getQuery("service_id"), ["contain" => ["Projects", "Projects.Customers"]]);
-        // $task->prio = 1;
-        // $task->marked = 1;
+        // $service wird nur für die Breadcrumb im Layout gebraucht. Ohne
+        // service_id in der URL lief get(null) bisher in einen 500er.
+        $serviceId = $this->request->getQuery("service_id");
+        $service = $serviceId
+            ? $this->Tasks->Services->get($serviceId, ["contain" => ["Projects", "Projects.Customers"]])
+            : null;
         $this->set(compact('task', 'service', 'services'));
     }
 
@@ -145,15 +148,6 @@ class TasksController extends AppController
         $marked = $this->request->getQuery("marked", 0);
         $task = $this->Tasks->get($id);
         $task->marked = $marked;
-        $this->Tasks->save($task);
-        $this->redirect(["action" => "index"]);
-    }
-
-    public function prio($id)
-    {
-        $prio = $this->request->getQuery("prio", 0);
-        $task = $this->Tasks->get($id);
-        $task->prio = $prio;
         $this->Tasks->save($task);
         $this->redirect(["action" => "index"]);
     }

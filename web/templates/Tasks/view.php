@@ -27,10 +27,6 @@ $this->assign('title', $task->name ? $task->name : $task->service->name);
                     <td><?= $task->hasValue('service') ? $this->Html->link($task->service->name, ['controller' => 'Services', 'action' => 'view', $task->service->id]) : '' ?></td>
                 </tr>
                 <tr>
-                    <th><?= __('Prio') ?></th>
-                    <td><?= $task->prio === null ? '' : $this->Number->format($task->prio) ?></td>
-                </tr>
-                <tr>
                     <th><?= __('Start Est') ?></th>
                     <td><?= h($task->start_est) ?></td>
                 </tr>

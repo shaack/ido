@@ -24,14 +24,10 @@
                 echo $this->Form->control('done');
                 echo $this->Form->control('marked');
                 echo $this->Form->control('name');
-                echo $this->Form->control('prio');
                 echo $this->Form->control('start_est', ['empty' => true]);
                 echo $this->Form->control('deadline', ['empty' => true]);
-                echo $this->Form->control('duration_est');
-                // echo $this->Form->control('link');
                 echo $this->Form->control('service_id', ['options' => $services, 'empty' => true]);
                 // echo $this->Form->control('done_at', ['empty' => true]);
-                // echo $this->Form->control('duration');
                 ?>
             </div>
             <div class="col-md">

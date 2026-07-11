@@ -50,7 +50,6 @@ function doneClass($doneTime)
                 <th><?= $this->Paginator->sort('Customers.shortcut', 'Cst') ?></th>
                 <th><?= $this->Paginator->sort('Services.name', 'Service') ?></th>
                 <th><?= $this->Paginator->sort('Projects.name', 'Project') ?></th>
-                <!-- <th><?= $this->Paginator->sort('prio') ?></th> -->
             </tr>
             </thead>
             <tbody>
@@ -81,22 +80,6 @@ function doneClass($doneTime)
                     <td><?= $this->Html->link($this->Text->truncate($task->service->smartName, 45), ['controller' => 'Services', 'action' => 'view', $task->service->id],
                             ['class' => $task->service->name ? '' : 'fst-italic']) ?></td>
                     <td><?= $this->Html->link($this->Text->truncate($task->service->project->name, 40), ['controller' => 'Projects', 'action' => 'view', $task->service->project->id]) ?></td>
-                    <!--
-                    <td class="text-end"><?php
-                    $icon = "";
-                    switch ($task->prio) {
-                        case 0:
-                            $icon = "<a href='tasks/prio/$task->id?prio=1'><i class=\"fa-solid fa-plus\"></i></a> <a href='tasks/prio/$task->id?prio=-1'><i class=\"fa-solid fa-minus\"></i></a>";
-                            break;
-                        case 1:
-                            $icon = "<a href='tasks/prio/$task->id?prio=-1' class='text-warning'><i class=\"fa-solid fa-plus\"></i></a>";
-                            break;
-                        case -1:
-                            $icon = "<a href='tasks/prio/$task->id?prio=1' class='text-muted'><i class=\"fa-solid fa-minus\"></i></a>";
-                            break;
-                    }
-                    echo $icon;
-                    ?></td>-->
                 </tr>
             <?php endforeach; ?>
             </tbody>
