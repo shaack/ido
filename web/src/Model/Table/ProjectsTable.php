@@ -95,10 +95,6 @@ class ProjectsTable extends Table
             ->notEmptyString('hourly_rate');
 
         $validator
-            ->scalar('notes')
-            ->allowEmptyString('notes');
-
-        $validator
             ->scalar('description')
             ->allowEmptyString('description');
 

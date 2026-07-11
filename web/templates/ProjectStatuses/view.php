@@ -40,7 +40,6 @@
                             <th><?= __('End') ?></th>
                             <th><?= __('Fixed Price') ?></th>
                             <th><?= __('Hourly Rate') ?></th>
-                            <th><?= __('Notes') ?></th>
                             <th><?= __('Description') ?></th>
                             <th><?= __('Invoice Number') ?></th>
                             <th><?= __('Invoice Date') ?></th>
@@ -58,7 +57,6 @@
                             <td><?= h($projects->end) ?></td>
                             <td><?= h($projects->fixed_price) ?></td>
                             <td><?= $projects->hourly_rate === null ? "" : $this->Number->format($projects->hourly_rate) ?></td>
-                            <td><?= h($projects->notes) ?></td>
                             <td><?= h($projects->description) ?></td>
                             <td><?= h($projects->invoice_number) ?></td>
                             <td><?= h($projects->invoice_date) ?></td>

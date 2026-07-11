@@ -26,7 +26,6 @@
                     echo $this->Form->control('end', ['empty' => true]);
                     echo $this->Form->control('fixed_price');
                     echo $this->Form->control('hourly_rate');
-                    echo $this->Form->control('notes');
                     echo $this->Form->control('description');
                     echo $this->Form->control('invoice_number');
                     echo $this->Form->control('invoice_date', ['empty' => true]);

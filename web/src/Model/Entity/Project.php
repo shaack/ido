@@ -46,7 +46,6 @@ class Project extends Entity
         'end' => true,
         'fixed_price' => true,
         'hourly_rate' => true,
-        'notes' => true,
         'description' => true,
         'invoice_number' => true,
         'invoice_date' => true,

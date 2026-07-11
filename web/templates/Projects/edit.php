@@ -44,7 +44,6 @@
 
                         ?></div>
                     <div class="col"><?php
-                        echo $this->Form->control('notes', ["rows" => 15]);
                         echo $this->Form->control('description', ["rows" => 15]);
                         ?></div>
                 </div>

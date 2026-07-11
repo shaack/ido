@@ -135,12 +135,6 @@ $this->assign('title', h($project->name));
                 </div>
 
                 <div class="col">
-                    <div class="text">
-                        <strong><?= __('Notes') ?></strong>
-                        <blockquote>
-                            <?= $this->Markdown->toHtmlWithHashtags($project->notes); ?>
-                        </blockquote>
-                    </div>
                     <?php if ($project->description) { ?>
                         <div class="text">
                             <strong><?= __('Description') ?></strong>
