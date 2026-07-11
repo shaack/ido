@@ -131,9 +131,12 @@ class ProjectsController extends AppController
                 $project->hourly_rate = $customerRates[(int)$project->customer_id] ?? null;
             }
             $project->start = new Date();
+            // Das Auswahlfeld hängt an project_status_id. Hier stand vorher
+            // $project->project_status = ...->get(15), was nur das
+            // Assoziationsobjekt setzte und im Formular nichts vorauswählte.
+            $project->project_status_id = 15; // runs
         }
 
-        $project->project_status = $this->Projects->ProjectStatuses->get(15); // runs
         $projectStatuses = $this->Projects->ProjectStatuses->find('list', ['limit' => 200])->all();
         $this->set(compact('project', 'customers', 'projectStatuses', 'customerRates'));
     }
