@@ -27,7 +27,7 @@ $this->assign('title', __('Edit Time Tracking'));
         <legend><?= __('Edit Time Tracking') ?></legend>
         <?php
             echo $this->Form->control('task_id', ['options' => $tasks]);
-            echo $this->Form->control('created', ['type' => 'datetime-local']);
+            echo $this->Form->control('created');
             echo $this->Form->control('duration', ['step' => 'any', 'label' => __('Duration (hours)')]);
         ?>
     </fieldset>
