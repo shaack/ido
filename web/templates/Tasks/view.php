@@ -58,7 +58,7 @@ $this->assign('title', $task->name ? $task->name : $task->service->name);
                                     <td><?= h($timeTrackings->created) ?></td>
                                     <td><?= $this->Effort->hours($timeTrackings->duration) ?></td>
                                     <td class="actions">
-                                        <?= $this->Html->link(__('Continue tracking'), ['controller' => 'TimeTrackings', 'action' => 'edit', $timeTrackings->id]) ?>
+                                        <?= $this->Html->link(__('Continue tracking'), ['controller' => 'TimeTrackings', 'action' => 'track', $timeTrackings->id]) ?>
                                         <?= $this->Form->postLink(__('Delete'), ['controller' => 'TimeTrackings', 'action' => 'delete', $timeTrackings->id], ['confirm' => __('Are you sure you want to delete # {0}?', $timeTrackings->id)]) ?>
                                     </td>
                                 </tr>

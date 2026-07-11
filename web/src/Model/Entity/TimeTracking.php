@@ -28,6 +28,7 @@ class TimeTracking extends Entity
      */
     protected array $_accessible = [
         'task_id' => true,
+        'created' => true,
         'duration' => true,
         'task' => true,
     ];

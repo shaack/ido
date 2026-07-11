@@ -22,6 +22,7 @@
                         <th><?= $this->Paginator->sort('Services.name', 'Service') ?></th>
                         <th><?= $this->Paginator->sort('Projects.name', 'Project') ?></th>
                         <th class="text-end"><?= $this->Paginator->sort('duration') ?></th>
+                        <th class="actions"><?= __('Actions') ?></th>
                     <?php else: ?>
                         <th><?= __('Created') ?></th>
                         <th><?= __('Task') ?></th>
@@ -29,6 +30,7 @@
                         <th><?= __('Service') ?></th>
                         <th><?= __('Project') ?></th>
                         <th class="text-end"><?= __('Duration') ?></th>
+                        <th class="actions"><?= __('Actions') ?></th>
                     <?php endif; ?>
                 </tr>
             </thead>
@@ -37,12 +39,15 @@
                     $customer = $timeTracking->task->service->project->customer;
                     ?>
                 <tr>
-                    <td><?= $this->Html->link($timeTracking->created, ['action' => 'edit', $timeTracking->id]) ?></td>
+                    <td><?= $this->Html->link($timeTracking->created, ['action' => 'track', $timeTracking->id]) ?></td>
                     <td class="<?= $timeTracking->task->name ? "" : "fst-italic" ?>"><?= $timeTracking->hasValue('task') ? $this->Html->link($timeTracking->task->name ?: $timeTracking->task->service->name, ['controller' => 'Tasks', 'action' => 'view', $timeTracking->task->id]) : '' ?></td>
                     <td><?php if ($customer): ?><?= $this->Html->link($customer->shortcut, ['controller' => 'Customers', 'action' => 'view', $customer->id], ['style' => 'color: ' . $customer->color]) ?><?php endif ?></td>
                     <td><?= $this->Html->link($this->Text->truncate($timeTracking->task->service->name, 32), ['controller' => 'Services', 'action' => 'view', $timeTracking->task->service->id]) ?></td>
                     <td><?= $this->Html->link($this->Text->truncate($timeTracking->task->service->project->name, 32), ['controller' => 'Projects', 'action' => 'view', $timeTracking->task->service->project->id]) ?></td>
                     <td class="text-end"><?= $this->Effort->hours($timeTracking->duration) ?></td>
+                    <td class="actions">
+                        <?= $this->Html->link(__('Edit'), ['action' => 'edit', $timeTracking->id]) ?>
+                    </td>
                 </tr>
                 <?php endforeach; ?>
 
