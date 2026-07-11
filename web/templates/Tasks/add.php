@@ -5,27 +5,24 @@
  * @var \Cake\Collection\CollectionInterface|string[] $services
  */
 ?>
+<div class="actions">
+    <?= $this->Html->link(__('List Tasks'), ['action' => 'index']) ?>
+</div>
 <div class="row">
-    <div class="tasks form content">
-        <?= $this->Form->create($task) ?>
-        <fieldset>
-            <legend><?= __('Add Task') ?></legend>
-            <div class="row">
-                <div class="col-md-8">
-                    <?php
+    <div class="column-responsive column-80">
+        <div class="tasks form content">
+            <?= $this->Form->create($task) ?>
+            <fieldset>
+                <legend><?= __('Add Task') ?></legend>
+                <?php
                     echo $this->Form->control('done');
                     echo $this->Form->control('marked');
                     echo $this->Form->control('name');
                     echo $this->Form->control('service_id', ['options' => $services, 'empty' => true]);
-                    ?>
-                </div>
-                <div class="col">
-                    <?php
-                    ?>
-                </div>
-            </div>
-        </fieldset>
-        <?= $this->Form->button(__('Submit')) ?>
-        <?= $this->Form->end() ?>
+                ?>
+            </fieldset>
+            <?= $this->Form->button(__('Submit')) ?>
+            <?= $this->Form->end() ?>
+        </div>
     </div>
 </div>
