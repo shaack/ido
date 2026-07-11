@@ -31,9 +31,6 @@
                     echo $this->Form->control('project_id', ['options' => $projects]);
                     echo $this->Form->control('effort_est');
                     echo $this->Form->control('fixed_price');
-                    echo $this->Form->control('effort');
-                    echo $this->Form->control('costs');
-                    echo $this->Form->control('notes');
                     echo $this->Form->control('sort');
                 ?>
             </fieldset>

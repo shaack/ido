@@ -48,7 +48,7 @@ $this->assign('title', h($service->name));
                 </tr>
                 <tr>
                     <th><?= __('Costs') ?></th>
-                    <td><?= $service->costs === null ? '' : $this->Number->format($service->costs) ?></td>
+                    <td><?= $this->Number->currency($service->costs()) ?></td>
                 </tr>
                 <tr>
                     <th><?= __('Sort') ?></th>
@@ -60,12 +60,6 @@ $this->assign('title', h($service->name));
                 </tr>
             </table>
             -->
-            <div class="text">
-                <strong><?= __('Notes') ?></strong>
-                <blockquote>
-                    <?= $this->Text->autoParagraph(h($service->notes)); ?>
-                </blockquote>
-            </div>
             <div class="related">
                 <h4><?= __('Related Tasks') ?></h4>
                 <a class="button-clear" href="/tasks/add?service_id=<?= $service->id ?>">Add Task</a>
