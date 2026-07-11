@@ -3,7 +3,7 @@ declare(strict_types=1);
 
 namespace App\Controller;
 
-use Cake\I18n\FrozenDate;
+use Cake\I18n\Date;
 
 /**
  * Projects Controller
@@ -21,27 +21,20 @@ class ProjectsController extends AppController
     public function index()
     {
         $current = $this->request->getQuery("current", false);
-        $options = ['conditions' => ['OR' => [
-            ['Projects.project_status_id' => 5],
-            ['Projects.project_status_id' => 10],
-            ['Projects.project_status_id' => 15],
-            ['Projects.project_status_id' => 20],
-            ['Projects.project_status_id' => 25],
-            ['Projects.project_status_id' => 30],
-            ['Projects.project_status_id' => 35]
-        ]]];
+        $query = $this->Projects->find()->contain([
+            'Customers', 'ParentProjects', 'ProjectStatuses', 'Services', 'Services.Tasks', 'Services.Tasks.TimeTrackings'
+        ]);
         if ($current) {
+            $query->where(['Projects.project_status_id IN' => [5, 10, 15, 20, 25, 30, 35]]);
             $this->paginate = [
-                'contain' => ['Customers', 'ParentProjects', 'ProjectStatuses', 'Services', 'Services.Tasks', 'Services.Tasks.TimeTrackings'],
                 'order' => ['invoice_number' => 'asc', 'project_status_id' => 'asc', 'id' => 'asc']
             ];
         } else {
             $this->paginate = [
-                'contain' => ['Customers', 'ParentProjects', 'ProjectStatuses', 'Services', 'Services.Tasks', 'Services.Tasks.TimeTrackings'],
                 'order' => ['id' => 'desc']
             ];
         }
-        $projects = $this->paginate($this->Projects, $current ? $options : []);
+        $projects = $this->paginate($query);
 
         $this->set(compact('projects'));
     }
@@ -93,10 +86,10 @@ class ProjectsController extends AppController
                 'fields' => ['amount' => 'MAX(Projects.invoice_number)']
             ])->first()->amount;
             $project->invoice_number = $latestInvoiceNumber + 1;
-            $project->invoice_date = new FrozenDate();
+            $project->invoice_date = new Date();
             $invoiceStored = false;
             if (!$project->end) {
-                $project->end = new FrozenDate();
+                $project->end = new Date();
             }
         }
         $this->viewBuilder()->setLayout('print');

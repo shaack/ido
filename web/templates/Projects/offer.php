@@ -3,7 +3,7 @@
 /** @var $invoiceStored boolean */
 
 use Cake\Core\Configure;
-use Cake\I18n\FrozenDate;
+use Cake\I18n\Date;
 
 $type = $this->request->getQuery('type', 'default');
 $latestInvoiceNumber = $this->get('latestInvoiceNumber');
@@ -12,7 +12,7 @@ $newInvoiceNumber = $asNumber + 1;
 
 $foreign = $project->customer->country && $project->customer->country !== "Deutschland";
 $lang = $foreign ? "en" : "de";
-$fileName = FrozenDate::now()->i18nFormat('yyyy-MM-dd') .
+$fileName = Date::now()->i18nFormat('yyyy-MM-dd') .
     " " . ($lang == "de" ? "Angebot" : "Offer") . " " . $project->customer->shortcut . " " . $project->name;
 $this->assign('title', $fileName);
 ?>
@@ -71,5 +71,5 @@ $this->assign('title', $fileName);
 </p>
 <p>
     Vielen Dank für Ihr Interesse an meinen Dienstleistungen<br/>
-    <?= Configure::read('Company.name') ?>, <?= Configure::read('Company.city') ?> <?= FrozenDate::now()->i18nFormat('dd.MM.yyyy') ?>
+    <?= Configure::read('Company.name') ?>, <?= Configure::read('Company.city') ?> <?= Date::now()->i18nFormat('dd.MM.yyyy') ?>
 </p>

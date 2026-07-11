@@ -21,7 +21,7 @@ use Cake\ORM\Entity;
  * @property string|null $country
  * @property string|null $address_addition
  * @property string|null $invoice_email
- * @property \Cake\I18n\FrozenTime|null $created
+ * @property \Cake\I18n\DateTime|null $created
  * @property bool $internal
  *
  * @property \App\Model\Entity\Contact[] $contacts
@@ -38,7 +38,7 @@ class Customer extends Entity
      *
      * @var array<string, bool>
      */
-    protected $_accessible = [
+    protected array $_accessible = [
         'shortcut' => true,
         'hourly_rate' => true,
         'website' => true,

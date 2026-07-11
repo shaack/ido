@@ -17,7 +17,7 @@ use Cake\ORM\Entity;
  * @property float|null $costs
  * @property string|null $notes
  * @property int|null $sort
- * @property \Cake\I18n\FrozenTime $created
+ * @property \Cake\I18n\DateTime $created
  *
  * @property \App\Model\Entity\Project $project
  * @property \App\Model\Entity\Task[] $tasks
@@ -33,7 +33,7 @@ class Service extends Entity
      *
      * @var array<string, bool>
      */
-    protected $_accessible = [
+    protected array $_accessible = [
         'name' => true,
         'project_id' => true,
         'effort_est' => true,
@@ -58,7 +58,9 @@ class Service extends Entity
     }
 
     function effortPlanned() {
-        return $this->effort_est;
+        // effort_est ist nullable. CakePHP 4 hat null in den Number-Helfern noch
+        // als 0 durchgehen lassen, CakePHP 5 wirft dafür einen TypeError.
+        return $this->effort_est ?? 0;
     }
 
     function costsPlanned() {

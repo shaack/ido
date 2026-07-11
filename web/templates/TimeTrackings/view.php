@@ -20,7 +20,7 @@
             <table>
                 <tr>
                     <th><?= __('Task') ?></th>
-                    <td><?= $timeTracking->has('task') ? $this->Html->link($timeTracking->task->name, ['controller' => 'Tasks', 'action' => 'view', $timeTracking->task->id]) : '' ?></td>
+                    <td><?= $timeTracking->hasValue('task') ? $this->Html->link($timeTracking->task->name, ['controller' => 'Tasks', 'action' => 'view', $timeTracking->task->id]) : '' ?></td>
                 </tr>
                 <tr>
                     <th><?= __('Id') ?></th>

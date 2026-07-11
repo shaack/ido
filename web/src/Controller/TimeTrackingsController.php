@@ -3,9 +3,8 @@ declare(strict_types=1);
 
 namespace App\Controller;
 
-use Cake\Chronos\Date;
-use Cake\I18n\FrozenDate;
-use Cake\I18n\FrozenTime;
+use Cake\I18n\Date;
+use Cake\I18n\DateTime;
 
 /**
  * TimeTrackings Controller
@@ -23,10 +22,11 @@ class TimeTrackingsController extends AppController
     public function index()
     {
         $this->paginate = [
-            'contain' => ['Tasks', 'Tasks.Services', 'Tasks.Services.Projects', 'Tasks.Services.Projects.Customers'],
             'order' => ['id' => 'desc']
         ];
-        $timeTrackings = $this->paginate($this->TimeTrackings);
+        $query = $this->TimeTrackings->find()
+            ->contain(['Tasks', 'Tasks.Services', 'Tasks.Services.Projects', 'Tasks.Services.Projects.Customers']);
+        $timeTrackings = $this->paginate($query);
 
         $this->set(compact('timeTrackings'));
     }
@@ -64,7 +64,7 @@ class TimeTrackingsController extends AppController
         }
         $this->TimeTrackings->deleteAll([ // delete old trackings
             "duration" => 0,
-            "created <" => FrozenDate::now()->subDay(3)
+            "created <" => Date::now()->subDay(3)
         ]);
         return $this->redirect(['action' => 'edit', $timeTracking->id]);
     }
@@ -92,8 +92,8 @@ class TimeTrackingsController extends AppController
         }
         $tasks = $this->TimeTrackings->Tasks->find('list', ['limit' => 1000, 'order' => ['id' => 'DESC']])->all();
         // $hideNavigation = true;
-        $doneToday = $this->TimeTrackings->find()->where(["created >" => FrozenDate::now()])->sumOf('duration');
-        $doneTask = $this->TimeTrackings->find()->where(["task_id" => $timeTracking->task_id])->sumOf('duration');
+        $doneToday = $this->TimeTrackings->find()->where(["created >" => Date::now()])->all()->sumOf('duration');
+        $doneTask = $this->TimeTrackings->find()->where(["task_id" => $timeTracking->task_id])->all()->sumOf('duration');
         $this->set(compact('timeTracking', 'tasks', 'hideNavigation',
             'doneToday', 'doneTask'));
     }
@@ -137,14 +137,18 @@ class TimeTrackingsController extends AppController
         // Extract year and month
         list($year, $monthNum) = explode('-', $month);
 
-        // Create start and end dates for the month
-        $startDate = new FrozenDate("$year-$monthNum-01");
-        $endDate = $startDate->modify('last day of this month');
+        // Halboffenes Intervall: ab dem Monatsersten bis zum Ersten des
+        // Folgemonats, dieser ausschliesslich. Unter CakePHP 4 stand hier
+        // "letzter Tag + 2 Tage - 1 Sekunde". Das war ein Workaround, weil
+        // FrozenDate nach jeder Rechnung die Uhrzeit wieder auf Mitternacht
+        // zurücksetzte, und ergab effektiv dieselbe Grenze.
+        $startDate = new Date("$year-$monthNum-01");
+        $endDate = $startDate->addMonths(1);
 
         // Add date range condition to query
         $query->where([
             'TimeTrackings.created >=' => $startDate,
-            'TimeTrackings.created <=' => $endDate->modify('+2 day')->subSecond(1)
+            'TimeTrackings.created <' => $endDate
         ]);
 /*
         print_r($query->sql());
@@ -155,11 +159,11 @@ class TimeTrackingsController extends AppController
 */
 
         // Calculate total duration
-        $totalDuration = $query->sumOf('duration');
+        $totalDuration = $query->all()->sumOf('duration');
 
         // Don't use pagination for monthly view
         $showPagination = false;
-        $timeTrackings = $query->order(['TimeTrackings.created' => 'asc'])->all();
+        $timeTrackings = $query->orderBy(['TimeTrackings.created' => 'asc'])->all();
 
         $this->viewBuilder()->setLayout('print');
         $this->set(compact('timeTrackings', 'showPagination', 'totalDuration', 'month', 'customerShortcut'));

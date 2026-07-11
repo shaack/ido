@@ -31,7 +31,7 @@ $this->assign('title', h($service->name));
                 </tr>
                 <tr>
                     <th><?= __('Project') ?></th>
-                    <td><?= $service->has('project') ? $this->Html->link($service->project->name, ['controller' => 'Projects', 'action' => 'view', $service->project->id]) : '' ?></td>
+                    <td><?= $service->hasValue('project') ? $this->Html->link($service->project->name, ['controller' => 'Projects', 'action' => 'view', $service->project->id]) : '' ?></td>
                 </tr>
                 <tr>
                     <th><?= __('Effort Est') ?></th>

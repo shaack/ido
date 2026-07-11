@@ -3,7 +3,7 @@ declare(strict_types=1);
 
 namespace App\Controller;
 
-use Cake\I18n\FrozenTime;
+use Cake\I18n\DateTime;
 
 /**
  * Services Controller
@@ -21,11 +21,12 @@ class ServicesController extends AppController
     public function index()
     {
         $this->paginate = [
-            'contain' => ['Projects', 'Projects.Customers', 'Tasks', 'Tasks.TimeTrackings'],
             'order' => ['id' => 'desc']
         ];
-        $options = ['conditions' => ['project_status_id' => 15]];
-        $services = $this->paginate($this->Services, $options);
+        $query = $this->Services->find()
+            ->contain(['Projects', 'Projects.Customers', 'Tasks', 'Tasks.TimeTrackings'])
+            ->where(['project_status_id' => 15]);
+        $services = $this->paginate($query);
 
         $this->set(compact('services'));
     }

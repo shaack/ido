@@ -12,16 +12,16 @@ use Cake\ORM\Entity;
  * @property bool $marked
  * @property int|null $prio
  * @property string|null $name
- * @property \Cake\I18n\FrozenDate|null $start_est
- * @property \Cake\I18n\FrozenDate|null $deadline
+ * @property \Cake\I18n\Date|null $start_est
+ * @property \Cake\I18n\Date|null $deadline
  * @property int|null $duration_est
  * @property string|null $link
  * @property int|null $service_id
- * @property \Cake\I18n\FrozenTime|null $created
- * @property \Cake\I18n\FrozenTime|null $modified
+ * @property \Cake\I18n\DateTime|null $created
+ * @property \Cake\I18n\DateTime|null $modified
  * @property string|null $notes
  * @property bool $done
- * @property \Cake\I18n\FrozenTime|null $done_at
+ * @property \Cake\I18n\DateTime|null $done_at
  * @property float|null $duration
  *
  * @property \App\Model\Entity\Service $service
@@ -38,7 +38,7 @@ class Task extends Entity
      *
      * @var array<string, bool>
      */
-    protected $_accessible = [
+    protected array $_accessible = [
         'marked' => true,
         'prio' => true,
         'name' => true,

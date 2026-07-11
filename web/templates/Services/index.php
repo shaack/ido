@@ -26,8 +26,8 @@
                 <tr>
                     <td><?= $this->Html->link($service->name, ['action' => 'view', $service->id]) ?></td>
                     <?php $customer = $service->project->customer ?>
-                    <td><?= $this->Html->link($customer->shortcut, ['controller' => 'Customers', 'action' => 'view', $customer->id], ['style' => 'color: ' . $customer->color]) ?></td>
-                    <td><?= $service->has('project') ? $this->Html->link($service->project->name, ['controller' => 'Projects', 'action' => 'view', $service->project->id]) : '' ?></td>
+                    <td><?php if ($customer): ?><?= $this->Html->link($customer->shortcut, ['controller' => 'Customers', 'action' => 'view', $customer->id], ['style' => 'color: ' . $customer->color]) ?><?php endif ?></td>
+                    <td><?= $service->hasValue('project') ? $this->Html->link($service->project->name, ['controller' => 'Projects', 'action' => 'view', $service->project->id]) : '' ?></td>
                     <td class="text-end"><?= $this->Number->format($service->effort()) ?></td>
                     <td class="text-end"><?= $costs ? $this->Number->currency($costs) : "" ?></td>
                     <td class="actions">

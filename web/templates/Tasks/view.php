@@ -24,7 +24,7 @@ $this->assign('title', $task->name ? $task->name : $task->service->name);
                 </tr>
                 <tr>
                     <th><?= __('Service') ?></th>
-                    <td><?= $task->has('service') ? $this->Html->link($task->service->name, ['controller' => 'Services', 'action' => 'view', $task->service->id]) : '' ?></td>
+                    <td><?= $task->hasValue('service') ? $this->Html->link($task->service->name, ['controller' => 'Services', 'action' => 'view', $task->service->id]) : '' ?></td>
                 </tr>
                 <tr>
                     <th><?= __('Prio') ?></th>

@@ -11,19 +11,19 @@ use Cake\ORM\Entity;
  * @property int $id
  * @property string $name
  * @property int|null $customer_id
- * @property \Cake\I18n\FrozenDate|null $start
- * @property \Cake\I18n\FrozenDate|null $end_est
- * @property \Cake\I18n\FrozenDate|null $end
+ * @property \Cake\I18n\Date|null $start
+ * @property \Cake\I18n\Date|null $end_est
+ * @property \Cake\I18n\Date|null $end
  * @property bool|null $fixed_price
  * @property float $hourly_rate
  * @property string|null $notes
  * @property string|null $description
  * @property string|null $invoice_number
- * @property \Cake\I18n\FrozenDate|null $invoice_date
- * @property \Cake\I18n\FrozenDate|null $paid_at
+ * @property \Cake\I18n\Date|null $invoice_date
+ * @property \Cake\I18n\Date|null $paid_at
  * @property int|null $parent_id
  * @property int|null $project_status_id
- * @property \Cake\I18n\FrozenTime|null $created
+ * @property \Cake\I18n\DateTime|null $created
  * @property string|null $invoice_type
  *
  * @property \App\Model\Entity\Customer $customer
@@ -43,7 +43,7 @@ class Project extends Entity
      *
      * @var array<string, bool>
      */
-    protected $_accessible = [
+    protected array $_accessible = [
         'name' => true,
         'customer_id' => true,
         'start' => true,

@@ -28,7 +28,7 @@
                     <td><?= h($contact->role) ?></td>
                     <td><?= h($contact->telephone) ?></td>
                     <td><?= h($contact->email) ?></td>
-                    <td><?= $contact->has('customer') ? $this->Html->link($contact->customer->name, ['controller' => 'Customers', 'action' => 'view', $contact->customer->id]) : '' ?></td>
+                    <td><?= $contact->hasValue('customer') ? $this->Html->link($contact->customer->name, ['controller' => 'Customers', 'action' => 'view', $contact->customer->id]) : '' ?></td>
                     <td class="actions">
                         <?= $this->Html->link(__('View'), ['action' => 'view', $contact->id]) ?>
                         <?= $this->Html->link(__('Edit'), ['action' => 'edit', $contact->id]) ?>

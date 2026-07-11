@@ -35,7 +35,7 @@ $this->assign('title', $fileName);
                     ?>
                 <tr>
                     <td><?= $this->Html->link($timeTracking->created, ['action' => 'edit', $timeTracking->id]) ?></td>
-                    <td class="<?= $timeTracking->task->name ? "" : "fst-italic" ?>"><?= $timeTracking->has('task') ? $this->Html->link($timeTracking->task->name ?: 'Diverses', ['controller' => 'Tasks', 'action' => 'view', $timeTracking->task->id]) : '' ?></td>
+                    <td class="<?= $timeTracking->task->name ? "" : "fst-italic" ?>"><?= $timeTracking->hasValue('task') ? $this->Html->link($timeTracking->task->name ?: 'Diverses', ['controller' => 'Tasks', 'action' => 'view', $timeTracking->task->id]) : '' ?></td>
                     <td><?= $this->Html->link($timeTracking->task->service->name, ['controller' => 'Services', 'action' => 'view', $timeTracking->task->service->id]) ?></td>
                     <td><?= $this->Html->link($timeTracking->task->service->project->name, ['controller' => 'Projects', 'action' => 'view', $timeTracking->task->service->project->id]) ?></td>
                     <td class="text-end"><?= $timeTracking->duration === null ? '' : $this->Number->format($timeTracking->duration) ?></td>

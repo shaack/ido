@@ -36,7 +36,7 @@
                 </tr>
                 <tr>
                     <th><?= __('Customer') ?></th>
-                    <td><?= $contact->has('customer') ? $this->Html->link($contact->customer->name, ['controller' => 'Customers', 'action' => 'view', $contact->customer->id]) : '' ?></td>
+                    <td><?= $contact->hasValue('customer') ? $this->Html->link($contact->customer->name, ['controller' => 'Customers', 'action' => 'view', $contact->customer->id]) : '' ?></td>
                 </tr>
                 <tr>
                     <th><?= __('Id') ?></th>

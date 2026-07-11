@@ -86,7 +86,7 @@ $this->assign('title', h($project->name));
                         </tr>
                         <tr>
                             <th><?= __('Customer') ?></th>
-                            <td><?= $project->has('customer') ? $this->Html->link($project->customer->name, ['controller' => 'Customers', 'action' => 'view', $project->customer->id]) : '' ?></td>
+                            <td><?= $project->hasValue('customer') ? $this->Html->link($project->customer->name, ['controller' => 'Customers', 'action' => 'view', $project->customer->id]) : '' ?></td>
                         </tr>
                         <tr>
                             <th><?= __('Invoice Number') ?></th>
@@ -98,11 +98,11 @@ $this->assign('title', h($project->name));
                         </tr>
                         <tr>
                             <th><?= __('Parent Project') ?></th>
-                            <td><?= $project->has('parent_project') ? $this->Html->link($project->parent_project->name, ['controller' => 'Projects', 'action' => 'view', $project->parent_project->id]) : '' ?></td>
+                            <td><?= $project->hasValue('parent_project') ? $this->Html->link($project->parent_project->name, ['controller' => 'Projects', 'action' => 'view', $project->parent_project->id]) : '' ?></td>
                         </tr>
                         <tr>
                             <th><?= __('Project Status') ?></th>
-                            <td><?= $project->has('project_status') ? $this->Html->link($project->project_status->name, ['controller' => 'ProjectStatuses', 'action' => 'view', $project->project_status->id]) : '' ?></td>
+                            <td><?= $project->hasValue('project_status') ? $this->Html->link($project->project_status->name, ['controller' => 'ProjectStatuses', 'action' => 'view', $project->project_status->id]) : '' ?></td>
                         </tr>
                         <!--
                         <tr>
