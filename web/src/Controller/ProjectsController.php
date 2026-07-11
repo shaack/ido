@@ -130,6 +130,7 @@ class ProjectsController extends AppController
             if ($project->customer_id) {
                 $project->hourly_rate = $customerRates[(int)$project->customer_id] ?? null;
             }
+            $project->start = new Date();
         }
 
         $project->project_status = $this->Projects->ProjectStatuses->get(15); // runs
