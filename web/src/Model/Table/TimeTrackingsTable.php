@@ -63,14 +63,6 @@ class TimeTrackingsTable extends Table
             ->notEmptyString('task_id');
 
         $validator
-            ->dateTime('start')
-            ->allowEmptyDateTime('start');
-
-        $validator
-            ->numeric('pause')
-            ->allowEmptyString('pause');
-
-        $validator
             ->numeric('duration')
             ->allowEmptyString('duration');
 

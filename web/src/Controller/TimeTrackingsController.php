@@ -64,7 +64,7 @@ class TimeTrackingsController extends AppController
         }
         $this->TimeTrackings->deleteAll([ // delete old trackings
             "duration" => 0,
-            "created <" => Date::now()->subDay(3)
+            "created <" => Date::now()->subDays(3)
         ]);
         return $this->redirect(['action' => 'edit', $timeTracking->id]);
     }

@@ -19,8 +19,6 @@
                 <legend><?= __('Add Time Tracking') ?></legend>
                 <?php
                     echo $this->Form->control('task_id', ['options' => $tasks]);
-                    echo $this->Form->control('start', ['empty' => true]);
-                    echo $this->Form->control('pause');
                     echo $this->Form->control('duration');
                 ?>
             </fieldset>

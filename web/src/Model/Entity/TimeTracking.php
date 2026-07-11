@@ -10,8 +10,7 @@ use Cake\ORM\Entity;
  *
  * @property int $id
  * @property int $task_id
- * @property \Cake\I18n\DateTime|null $start
- * @property float|null $pause
+ * @property \Cake\I18n\DateTime|null $created
  * @property float|null $duration
  *
  * @property \App\Model\Entity\Task $task
@@ -29,8 +28,6 @@ class TimeTracking extends Entity
      */
     protected array $_accessible = [
         'task_id' => true,
-        'start' => true,
-        'pause' => true,
         'duration' => true,
         'task' => true,
     ];

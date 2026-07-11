@@ -27,16 +27,12 @@
                     <td><?= $this->Number->format($timeTracking->id) ?></td>
                 </tr>
                 <tr>
-                    <th><?= __('Pause') ?></th>
-                    <td><?= $timeTracking->pause === null ? '' : $this->Number->format($timeTracking->pause) ?></td>
-                </tr>
-                <tr>
                     <th><?= __('Duration') ?></th>
                     <td><?= $timeTracking->duration === null ? '' : $this->Number->format($timeTracking->duration) ?></td>
                 </tr>
                 <tr>
-                    <th><?= __('Start') ?></th>
-                    <td><?= h($timeTracking->start) ?></td>
+                    <th><?= __('Created') ?></th>
+                    <td><?= h($timeTracking->created) ?></td>
                 </tr>
             </table>
         </div>
