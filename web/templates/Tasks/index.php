@@ -72,7 +72,7 @@ function doneClass($doneTime)
                     <td class="text-end">
                         <!-- /timeTrackings/add?task_id=<?= $task->id ?> -->
                         <a class="text-nowrap hover-bg"
-                           href="/timeTrackings/add?task_id=<?= $task->id ?>"><?= $task->duration() > 0 ? $this->Number->format($task->duration()) : ''; ?>
+                           href="/timeTrackings/add?task_id=<?= $task->id ?>"><?= $task->duration() > 0 ? $this->Effort->hours($task->duration()) : ''; ?>
                             <i class="fa-solid fa-stopwatch"></i>️</a>
                     </td>
                     <td><a class="no-line-through"

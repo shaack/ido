@@ -31,13 +31,17 @@ $this->assign('title', h($customer->shortcut));
                                 <th><?= __('Start') ?></th>
                                 <th><?= __('Invoice Number') ?></th>
                                 <th><?= __('Project Status Id') ?></th>
+                                <th class="text-end"><?= __('Effort') ?></th>
                                 <th class="actions"><?= __('Actions') ?></th>
                             </tr>
                             </thead>
-                            <?php foreach ($customer->projects as $projects) :
+                            <?php $effortSum = 0.0;
+                            foreach ($customer->projects as $projects) :
                                 if($projects->project_status->id !== 15) {
                                     continue;
                                 }
+                                $effort = $projects->effort();
+                                $effortSum += $effort;
                                 ?>
                                 <tr>
                                     <td><?= $this->Html->link($projects->name, ['controller' => 'Projects', 'action' => 'view', $projects->id]) ?></td>
@@ -46,6 +50,7 @@ $this->assign('title', h($customer->shortcut));
                                     <td class="project-status-<?= $projects->project_status->id ?>">
                                         <?= $this->Html->link($projects->project_status->name, ['controller' => 'ProjectStatuses', 'action' => 'view', $projects->project_status->id]) ?>
                                     </td>
+                                    <td class="text-end"><?= $this->Effort->effort($effort) ?></td>
                                     <td class="actions">
                                         <?= $this->Html->link(__('View'), ['controller' => 'Projects', 'action' => 'view', $projects->id]) ?>
                                         <?= $this->Html->link(__('Edit'), ['controller' => 'Projects', 'action' => 'edit', $projects->id]) ?>
@@ -53,6 +58,11 @@ $this->assign('title', h($customer->shortcut));
                                     </td>
                                 </tr>
                             <?php endforeach; ?>
+                            <tr>
+                                <td colspan="4"></td>
+                                <td class="text-end border-top border-2"><b><?= $this->Effort->effort($effortSum) ?></b></td>
+                                <td></td>
+                            </tr>
                         </table>
                     </div>
                 <?php endif; ?>

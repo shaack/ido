@@ -35,7 +35,7 @@ $this->assign('title', h($service->name));
                 </tr>
                 <tr>
                     <th><?= __('Effort Est') ?></th>
-                    <td><?= $service->effort_est === null ? '' : $this->Number->format($service->effort_est) ?></td>
+                    <td><?= $this->Effort->effort($service->effort_est) ?></td>
                 </tr>
 
                 <tr>
@@ -44,7 +44,7 @@ $this->assign('title', h($service->name));
                 </tr>
                 <tr>
                     <th><?= __('Effort') ?></th>
-                    <td><?= $this->Number->format($service->effort()) ?></td>
+                    <td><?= $this->Effort->effort($service->effort()) ?></td>
                 </tr>
                 <tr>
                     <th><?= __('Costs') ?></th>
@@ -82,13 +82,13 @@ $this->assign('title', h($service->name));
                             ?>
                         <tr>
                             <td><?= $this->Html->link($task->name ?: "[Task]", ['controller' => 'Tasks', 'action' => 'view', $task->id]) ?></td>
-                            <td><?= $this->Number->format($task->duration()) ?></td>
+                            <td><?= $this->Effort->hours($task->duration()) ?></td>
                         </tr>
                         <?php endforeach; ?>
                         <tr>
                             <td class="text-end border-top border-2">Summe
                             </td>
-                            <td class="border-top border-2"><b><?= $this->Number->format($durationSum) ?></b></td>
+                            <td class="border-top border-2"><b><?= $this->Effort->hours($durationSum) ?></b></td>
                         </tr>
                     </table>
                 </div>

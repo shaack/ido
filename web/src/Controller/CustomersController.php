@@ -38,7 +38,10 @@ class CustomersController extends AppController
         $customer = $this->Customers->get($id, [
             'contain' => ['Contacts' => ['sort' => ['name']], 'Projects' => [
                 'sort' => ['Projects.start' => 'desc', 'Projects.project_status_id' => 'asc', 'Projects.invoice_number' => 'desc', 'Projects.id' => 'asc']
-            ], 'Projects.ProjectStatuses']
+            ], 'Projects.ProjectStatuses',
+                // Project::effort() summiert über Services, Tasks und TimeTrackings.
+                // Ohne diese Kette bliebe die Stundenspalte in der Projektliste leer.
+                'Projects.Services.Tasks.TimeTrackings']
         ]);
 
         $this->set(compact('customer'));

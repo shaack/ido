@@ -48,8 +48,8 @@ $this->assign('title', h($project->name));
                                 <tr class="<?= $trClass ?>">
                                     <td><?= $this->Html->link($service->name, ['controller' => 'Services', 'action' => 'view', $service->id]) ?></td>
                                     <td><?= $tasksDoneCount ?> / <?= $tasksCount["count"] ?></td>
-                                    <td class="text-end"><?= $service->effort_est === null ? "" : $this->Number->format($service->effort_est) ?></td>
-                                    <td class="text-end"><?= $this->Number->format($service->effort()) ?></td>
+                                    <td class="text-end"><?= $this->Effort->effort($service->effort_est) ?></td>
+                                    <td class="text-end"><?= $this->Effort->effort($service->effort()) ?></td>
                                     <td class="text-end"><?php
                                         if ($service->estimation_or_fixed_price) {
                                             echo $this->Number->currency($service->estimation_or_fixed_price);
@@ -68,7 +68,7 @@ $this->assign('title', h($project->name));
                                 <td></td>
                                 <td></td>
                                 <td></td>
-                                <td class="text-end"><b><?= $this->Number->format($effortSum) ?></b></td>
+                                <td class="text-end"><b><?= $this->Effort->effort($effortSum) ?></b></td>
                                 <td class="text-end">
                                     <b><?= $this->Number->currency($project->costs()) ?></b></td>
                             </tr>
