@@ -152,9 +152,26 @@ class ServicesController extends AppController
             : null;
 
         if ($current && $current->customer_id !== null) {
+            // "Name, start: 01.07.2026, Rnr: 26030". Bei 26 bis 154 Projekten je
+            // Kunde heißen viele ähnlich, erst Datum und Rechnungsnummer machen
+            // sie unterscheidbar. 60 Projekte haben keine Rechnungsnummer, dann
+            // entfällt der Teil. Das Startdatum ist Pflicht, die Prüfung darauf
+            // ist nur Absicherung.
+            $label = function ($project) {
+                $teile = [$project->name];
+                if ($project->start) {
+                    $teile[] = 'start: ' . $project->start->format('d.m.Y');
+                }
+                if ($project->invoice_number) {
+                    $teile[] = 'Rnr: ' . $project->invoice_number;
+                }
+
+                return implode(', ', $teile);
+            };
+
             return $this->Services->Projects->find('list', [
                 'keyField' => 'id',
-                'valueField' => 'name',
+                'valueField' => $label,
             ])
                 ->where(['Projects.customer_id' => $current->customer_id])
                 ->orderBy(['Projects.id' => 'DESC'])

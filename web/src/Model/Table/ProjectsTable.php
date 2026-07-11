@@ -84,7 +84,9 @@ class ProjectsTable extends Table
             ->notEmptyString('customer_id');
 
         $validator
-            ->date('start');
+            // Pflicht. Ein Projekt ohne Startdatum ist zeitlich nicht einzuordnen.
+            ->requirePresence('start', 'create')
+            ->notEmptyDate('start');
 
         $validator
             ->date('end')

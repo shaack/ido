@@ -67,11 +67,24 @@ DELETE s FROM services s
 DELETE FROM projects WHERE customer_id IS NULL;
 ```
 
+### Projekte ohne Startdatum
+
+Ein Projekt ohne Startdatum ist zeitlich nicht einzuordnen, `start` ist deshalb
+jetzt Pflicht. In der Entwicklungsdatenbank war genau eines betroffen (292,
+"Allgemein 2022", intern, kostenlos, mit 16,51 erfassten Stunden). Gelöscht wird
+es nicht, das Startdatum wird aus dem Anlagedatum abgeleitet, dem einzigen
+belegten Zeitpunkt.
+
+```sql
+UPDATE projects SET start = DATE(created) WHERE start IS NULL;
+```
+
 ### Kontrolle, muss überall 0 ergeben
 
 ```sql
 SELECT
   (SELECT COUNT(*) FROM projects WHERE customer_id IS NULL) AS projekt_ohne_kunde,
+  (SELECT COUNT(*) FROM projects WHERE start IS NULL) AS projekt_ohne_start,
   (SELECT COUNT(*) FROM services s LEFT JOIN projects p ON p.id = s.project_id
      WHERE p.id IS NULL) AS leistung_ohne_projekt,
   (SELECT COUNT(*) FROM tasks t LEFT JOIN services s ON s.id = t.service_id
