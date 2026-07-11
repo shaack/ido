@@ -47,14 +47,30 @@ class Service extends Entity
         'tasks' => true,
     ];
 
-    function effort()
+    /**
+     * Die tatsächlich erfasste Zeit, ungerundet.
+     */
+    function effortTracked()
     {
         $tasks = $this->tasks;
         $sum = 0.0;
         foreach ($tasks as $task) {
             $sum += $task->duration();
         }
-        return round($sum * 4) / 4;
+        return $sum;
+    }
+
+    /**
+     * Die abgerechnete Zeit: erfasste Zeit, auf Viertelstunden gerundet.
+     *
+     * costs() multipliziert diesen Wert mit dem Stundensatz, die Rundung geht
+     * also direkt in die Rechnung ein. Damit der Stundennachweis nicht eine
+     * andere Zahl ausweist als die Rechnung, stellt er beide Werte
+     * nebeneinander, erfasst und abgerechnet.
+     */
+    function effort()
+    {
+        return round($this->effortTracked() * 4) / 4;
     }
 
     function effortPlanned() {

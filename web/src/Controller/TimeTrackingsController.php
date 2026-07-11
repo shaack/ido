@@ -138,8 +138,10 @@ class TimeTrackingsController extends AppController
             throw new NotFoundException(__('Project not found.'));
         }
 
+        // Services samt Tasks und Trackings, damit der Nachweis je Leistung die
+        // erfasste und die abgerechnete Zeit gegenüberstellen kann.
         $project = $this->TimeTrackings->Tasks->Services->Projects->get($projectId, [
-            'contain' => ['Customers']
+            'contain' => ['Customers', 'Services.Tasks.TimeTrackings']
         ]);
 
         $timeTrackings = $this->TimeTrackings->find()

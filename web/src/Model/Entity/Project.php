@@ -67,6 +67,24 @@ class Project extends Entity
         'services' => true,
     ];
 
+    /**
+     * Die tatsächlich erfasste Zeit des Projekts, ungerundet.
+     */
+    function effortTracked()
+    {
+        $services = $this->services;
+        $sum = 0.0;
+        foreach ($services as $service) {
+            $sum += $service->effortTracked();
+        }
+        return $sum;
+    }
+
+    /**
+     * Die abgerechnete Zeit des Projekts, also die Summe der je Leistung auf
+     * Viertelstunden gerundeten Werte. Das entspricht dem Rechnungsbetrag
+     * geteilt durch den Stundensatz.
+     */
     function effort()
     {
         $services = $this->services;
