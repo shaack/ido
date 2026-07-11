@@ -38,7 +38,6 @@
                             <th><?= __('Customer Id') ?></th>
                             <th><?= __('Start') ?></th>
                             <th><?= __('End') ?></th>
-                            <th><?= __('Fixed Price') ?></th>
                             <th><?= __('Hourly Rate') ?></th>
                             <th><?= __('Description') ?></th>
                             <th><?= __('Invoice Number') ?></th>
@@ -55,7 +54,6 @@
                             <td><?= h($projects->customer_id) ?></td>
                             <td><?= h($projects->start) ?></td>
                             <td><?= h($projects->end) ?></td>
-                            <td><?= h($projects->fixed_price) ?></td>
                             <td><?= $projects->hourly_rate === null ? "" : $this->Number->format($projects->hourly_rate) ?></td>
                             <td><?= h($projects->description) ?></td>
                             <td><?= h($projects->invoice_number) ?></td>

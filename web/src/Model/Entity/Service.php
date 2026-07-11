@@ -12,7 +12,7 @@ use Cake\ORM\Entity;
  * @property string|null $name
  * @property int $project_id
  * @property float|null $effort_est
- * @property float|null $estimation_or_fixed_price
+ * @property float|null $fixed_price
  * @property float|null $effort
  * @property float|null $costs
  * @property string|null $notes
@@ -37,7 +37,7 @@ class Service extends Entity
         'name' => true,
         'project_id' => true,
         'effort_est' => true,
-        'estimation_or_fixed_price' => true,
+        'fixed_price' => true,
         'effort' => true,
         'costs' => true,
         'notes' => true,
@@ -85,8 +85,8 @@ class Service extends Entity
 
     function costs($hourlyRate = null)
     {
-        if($this->estimation_or_fixed_price) {
-            return $this->estimation_or_fixed_price;
+        if($this->fixed_price) {
+            return $this->fixed_price;
         } else {
             return $this->effort() * ($hourlyRate !== null ? $hourlyRate : $this->project->hourly_rate);
         }

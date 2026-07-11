@@ -52,8 +52,8 @@ $this->assign('title', h($project->name));
                                     <td class="text-end"><?= $this->Effort->effort($service->effort_est) ?></td>
                                     <td class="text-end"><?= $this->Effort->effort($service->effort()) ?></td>
                                     <td class="text-end"><?php
-                                        if ($service->estimation_or_fixed_price) {
-                                            echo $this->Number->currency($service->estimation_or_fixed_price);
+                                        if ($service->fixed_price) {
+                                            echo $this->Number->currency($service->fixed_price);
                                         } else {
                                             echo $this->Number->currency($service->costs());
                                         }
@@ -126,10 +126,6 @@ $this->assign('title', h($project->name));
                         <tr>
                             <th><?= __('Created') ?></th>
                             <td><?= h($project->created) ?></td>
-                        </tr>
-                        <tr>
-                            <th><?= __('Fixed Price') ?></th>
-                            <td><?= $project->fixed_price ? __('Yes') : __('No'); ?></td>
                         </tr>
                     </table>
                 </div>

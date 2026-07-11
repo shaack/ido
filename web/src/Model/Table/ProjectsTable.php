@@ -86,10 +86,6 @@ class ProjectsTable extends Table
             ->allowEmptyDate('end');
 
         $validator
-            ->boolean('fixed_price')
-            ->allowEmptyString('fixed_price');
-
-        $validator
             ->numeric('hourly_rate')
             ->requirePresence('hourly_rate', 'create')
             ->notEmptyString('hourly_rate');

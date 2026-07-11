@@ -44,7 +44,6 @@ class Project extends Entity
         'customer_id' => true,
         'start' => true,
         'end' => true,
-        'fixed_price' => true,
         'hourly_rate' => true,
         'description' => true,
         'invoice_number' => true,
@@ -100,9 +99,6 @@ class Project extends Entity
         $services = $this->services;
         $sum = 0.0;
         foreach ($services as $service) {
-            if($this->fixed_price && !$service->estimation_or_fixed_price) {
-                continue;
-            }
             $sum += $service->costs($this->hourly_rate);
         }
         return $sum;

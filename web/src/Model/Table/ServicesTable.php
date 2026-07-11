@@ -78,8 +78,8 @@ class ServicesTable extends Table
             ->allowEmptyString('effort_est');
 
         $validator
-            ->numeric('estimation_or_fixed_price')
-            ->allowEmptyString('estimation_or_fixed_price');
+            ->numeric('fixed_price')
+            ->allowEmptyString('fixed_price');
 
         $validator
             ->numeric('effort')

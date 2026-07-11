@@ -73,11 +73,10 @@ $this->assign('title', $fileName);
                 $billedSum = 0.0;
                 foreach ($project->services as $service):
                     $tracked = $service->effortTracked();
-                    // Bildet Project::costs() und Service::costs() nach. Nur wo
-                    // beides fehlt, ein Festpreis am Projekt und einer an der
-                    // Leistung, wird die Zeit in Rechnung gestellt. Sonst zählt
-                    // der Festbetrag und die Stunden sind nur Nachweis.
-                    $billedByTime = !$project->fixed_price && !$service->estimation_or_fixed_price;
+                    // Bildet Service::costs() nach: Ohne Festpreis wird die Zeit
+                    // berechnet, mit Festpreis zählt der Betrag und die Stunden
+                    // sind nur Nachweis.
+                    $billedByTime = !$service->fixed_price;
                     if (!$tracked && !$billedByTime) {
                         continue;
                     }
