@@ -14,6 +14,15 @@ use Cake\I18n\Date;
 class ProjectsController extends AppController
 {
     /**
+     * Ohne diese Liste verwirft CakePHP die Sortierung nach Feldern aus
+     * Assoziationen stillschweigend, der Klick auf die Spalte tut dann nichts.
+     */
+    private const SORTABLE_FIELDS = [
+        'name', 'invoice_number', 'project_status_id', 'start', 'end', 'invoice_date',
+        'Customers.shortcut',
+    ];
+
+    /**
      * Index method
      *
      * @return \Cake\Http\Response|null|void Renders view
@@ -27,11 +36,13 @@ class ProjectsController extends AppController
         if ($current) {
             $query->where(['Projects.project_status_id IN' => [5, 10, 15, 20, 25, 30, 35]]);
             $this->paginate = [
-                'order' => ['invoice_number' => 'asc', 'project_status_id' => 'asc', 'id' => 'asc']
+                'order' => ['invoice_number' => 'asc', 'project_status_id' => 'asc', 'id' => 'asc'],
+                'sortableFields' => self::SORTABLE_FIELDS,
             ];
         } else {
             $this->paginate = [
-                'order' => ['id' => 'desc']
+                'order' => ['id' => 'desc'],
+                'sortableFields' => self::SORTABLE_FIELDS,
             ];
         }
         $projects = $this->paginate($query);

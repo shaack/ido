@@ -23,7 +23,10 @@ class TimeTrackingsController extends AppController
     public function index()
     {
         $this->paginate = [
-            'order' => ['id' => 'desc']
+            'order' => ['id' => 'desc'],
+            // Ohne diese Liste verwirft CakePHP die Sortierung nach Feldern aus
+            // Assoziationen stillschweigend.
+            'sortableFields' => ['created', 'duration', 'Tasks.name', 'Services.name', 'Projects.name', 'Customers.shortcut'],
         ];
         $query = $this->TimeTrackings->find()
             ->contain(['Tasks', 'Tasks.Services', 'Tasks.Services.Projects', 'Tasks.Services.Projects.Customers']);

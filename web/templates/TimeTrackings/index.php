@@ -17,10 +17,10 @@
                 <tr>
                     <?php if (isset($showPagination) && $showPagination): ?>
                         <th><?= $this->Paginator->sort('created') ?></th>
-                        <th><?= $this->Paginator->sort('task_id') ?></th>
-                        <th><?= $this->Paginator->sort('customer_id') ?></th>
-                        <th><?= $this->Paginator->sort('service_id') ?></th>
-                        <th><?= $this->Paginator->sort('project_id') ?></th>
+                        <th><?= $this->Paginator->sort('Tasks.name', 'Task') ?></th>
+                        <th><?= $this->Paginator->sort('Customers.shortcut', 'Customer') ?></th>
+                        <th><?= $this->Paginator->sort('Services.name', 'Service') ?></th>
+                        <th><?= $this->Paginator->sort('Projects.name', 'Project') ?></th>
                         <th class="text-end"><?= $this->Paginator->sort('duration') ?></th>
                     <?php else: ?>
                         <th><?= __('Created') ?></th>

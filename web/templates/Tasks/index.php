@@ -43,13 +43,13 @@ function doneClass($doneTime)
         <table>
             <thead>
             <tr>
-                <th><?= $this->Paginator->sort('') ?></th>
+                <th></th>
                 <th><?= $this->Paginator->sort('name') ?></th>
-                <th class="text-end"><?= $this->Paginator->sort('Track') ?></th>
-                <th><?= $this->Paginator->sort('') ?></th>
-                <th><?= $this->Paginator->sort('cst') ?></th>
-                <th><?= $this->Paginator->sort('service_id') ?></th>
-                <th><?= $this->Paginator->sort('project_id') ?></th>
+                <th class="text-end"><?= __('Track') ?></th>
+                <th></th>
+                <th><?= $this->Paginator->sort('Customers.shortcut', 'Cst') ?></th>
+                <th><?= $this->Paginator->sort('Services.name', 'Service') ?></th>
+                <th><?= $this->Paginator->sort('Projects.name', 'Project') ?></th>
                 <!-- <th><?= $this->Paginator->sort('prio') ?></th> -->
             </tr>
             </thead>

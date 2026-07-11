@@ -21,7 +21,11 @@ class ServicesController extends AppController
     public function index()
     {
         $this->paginate = [
-            'order' => ['id' => 'desc']
+            'order' => ['id' => 'desc'],
+            // Ohne diese Liste verwirft CakePHP die Sortierung nach Feldern aus
+            // Assoziationen stillschweigend, der Klick auf die Spalte tut dann
+            // einfach nichts.
+            'sortableFields' => ['name', 'Customers.shortcut', 'Projects.name'],
         ];
         $query = $this->Services->find()
             ->contain(['Projects', 'Projects.Customers', 'Tasks', 'Tasks.TimeTrackings'])

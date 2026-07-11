@@ -12,10 +12,10 @@
                 <tr>
                     <!-- <th><?= $this->Paginator->sort('id') ?></th> -->
                     <th><?= $this->Paginator->sort('name') ?></th>
-                    <th><?= $this->Paginator->sort('customer_id') ?></th>
-                    <th><?= $this->Paginator->sort('project_id') ?></th>
-                    <th><?= $this->Paginator->sort('effort') ?></th>
-                    <th><?= $this->Paginator->sort('costs') ?></th>
+                    <th><?= $this->Paginator->sort('Customers.shortcut', 'Customer') ?></th>
+                    <th><?= $this->Paginator->sort('Projects.name', 'Project') ?></th>
+                    <th class="text-end"><?= __('Effort') ?></th>
+                    <th class="text-end"><?= __('Costs') ?></th>
                     <th class="actions"><?= __('Actions') ?></th>
                 </tr>
             </thead>

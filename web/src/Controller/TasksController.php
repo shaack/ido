@@ -26,7 +26,10 @@ class TasksController extends AppController
         $this->paginate = [
             'order' => ['marked' => 'desc', 'prio' => 'desc', 'id' => 'asc'],
             'maxLimit' => 1000,
-            'limit' => 1000
+            'limit' => 1000,
+            // Ohne diese Liste verwirft CakePHP die Sortierung nach Feldern aus
+            // Assoziationen stillschweigend.
+            'sortableFields' => ['name', 'prio', 'marked', 'Customers.shortcut', 'Services.name', 'Projects.name'],
         ];
         $now = DateTime::now();
         $conditions = ['OR' => [['start_est <=' => $now], ['start_est IS' => null]], ['OR' => [['done =' => false], ['done_at >' => $now->sub(new DateInterval("PT1H"))]]]];

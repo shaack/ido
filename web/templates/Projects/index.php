@@ -11,10 +11,10 @@
             <thead>
                 <tr>
                     <th><?= $this->Paginator->sort('name') ?></th>
-                    <th><?= $this->Paginator->sort('customer_id') ?></th>
+                    <th><?= $this->Paginator->sort('Customers.shortcut', 'Customer') ?></th>
                     <th><?= $this->Paginator->sort('invoice_number', 'Inv. #') ?></th>
                     <th><?= $this->Paginator->sort('project_status_id', 'Status') ?></th>
-                    <th class="text-end"><?= $this->Paginator->sort('costs') ?></th>
+                    <th class="text-end"><?= __('Costs') ?></th>
                     <th><?= $this->Paginator->sort('start', 'Start') ?></th>
                     <th><?= $this->Paginator->sort('end', 'End') ?></th>
                     <th><?= $this->Paginator->sort('invoice_date', 'Inv. date') ?></th>
