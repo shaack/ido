@@ -9,10 +9,10 @@
     <?= $this->Form->postLink(
         __('Delete'),
         ['action' => 'delete', $task->id],
-        ['confirm' => __('Are you sure you want to delete # {0}?', $task->id), 'class' => 'side-nav-item']
+        ['confirm' => __('Are you sure you want to delete # {0}?', $task->id)]
     ) ?>
     <?= $this->Html->link(__('View Task'), ['action' => 'view', $task->id]) ?>
-    <?= $this->Html->link(__('List Tasks'), ['action' => 'index'], ['class' => 'side-nav-item']) ?>
+    <?= $this->Html->link(__('List Tasks'), ['action' => 'index']) ?>
 </div>
 <div class="tasks form content">
     <?= $this->Form->create($task) ?>

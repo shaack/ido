@@ -8,10 +8,10 @@ $this->assign('title', h($customer->shortcut));
 <div class="row">
     <aside class="column">
         <div class="actions">
-            <?= $this->Html->link(__('Edit Customer'), ['action' => 'edit', $customer->id], ['class' => 'side-nav-item']) ?>
-            <?= $this->Form->postLink(__('Delete Customer'), ['action' => 'delete', $customer->id], ['confirm' => __('Are you sure you want to delete # {0}?', $customer->id), 'class' => 'side-nav-item']) ?>
-            <?= $this->Html->link(__('List Customers'), ['action' => 'index'], ['class' => 'side-nav-item']) ?>
-            <?= $this->Html->link(__('New Customer'), ['action' => 'add'], ['class' => 'side-nav-item']) ?>
+            <?= $this->Html->link(__('Edit Customer'), ['action' => 'edit', $customer->id]) ?>
+            <?= $this->Form->postLink(__('Delete Customer'), ['action' => 'delete', $customer->id], ['confirm' => __('Are you sure you want to delete # {0}?', $customer->id)]) ?>
+            <?= $this->Html->link(__('List Customers'), ['action' => 'index']) ?>
+            <?= $this->Html->link(__('New Customer'), ['action' => 'add']) ?>
         </div>
     </aside>
     <div class="column-responsive column-80">

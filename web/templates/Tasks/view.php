@@ -7,10 +7,10 @@
 $this->assign('title', $task->name ? $task->name : $task->service->name);
 ?>
 <div class="actions">
-    <?= $this->Html->link(__('Edit Task'), ['action' => 'edit', $task->id], ['class' => 'side-nav-item']) ?>
-    <?= $this->Form->postLink(__('Delete Task'), ['action' => 'delete', $task->id], ['confirm' => __('Are you sure you want to delete # {0}?', $task->id), 'class' => 'side-nav-item']) ?>
-    <?= $this->Html->link(__('List Tasks'), ['action' => 'index'], ['class' => 'side-nav-item']) ?>
-    <?= $this->Html->link(__('New Task in this Service'), ['action' => 'add', '?' => ['service_id' => $task->service->id]], ['class' => 'side-nav-item']) ?>
+    <?= $this->Html->link(__('Edit Task'), ['action' => 'edit', $task->id]) ?>
+    <?= $this->Form->postLink(__('Delete Task'), ['action' => 'delete', $task->id], ['confirm' => __('Are you sure you want to delete # {0}?', $task->id)]) ?>
+    <?= $this->Html->link(__('List Tasks'), ['action' => 'index']) ?>
+    <?= $this->Html->link(__('New Task in this Service'), ['action' => 'add', '?' => ['service_id' => $task->service->id]]) ?>
 </div>
 <div class="row">
     <div class="column-responsive column-80">

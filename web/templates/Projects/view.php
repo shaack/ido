@@ -9,7 +9,7 @@ $this->assign('title', h($project->name));
 <div class="row">
     <aside class="column">
         <div class="actions">
-            <?= $this->Html->link(__('Edit Project'), ['action' => 'edit', $project->id], ['class' => 'side-nav-item']) ?>
+            <?= $this->Html->link(__('Edit Project'), ['action' => 'edit', $project->id]) ?>
             <?= $this->Html->link(__('View Invoice'), ['action' => 'invoice', $project->id], ["target" => "_blank"]) ?>
             <?= $this->Html->link(__('View Offer'), ['action' => 'offer', $project->id], ["target" => "_blank"]) ?>
             <?= $this->Html->link(__('View Time Trackings'), ['controller' => 'TimeTrackings', 'action' => 'export', $project->id], ["target" => "_blank"]) ?>

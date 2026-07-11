@@ -6,14 +6,13 @@
 ?>
 <div class="row">
     <aside class="column">
-        <div class="side-nav">
-            <h4 class="heading"><?= __('Actions') ?></h4>
+        <div class="actions">
             <?= $this->Form->postLink(
                 __('Delete'),
                 ['action' => 'delete', $customer->id],
-                ['confirm' => __('Are you sure you want to delete # {0}?', $customer->id), 'class' => 'side-nav-item']
+                ['confirm' => __('Are you sure you want to delete # {0}?', $customer->id)]
             ) ?>
-            <?= $this->Html->link(__('List Customers'), ['action' => 'index'], ['class' => 'side-nav-item']) ?>
+            <?= $this->Html->link(__('List Customers'), ['action' => 'index']) ?>
         </div>
     </aside>
     <div class="column-responsive column-80">
