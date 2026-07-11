@@ -123,7 +123,7 @@ class ProjectsController extends AppController
             }
             $this->Flash->error(__('The project could not be saved. Please, try again.'));
         }
-        $customers = $this->Projects->Customers->find('list', ['limit' => 1000])->all();
+        $customers = $this->customerList();
 
         // Stundensatz je Kunde, damit das Formular ihn beim Wechsel des Kunden
         // direkt einträgt. Hier stand vorher
@@ -175,9 +175,31 @@ class ProjectsController extends AppController
                 $this->Flash->error(__('The project could not be saved. Please, try again.'));
             }
         }
-        $customers = $this->Projects->Customers->find('list', ['limit' => 1000])->where(['Customers.current =' => true]);
+        $customers = $this->customerList(true);
         $projectStatuses = $this->Projects->ProjectStatuses->find('list', ['limit' => 200])->all();
         $this->set(compact('project', 'customers', 'projectStatuses'));
+    }
+
+    /**
+     * Kundenliste fürs Auswahlfeld, als "KÜRZEL Kundenname" und nach Kürzel
+     * sortiert. Der displayField von Customers ist name, das Kürzel fehlte
+     * deshalb, obwohl man in der ganzen App danach sucht.
+     *
+     * @param bool $onlyCurrent Nur aktuelle Kunden, für das Bearbeiten-Formular.
+     * @return \Cake\Datasource\ResultSetInterface
+     */
+    private function customerList(bool $onlyCurrent = false)
+    {
+        $query = $this->Projects->Customers->find('list', [
+            'keyField' => 'id',
+            'valueField' => fn($customer) => trim($customer->shortcut . ' ' . $customer->name),
+        ])->orderBy(['Customers.shortcut' => 'asc']);
+
+        if ($onlyCurrent) {
+            $query->where(['Customers.current' => true]);
+        }
+
+        return $query->all();
     }
 
     /**
