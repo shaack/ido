@@ -27,14 +27,6 @@ $this->assign('title', $task->name ? $task->name : $task->service->name);
                     <td><?= $task->hasValue('service') ? $this->Html->link($task->service->name, ['controller' => 'Services', 'action' => 'view', $task->service->id]) : '' ?></td>
                 </tr>
                 <tr>
-                    <th><?= __('Start Est') ?></th>
-                    <td><?= h($task->start_est) ?></td>
-                </tr>
-                <tr>
-                    <th><?= __('Deadline') ?></th>
-                    <td><?= h($task->deadline) ?></td>
-                </tr>
-                <tr>
                     <th><?= __('Marked') ?></th>
                     <td><?= $task->marked ? __('Yes') : __('No'); ?></td>
                 </tr>
@@ -44,14 +36,6 @@ $this->assign('title', $task->name ? $task->name : $task->service->name);
                 </tr>
             </table>
             -->
-            <div class="text">
-                <strong><?= __('Notes') ?></strong>
-                <?php if ($task->notes) { ?>
-                    <blockquote>
-                        <?= $this->Markdown->toHtmlWithHashtags($task->notes); ?>
-                    </blockquote>
-                <?php } ?>
-            </div>
 
             <div class="related">
                 <h4><?= __('Related Time Trackings') ?></h4>

@@ -32,7 +32,9 @@ class TasksController extends AppController
             'sortableFields' => ['name', 'marked', 'Customers.shortcut', 'Services.name', 'Projects.name'],
         ];
         $now = DateTime::now();
-        $conditions = ['OR' => [['start_est <=' => $now], ['start_est IS' => null]], ['OR' => [['done =' => false], ['done_at >' => $now->sub(new DateInterval("PT1H"))]]]];
+        // Offene Tasks, plus die, die vor weniger als einer Stunde erledigt
+        // wurden, damit ein Klick auf "done" die Zeile nicht sofort wegreißt.
+        $conditions = ['OR' => [['done =' => false], ['done_at >' => $now->sub(new DateInterval("PT1H"))]]];
         if($filter == "customers") {
             $conditions[] = ['Customers.shortcut !=' => 'SHA'];
         }

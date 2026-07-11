@@ -74,20 +74,8 @@ class TasksTable extends Table
             ->allowEmptyString('name');
 
         $validator
-            ->date('start_est')
-            ->allowEmptyDate('start_est');
-
-        $validator
-            ->date('deadline')
-            ->allowEmptyDate('deadline');
-
-        $validator
             ->integer('service_id')
             ->allowEmptyString('service_id');
-
-        $validator
-            ->scalar('notes')
-            ->allowEmptyString('notes');
 
         $validator
             ->boolean('done')
