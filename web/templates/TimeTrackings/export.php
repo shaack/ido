@@ -56,9 +56,10 @@ $this->assign('title', $fileName);
 
     <?php if (!empty($project->services)) : ?>
         <h4 class="mt-5"><?= __('Abrechnung') ?></h4>
-        <p>Nach Zeit abgerechnete Leistungen werden auf die nächste Viertelstunde gerundet.
-            Die abgerechneten Stunden sind die Grundlage der zeitbasierten Positionen der Rechnung.
-            Leistungen mit Festpreis sind als solche gekennzeichnet.</p>
+        <p>Nach Zeit abgerechnete Leistungen werden je Leistung kaufmännisch auf Viertelstunden
+            gerundet, je nach erfasstem Wert also nach unten oder nach oben. Die abgerechneten
+            Stunden sind die Grundlage der zeitbasierten Positionen der Rechnung. Leistungen mit
+            Festpreis sind als solche gekennzeichnet.</p>
         <div class="table-responsive">
             <table>
                 <thead>
