@@ -85,10 +85,11 @@ function doneClass($doneTime)
     const stopwatchOutput = document.getElementById("stopwatch")
     const durationInput = document.getElementById("duration")
     const form = document.getElementById("time-tracking-form")
-    let pomodoroExpired = false
-    let hourExpired = false
-    const pomodoroMinutes = 25
-    const hourMinutes = 60
+    // Alle 30 Minuten eine Benachrichtigung, wie lange die Erfassung schon
+    // läuft. Vorher gab es genau zwei, bei 25 und bei 60 Minuten, danach nie
+    // wieder. Wer eine Erfassung vergaß, wurde also nicht mehr erinnert.
+    const notifyEveryMinutes = 30
+    let nextNotificationAt = notifyEveryMinutes
     const notifications = new Notifications()
     const progressBar = document.getElementById("progress-bar")
     const title = document.title
@@ -97,31 +98,38 @@ function doneClass($doneTime)
     function updateTimerOutput() {
         const minutesExpired = stopwatch.secondsExpired() / 60 + additionalMinutes
         document.title = title + " ⏱️ " + (Math.round(minutesExpired * 100) / 100).toFixed(2)
-        if (minutesExpired >= pomodoroMinutes && !pomodoroExpired) {
-            pomodoroExpired = true
-            notifications.show(pomodoroMinutes + " Minutes expired", "<?= h($timeTracking->task->name) ?>")
-        }
-        if (minutesExpired >= hourMinutes && !hourExpired) {
-            hourExpired = true
-            notifications.show(hourMinutes + " Minutes expired", "<?= h($timeTracking->task->name) ?>")
-        }
-        if (!pomodoroExpired) {
-            progressBar.style.width = minutesExpired / pomodoroMinutes * 100 + "%"
-        } else if (!hourExpired) {
-            progressBar.style.width = minutesExpired / hourMinutes * 100 + "%"
-            if (stopwatch.running()) {
-                progressBar.classList.remove("bg-primary")
-                progressBar.classList.add("bg-success")
+
+        // while, nicht if: Wer den Tab schlafen legt oder mit +5 vorspringt, kann
+        // mehrere Schwellen auf einmal überspringen. Gemeldet wird dann nur die
+        // zuletzt erreichte, nicht jede einzelne.
+        if (minutesExpired >= nextNotificationAt) {
+            while (minutesExpired >= nextNotificationAt) {
+                nextNotificationAt += notifyEveryMinutes
             }
-        } else {
-            progressBar.style.width = minutesExpired / hourMinutes * 100 + "%"
-            if (stopwatch.running()) {
-                progressBar.classList.remove("bg-success")
+            const reached = nextNotificationAt - notifyEveryMinutes
+            notifications.show(
+                "Running for " + reached + " minutes",
+                "<?= h($timeTracking->task->name) ?>"
+            )
+        }
+
+        // Der Balken füllt sich innerhalb des laufenden 30-Minuten-Abschnitts und
+        // beginnt bei jeder Benachrichtigung von vorn. Die Farbe zeigt, in
+        // welchem Abschnitt man ist.
+        const minutesInBlock = ((minutesExpired % notifyEveryMinutes) + notifyEveryMinutes) % notifyEveryMinutes
+        progressBar.style.width = (minutesInBlock / notifyEveryMinutes * 100) + "%"
+        if (stopwatch.running()) {
+            progressBar.classList.remove("bg-primary", "bg-success", "bg-warning")
+            if (minutesExpired < notifyEveryMinutes) {
+                progressBar.classList.add("bg-primary")
+            } else if (minutesExpired < notifyEveryMinutes * 2) {
+                progressBar.classList.add("bg-success")
+            } else {
                 progressBar.classList.add("bg-warning")
             }
         }
-        stopwatchOutput.value = (Math.round(minutesExpired * 100) / 100).toFixed(2)
 
+        stopwatchOutput.value = (Math.round(minutesExpired * 100) / 100).toFixed(2)
     }
 
     window.stopwatch = new Stopwatch({
@@ -131,16 +139,13 @@ function doneClass($doneTime)
         onStateChanged: (running) => {
             if (running) {
                 if (!progressBar.classList.contains("progress-bar-striped")) {
-                    if (!pomodoroExpired) {
-                        progressBar.classList.add("bg-primary")
-                    } else if (!hourExpired) {
-                        progressBar.classList.add("bg-success")
-                    } else {
-                        progressBar.classList.add("bg-warning")
-                    }
                     progressBar.classList.add("progress-bar-striped")
                     progressBar.classList.add("progress-bar-animated")
                     progressBar.classList.remove("bg-secondary")
+                    // Die Farbe setzt updateTimerOutput passend zum laufenden
+                    // 30-Minuten-Abschnitt. Hier stand sie doppelt, mit den alten
+                    // Schwellen 25 und 60.
+                    updateTimerOutput()
                 }
             } else {
                 if (progressBar.classList.contains("progress-bar-striped")) {
@@ -163,6 +168,8 @@ function doneClass($doneTime)
     document.getElementById("btn-reset").addEventListener("click", (event) => {
         event.preventDefault()
         additionalMinutes = 0
+        // Die Uhr steht wieder auf null, also auch der nächste Meldezeitpunkt.
+        nextNotificationAt = notifyEveryMinutes
         window.stopwatch.reset()
         window.resetNotRunningAlert()
     })
@@ -183,7 +190,10 @@ function doneClass($doneTime)
         } catch (e) {
             console.log(e)
         }
-        pomodoroExpired = false
+        // Kein Zurücksetzen des Meldezeitpunkts: Nach einer Pause läuft die Zeit
+        // weiter, die nächste Schwelle liegt also ohnehin voraus. Vorher wurde
+        // hier pomodoroExpired zurückgesetzt, was nach jeder Pause erneut bei 25
+        // Minuten meldete, obwohl die Uhr längst darüber stand.
         window.stopwatch.start()
     }
 
