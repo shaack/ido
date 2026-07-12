@@ -147,17 +147,47 @@ class TimeTrackingsController extends AppController
     }
 
     /**
-     * Taskliste fürs Auswahlfeld, als "KÜRZEL / Projekt / Leistung / Task",
-     * beschränkt auf die letzten 500 Tasks aktueller Kunden.
+     * Taskliste fürs Auswahlfeld.
      *
-     * @param int|null $ensureId Task, der auf jeden Fall enthalten sein muss.
+     * Eine Erfassung in ein anderes Projekt zu verschieben ergibt keinen Sinn.
+     * Steht das Projekt fest, zeigt die Liste deshalb nur dessen Tasks, als
+     * "Leistung / Task". Kunde und Projekt wären dort redundant, sie stehen
+     * ohnehin in der Breadcrumb. Das größte Projekt hat 109 Tasks.
+     *
+     * @param int|null $taskId Task der Erfassung, daraus folgt das Projekt.
      * @return array<int, string>
      */
-    private function taskList(?int $ensureId = null): array
+    private function taskList(?int $taskId = null): array
     {
-        // 473 Tasks haben keinen Namen, 71 Leistungen ebenso. Leere Segmente
-        // werden weggelassen, statt " / / " zu erzeugen.
-        $label = function ($task) {
+        // 473 Tasks und 71 Leistungen haben keinen Namen. Die Platzhalter
+        // entsprechen denen, die die Templates ohnehin verwenden.
+        $servicePlusTask = fn($task) => ($task->service->name ?: '[Service]')
+            . ' / ' . ($task->name ?: '[Task]');
+
+        $current = $taskId !== null
+            ? $this->TimeTrackings->Tasks->find()
+                ->contain(['Services', 'Services.Projects', 'Services.Projects.Customers'])
+                ->where(['Tasks.id' => $taskId])
+                ->first()
+            : null;
+
+        $projectId = $current->service->project_id ?? null;
+
+        if ($projectId !== null) {
+            return $this->TimeTrackings->Tasks->find('list', [
+                'keyField' => 'id',
+                'valueField' => $servicePlusTask,
+            ])
+                ->contain(['Services'])
+                ->where(['Services.project_id' => $projectId])
+                ->orderBy(['Tasks.id' => 'DESC'])
+                ->toArray();
+        }
+
+        // Kein Projekt bekannt. Dann die letzten 500 Tasks aktueller Kunden mit
+        // vollem Pfad, weil Leistungs- und Tasknamen projektübergreifend
+        // nichtssagend sind.
+        $fullPath = function ($task) {
             $service = $task->service;
             $project = $service->project ?? null;
             $teile = [];
@@ -179,7 +209,7 @@ class TimeTrackingsController extends AppController
 
         $tasks = $this->TimeTrackings->Tasks->find('list', [
             'keyField' => 'id',
-            'valueField' => $label,
+            'valueField' => $fullPath,
         ])
             ->contain(['Services', 'Services.Projects', 'Services.Projects.Customers'])
             ->where(['Customers.current' => true])
@@ -187,19 +217,11 @@ class TimeTrackingsController extends AppController
             ->limit(500)
             ->toArray();
 
-        // Der Task der bearbeiteten Erfassung muss in der Liste stehen, auch wenn
-        // er älter ist oder zu einem inaktiven Kunden gehört. Sonst wäre im
-        // Select nichts ausgewählt, und ein Speichern würde die Erfassung
-        // stillschweigend dem ersten Task zuschlagen. Das beträfe 1822 von 2867
-        // Erfassungen.
-        if ($ensureId !== null && !isset($tasks[$ensureId])) {
-            $task = $this->TimeTrackings->Tasks->find()
-                ->contain(['Services', 'Services.Projects', 'Services.Projects.Customers'])
-                ->where(['Tasks.id' => $ensureId])
-                ->first();
-            if ($task) {
-                $tasks = [$ensureId => $label($task)] + $tasks;
-            }
+        // Der Task der bearbeiteten Erfassung muss in der Liste stehen, sonst wäre
+        // im Select nichts ausgewählt und ein Speichern würde die Erfassung
+        // stillschweigend dem ersten Task zuschlagen.
+        if ($current && !isset($tasks[$taskId])) {
+            $tasks = [$taskId => $fullPath($current)] + $tasks;
         }
 
         return $tasks;
