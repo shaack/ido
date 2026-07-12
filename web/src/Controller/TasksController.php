@@ -119,8 +119,10 @@ class TasksController extends AppController
      */
     public function edit($id = null)
     {
+        // Die Kette wird für die Breadcrumb im Layout gebraucht. Ohne sie stand
+        // dort nichts, anders als in der Task-Ansicht.
         $task = $this->Tasks->get($id, [
-            'contain' => [],
+            'contain' => ['Services', 'Services.Projects', 'Services.Projects.Customers'],
         ]);
         if ($this->request->is(['patch', 'post', 'put'])) {
             $task = $this->Tasks->patchEntity($task, $this->request->getData());

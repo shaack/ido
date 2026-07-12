@@ -121,12 +121,12 @@ $controller = $this->request->getParam('controller')
                 echo $this->Html->link($service->name ?: "[Service]", ['controller' => 'Services', 'action' => 'view', $service->id],
                     ["class" => "breadcrumb-item text-decoration-none"]);
             }
-            if (@$task) {
+            if (@$task && $task->id) {
                 echo $this->Html->link($task->name ?: "[Task]", ['controller' => 'Tasks', 'action' => 'view', $task->id],
                     ["class" => "breadcrumb-item text-decoration-none"]);
             }
-            if (@$timeTracking) {
-                echo $this->Html->link($timeTracking->name ?: "[Tracking]", ['controller' => 'TimeTrackings', 'action' => 'view', $timeTracking->id],
+            if (@$timeTracking && $timeTracking->id) {
+                echo $this->Html->link("[Tracking]", ['controller' => 'TimeTrackings', 'action' => 'view', $timeTracking->id],
                     ["class" => "breadcrumb-item text-decoration-none"]);
             }
             ?>

@@ -44,8 +44,9 @@ class TimeTrackingsController extends AppController
      */
     public function view($id = null)
     {
+        // Die volle Kette, damit das Layout die Breadcrumb bauen kann.
         $timeTracking = $this->TimeTrackings->get($id, [
-            'contain' => ['Tasks'],
+            'contain' => ['Tasks', 'Tasks.Services', 'Tasks.Services.Projects', 'Tasks.Services.Projects.Customers'],
         ]);
 
         $this->set(compact('timeTracking'));
@@ -125,8 +126,9 @@ class TimeTrackingsController extends AppController
      */
     public function edit($id = null)
     {
+        // Die volle Kette, damit das Layout die Breadcrumb bauen kann.
         $timeTracking = $this->TimeTrackings->get($id, [
-            'contain' => ['Tasks'],
+            'contain' => ['Tasks', 'Tasks.Services', 'Tasks.Services.Projects', 'Tasks.Services.Projects.Customers'],
         ]);
         if ($this->request->is(['patch', 'post', 'put'])) {
             $timeTracking = $this->TimeTrackings->patchEntity($timeTracking, $this->request->getData());

@@ -140,6 +140,9 @@ class ProjectsController extends AppController
             $project->customer_id = $this->request->getQuery("customer_id");
             if ($project->customer_id) {
                 $project->hourly_rate = $customerRates[(int)$project->customer_id] ?? null;
+                // Der Kunde selbst, nicht nur seine Id. Sonst kann das Layout die
+                // Breadcrumb nicht bauen.
+                $project->customer = $this->Projects->Customers->get((int)$project->customer_id);
             }
             $project->start = new Date();
             // Das Auswahlfeld hängt an project_status_id. Hier stand vorher
