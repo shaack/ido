@@ -99,10 +99,13 @@ function doneClass($doneTime)
         const minutesExpired = stopwatch.secondsExpired() / 60 + additionalMinutes
         document.title = title + " ⏱️ " + (Math.round(minutesExpired * 100) / 100).toFixed(2)
 
-        // while, nicht if: Wer den Tab schlafen legt oder mit +5 vorspringt, kann
-        // mehrere Schwellen auf einmal überspringen. Gemeldet wird dann nur die
-        // zuletzt erreichte, nicht jede einzelne.
-        if (minutesExpired >= nextNotificationAt) {
+        // Nur wenn die Uhr läuft. Sonst meldete auch der +5-Knopf eine "laufende"
+        // Erfassung, sobald man sich damit über eine Schwelle hochklickt.
+        //
+        // while, nicht if: Ein schlafender Tab kann mehrere Schwellen auf einmal
+        // überspringen. Gemeldet wird dann nur die zuletzt erreichte, statt eine
+        // Flut nachzuschieben.
+        if (stopwatch.running() && minutesExpired >= nextNotificationAt) {
             while (minutesExpired >= nextNotificationAt) {
                 nextNotificationAt += notifyEveryMinutes
             }
@@ -163,7 +166,7 @@ function doneClass($doneTime)
     document.getElementById("btn-pause").addEventListener("click", (event) => {
         event.preventDefault()
         window.stopwatch.stop()
-        window.resetNotRunningAlert()
+        window.armIdleAlert()
     })
     document.getElementById("btn-reset").addEventListener("click", (event) => {
         event.preventDefault()
@@ -171,7 +174,7 @@ function doneClass($doneTime)
         // Die Uhr steht wieder auf null, also auch der nächste Meldezeitpunkt.
         nextNotificationAt = notifyEveryMinutes
         window.stopwatch.reset()
-        window.resetNotRunningAlert()
+        window.armIdleAlert()
     })
     document.getElementById("btn-minus").addEventListener("click", (event) => {
         event.preventDefault()
@@ -194,6 +197,11 @@ function doneClass($doneTime)
         // weiter, die nächste Schwelle liegt also ohnehin voraus. Vorher wurde
         // hier pomodoroExpired zurückgesetzt, was nach jeder Pause erneut bei 25
         // Minuten meldete, obwohl die Uhr längst darüber stand.
+        //
+        // Die Untätigkeits-Erinnerung wird abgeräumt. Vorher blieb ihr Timeout
+        // stehen und feuerte blind weiter. Dass er nichts anrichtete, lag nur an
+        // der Prüfung in seinem Rumpf.
+        window.clearIdleAlert()
         window.stopwatch.start()
     }
 
@@ -211,15 +219,30 @@ function doneClass($doneTime)
         form.submit()
     }
     updateTimerOutput()
-    // if no timer is running for 5 minutes, show a notification
-    window.resetNotRunningAlert =  () => {
-        clearTimeout(window.notRunningInterval)
-        window.notRunningInterval = setTimeout(() => {
-            if (!stopwatch.running()) {
-                notifications.show("No timer running", "<?= h($timeTracking->task->name) ?>")
+
+    // Erinnerung alle 15 Minuten, solange die Stoppuhr steht. Vorher war es ein
+    // einmaliger setTimeout nach 5 Minuten: Wer die Uhr pausierte und vergaß,
+    // bekam genau eine Erinnerung und danach nie wieder eine.
+    const idleEveryMinutes = 15
+
+    window.armIdleAlert = () => {
+        clearInterval(window.idleInterval)
+        window.idleInterval = setInterval(() => {
+            if (stopwatch.running()) {
+                // Sicherheitsnetz. Sollte das Abräumen beim Start je ausbleiben,
+                // beendet sich das Intervall hier selbst, statt eine laufende
+                // Uhr als untätig zu melden.
+                clearInterval(window.idleInterval)
+                return
             }
-        }, 1000 * 60 * 5)
+            notifications.show("No timer running", "<?= h($timeTracking->task->name) ?>")
+        }, 1000 * 60 * idleEveryMinutes)
     }
+
+    window.clearIdleAlert = () => {
+        clearInterval(window.idleInterval)
+    }
+
     notifications.requestPermission()
-    window.resetNotRunningAlert()
+    window.armIdleAlert()
 </script>
