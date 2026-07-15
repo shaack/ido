@@ -23,6 +23,17 @@ class TasksController extends AppController
     public function index()
     {
         $filter = $this->request->getQuery("filter");
+
+        // Projektfilter: steht ein project_id in der URL, merken wir ihn für die
+        // Session (leerer Wert räumt ihn wieder ab). Ohne URL-Parameter gilt der
+        // gemerkte Wert weiter.
+        $session = $this->request->getSession();
+        if ($this->request->getQuery('project_id') !== null) {
+            $chosen = $this->request->getQuery('project_id');
+            $session->write('Tasks.projectId', $chosen === '' ? null : (int)$chosen);
+        }
+        $projectId = $session->read('Tasks.projectId');
+
         $this->paginate = [
             'order' => ['marked' => 'desc', 'id' => 'asc'],
             'maxLimit' => 1000,
@@ -38,6 +49,32 @@ class TasksController extends AppController
         if($filter == "customers") {
             $conditions[] = ['Customers.shortcut !=' => 'SHA'];
         }
+
+        // Auswahlliste für den Filter: die Projekte, die in der ungefilterten
+        // Liste vorkommen. So lässt sich der Filter jederzeit wieder wechseln.
+        $projectOptions = [];
+        $base = $this->Tasks->find()
+            ->contain(['Services.Projects' => ['conditions' => ['project_status_id' => '15']], 'Services.Projects.Customers'])
+            ->where($conditions);
+        foreach ($base->all() as $t) {
+            $project = $t->service->project ?? null;
+            if ($project !== null) {
+                $shortcut = $project->customer->shortcut ?? '';
+                $projectOptions[$project->id] = trim($shortcut . ' / ' . $project->name, ' /');
+            }
+        }
+        asort($projectOptions);
+
+        // Der gemerkte Projektfilter greift nur, solange das Projekt noch in der
+        // Liste steht, sonst räumen wir ihn ab.
+        if ($projectId !== null && !isset($projectOptions[$projectId])) {
+            $projectId = null;
+            $session->delete('Tasks.projectId');
+        }
+        if ($projectId !== null) {
+            $conditions[] = ['Services.project_id' => $projectId];
+        }
+
         $query = $this->Tasks->find()
             ->contain(['Services', 'Services.Projects' => ['conditions' => ['project_status_id' => '15']], 'Services.Projects.Customers', 'TimeTrackings'])
             ->where($conditions);
@@ -60,7 +97,7 @@ class TasksController extends AppController
         $dayBefore = $dayBefore->sub($oneDayInterval);
         $done3 = $this->Tasks->TimeTrackings->find()->where(["created >" => $day])->where(["created <" => $dayBefore])->all()->sumOf('duration');
 
-        $this->set(compact('tasks', 'doneToday', 'done1', 'done2', 'done3'));
+        $this->set(compact('tasks', 'doneToday', 'done1', 'done2', 'done3', 'projectOptions', 'projectId'));
     }
 
     /**

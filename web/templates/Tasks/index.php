@@ -36,6 +36,20 @@ function doneClass($doneTime)
             <span class="me-2 <?= doneClass($done2) ?>"><?= $this->Number->format($done2, ["places" => 2]) ?></span>
             <span class="<?= doneClass($done3) ?>"><?= $this->Number->format($done3, ["places" => 2]) ?></span>
         </div>
+        <div class="col-auto">
+            <?php
+            $projectOptions = $this->get('projectOptions') ?? [];
+            $projectId = $this->get('projectId');
+            ?>
+            <form method="get" action="/tasks" class="m-0">
+                <select name="project_id" class="form-select form-select-sm" onchange="this.form.submit()">
+                    <option value=""><?= __('Alle Projekte') ?></option>
+                    <?php foreach ($projectOptions as $id => $label): ?>
+                        <option value="<?= $id ?>" <?= (int)$projectId === (int)$id ? 'selected' : '' ?>><?= h($label) ?></option>
+                    <?php endforeach; ?>
+                </select>
+            </form>
+        </div>
         <div
             class="col-auto text-end"><?= $this->Html->link(__('New Task'), ['action' => 'add'], ['class' => 'btn btn-primary btn-sm float-right']) ?></div>
     </div>
