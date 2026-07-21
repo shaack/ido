@@ -7,7 +7,20 @@
 $shortcut = $project->customer ? $project->customer->shortcut : '';
 $fileName = trim("Time Trackings " . $shortcut . " " . $project->name);
 $this->assign('title', $fileName);
+$this->start('css');
 ?>
+<style>
+    .timeTrackings.index table td,
+    .timeTrackings.index table th {
+        padding-right: 0.5rem;
+    }
+
+    .timeTrackings.index table td:last-child,
+    .timeTrackings.index table th:last-child {
+        padding-right: 0;
+    }
+</style>
+<?php $this->end(); ?>
 <div class="timeTrackings index content">
     <h3 class="mt-5">
         <?= __('Time Trackings') ?>
