@@ -27,8 +27,8 @@ $internalParam = $includeInternal ? '1' : '0';
             <?php foreach ($periodLabels as $key => $label): ?>
                 <?= $this->Html->link(
                     $label,
-                    ['?' => ['period' => $key, 'internal' => $internalParam]],
-                    ['class' => 'btn btn-outline-secondary' . ($period === $key ? ' active' : '')],
+                    ['?' => ['period' => (string)$key, 'internal' => $internalParam]],
+                    ['class' => 'btn btn-outline-secondary' . ((string)$key === $period ? ' active' : '')],
                 ) ?>
             <?php endforeach; ?>
         </div>
