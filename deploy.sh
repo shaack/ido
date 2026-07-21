@@ -114,8 +114,6 @@ if [ "$DRY_RUN" = true ]; then
 else
   DRY_FLAG=""
 fi
-read -rp "$([ "$DRY_RUN" = true ] && echo 'Simulieren?' || echo 'Hochladen?') [j/N] " ANSWER
-[ "${ANSWER:-}" = "j" ] || { echo "Abgebrochen."; exit 0; }
 
 # ---- vendor/ für Produktion bauen --------------------------------
 # Der Dev-Stand wird in jedem Fall wiederhergestellt, auch wenn der
