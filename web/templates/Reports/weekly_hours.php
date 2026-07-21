@@ -5,6 +5,7 @@
  * @var float $totalHours
  * @var float $averageHours
  * @var int $weekCount
+ * @var bool $includeInternal
  */
 $this->assign('title', 'Arbeitszeit pro Woche');
 
@@ -12,8 +13,9 @@ $this->assign('title', 'Arbeitszeit pro Woche');
 // damit kein zusätzliches Chart-Paket nötig ist und der Report auch im
 // Druck-Layout funktioniert.
 $plotH = 300;      // Höhe der Zeichenfläche
-$step = 22;        // Abstand Balkenmitte zu Balkenmitte
-$barW = 15;        // Balkenbreite
+$barW = 2;         // Balkenbreite
+$gap = 1;          // Abstand zwischen zwei Balken
+$step = $barW + $gap; // Abstand Balkenmitte zu Balkenmitte
 $padLeft = 48;     // Platz für die Y-Beschriftung
 $padTop = 16;
 $padBottom = 64;   // Platz für die gedrehte X-Beschriftung
@@ -35,9 +37,34 @@ $baseline = $padTop + $plotH;
 $labelEvery = max(1, (int)ceil($count / 40));
 
 $gridSteps = 5;
+
+// Gleitender Mittelwert als Trendkurve. Zentriertes Fenster von $avgWindow
+// Wochen, an den Rändern auf die vorhandenen Wochen beschnitten. Glättet die
+// wöchentlichen Ausschläge zu einer lesbaren Kurve.
+$avgWindow = 20;
+$avgPoints = [];
+foreach ($weeks as $i => $w) {
+    $from = max(0, $i - (int)floor($avgWindow / 2));
+    $to = min($count - 1, $i + (int)ceil($avgWindow / 2) - 1);
+    $sum = 0.0;
+    for ($j = $from; $j <= $to; $j++) {
+        $sum += $weeks[$j]['hours'];
+    }
+    $mean = $sum / ($to - $from + 1);
+    $x = $padLeft + $i * $step + $step / 2;
+    $y = $baseline - $mean * $yScale;
+    $avgPoints[] = round($x, 1) . ',' . round($y, 1);
+}
 ?>
 <div class="reports content">
     <h3 class="mt-5"><?= __('Arbeitszeit pro Woche') ?></h3>
+
+    <div class="form-check form-switch mb-3">
+        <input class="form-check-input" type="checkbox" role="switch" id="internalToggle"
+               <?= $includeInternal ? 'checked' : '' ?>
+               onchange="location.search = this.checked ? '?internal=1' : '?internal=0'">
+        <label class="form-check-label" for="internalToggle"><?= __('Interne Projekte') ?></label>
+    </div>
 
     <?php if (!$count): ?>
         <p class="text-muted"><?= __('Noch keine Zeiten erfasst.') ?></p>
@@ -46,6 +73,9 @@ $gridSteps = 5;
             <?= $weekCount ?> <?= __('Wochen') ?> &middot;
             <?= __('Summe') ?> <?= $this->Effort->hours($totalHours) ?> h &middot;
             <?= __('Durchschnitt') ?> <?= $this->Effort->hours($averageHours) ?> h/<?= __('Woche') ?>
+            &middot;
+            <span style="color:var(--bs-orange)">&#9473;</span>
+            <?= __('gleitender Mittelwert') ?> (<?= $avgWindow ?> <?= __('Wochen') ?>)
         </p>
 
         <div class="table-responsive">
@@ -72,10 +102,15 @@ $gridSteps = 5;
                     $y = $baseline - $barH; ?>
                     <rect x="<?= round($x, 1) ?>" y="<?= round($y, 1) ?>"
                           width="<?= $barW ?>" height="<?= round($barH, 1) ?>"
-                          fill="var(--bs-primary)" rx="2">
+                          fill="var(--bs-primary)">
                         <title><?= h($w['label']) ?>: <?= $this->Effort->hours($w['hours']) ?> h</title>
                     </rect>
                 <?php endforeach; ?>
+
+                <?php // Mittelwertkurve (gleitender Mittelwert) über den Balken ?>
+                <polyline points="<?= implode(' ', $avgPoints) ?>"
+                          fill="none" stroke="var(--bs-orange)" stroke-width="2"
+                          stroke-linejoin="round" stroke-linecap="round"/>
 
                 <?php // X-Beschriftung, gedreht ?>
                 <?php foreach ($weeks as $i => $w):
