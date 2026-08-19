@@ -2,12 +2,25 @@
 /**
  * @var \App\View\AppView $this
  * @var iterable<\App\Model\Entity\Customer> $customers
+ * @var string $filter
  */
 ?>
 <div class="customers index content">
     <div class="row d-flex align-items-center mb-2">
         <div class="col"><h3 class="m-0"><?= __('Customers') ?></h3></div>
         <div class="col text-end"><?= $this->Html->link(__('New Customer'), ['action' => 'add'], ['class' => 'btn btn-primary btn-sm float-right']) ?></div>
+    </div>
+    <div class="btn-group btn-group-sm mb-3" role="group">
+        <?= $this->Html->link(
+            __('Aktuelle'),
+            ['action' => 'index', '?' => ['filter' => 'current']],
+            ['class' => 'btn btn-outline-secondary' . ($filter === 'current' ? ' active' : '')],
+        ) ?>
+        <?= $this->Html->link(
+            __('Alle'),
+            ['action' => 'index', '?' => ['filter' => 'all']],
+            ['class' => 'btn btn-outline-secondary' . ($filter === 'all' ? ' active' : '')],
+        ) ?>
     </div>
     <div class="table-responsive">
         <table>

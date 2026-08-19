@@ -18,12 +18,18 @@ class CustomersController extends AppController
      */
     public function index()
     {
-        $current = $this->request->getQuery("current", false);
-        $options = array('conditions' => array('current' => $current),
-            'order' => ['name' => "asc"]);
-        $customers = $this->paginate($this->Customers, $options);
+        // Standard ist die Liste der aktuellen Kunden. Mit ?filter=all werden
+        // alle angezeigt. Alles ausser 'all' faellt auf 'current' zurueck.
+        $filter = $this->request->getQuery('filter') === 'all' ? 'all' : 'current';
+        // conditions/order in den Paginator-Settings werden in CakePHP 5 still
+        // ignoriert (siehe CLAUDE.md), darum die Query selbst aufbauen.
+        $query = $this->Customers->find()->orderBy(['shortcut' => 'asc']);
+        if ($filter !== 'all') {
+            $query->where(['current' => true]);
+        }
+        $customers = $this->paginate($query);
 
-        $this->set(compact('customers'));
+        $this->set(compact('customers', 'filter'));
     }
 
     /**
