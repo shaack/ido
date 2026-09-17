@@ -8,9 +8,12 @@ use Cake\I18n\Number;
  */
 $this->assign('title', 'Umsatz pro Monat');
 
+// Geometrie wie bei "Arbeitszeit pro Woche": schmale Balken, damit das
+// Diagramm ohne horizontales Scrollen in die Seite passt. Monate sind
+// seltener als Wochen, deshalb etwas breiter als dort (2/1).
 $plotH = 300;
-$barW = 18;
-$gap = 8;
+$barW = 4;
+$gap = 2;
 $step = $barW + $gap;
 $padLeft = 64;     // Platz für die Euro-Beschriftung
 $padTop = 16;
@@ -74,7 +77,7 @@ $gridSteps = 5;
                     $y = $baseline - $barH; ?>
                     <rect x="<?= round($x, 1) ?>" y="<?= round($y, 1) ?>"
                           width="<?= $barW ?>" height="<?= round($barH, 1) ?>"
-                          fill="var(--bs-primary)" rx="2">
+                          fill="var(--bs-primary)">
                         <title><?= h($m['label']) ?>: <?= Number::currency($m['revenue'], 'EUR') ?></title>
                     </rect>
                 <?php endforeach; ?>
