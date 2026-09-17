@@ -12,7 +12,8 @@ $this->assign('title', 'Offene Forderungen');
 <div class="reports content">
     <h3 class="mt-5"><?= __('Offene Forderungen') ?></h3>
     <p class="text-muted">
-        <?= __('Berechnet, aber noch nicht als bezahlt markiert. Beträge aus '
+        <?= __('Berechnet, aber noch nicht als bezahlt markiert. Stornierte, kostenlose '
+            . 'und abgebrochene Projekte sind ausgenommen. Beträge aus '
             . 'erfassten Zeiten und Festpreisen; Rechnungen aus der Zeit vor der '
             . 'Zeiterfassung sind ohne berechenbaren Betrag hier ausgelassen.') ?>
     </p>

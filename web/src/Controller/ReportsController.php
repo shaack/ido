@@ -257,15 +257,27 @@ class ReportsController extends AppController
     }
 
     /**
+     * Status, bei denen trotz gesetztem invoice_date keine Forderung mehr
+     * besteht: 45 Rechnung storniert, 50 kostenlos, 55 Projekt abgebrochen.
+     */
+    private const RECEIVABLE_EXCLUDED_STATUSES = [45, 50, 55];
+
+    /**
      * Offene Forderungen: berechnete, aber noch nicht bezahlte Projekte
-     * (invoice_date gesetzt, paid_at leer).
+     * (invoice_date gesetzt, paid_at leer). Stornierte, kostenlose und
+     * abgebrochene Projekte zählen nicht, sonst bleiben abgeschriebene
+     * Rechnungen dauerhaft in der Liste.
      *
      * @return void
      */
     public function receivables(): void
     {
         $projects = $this->fetchTable('Projects')->find()
-            ->where(['invoice_date IS NOT' => null, 'paid_at IS' => null])
+            ->where([
+                'invoice_date IS NOT' => null,
+                'paid_at IS' => null,
+                'project_status_id NOT IN' => self::RECEIVABLE_EXCLUDED_STATUSES,
+            ])
             ->contain(['Customers', 'Services.Tasks.TimeTrackings'])
             ->orderBy(['invoice_date' => 'ASC'])
             ->all();
