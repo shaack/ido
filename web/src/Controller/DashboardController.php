@@ -5,8 +5,6 @@ namespace App\Controller;
 
 use App\Backup\DatabaseBackup;
 use Cake\I18n\Date;
-use Cake\I18n\DateTime;
-use DateInterval;
 
 /**
  * Dashboard Controller
@@ -80,18 +78,17 @@ class DashboardController extends AppController
     }
 
     /**
-     * Offene Tasks laufender Projekte, markierte zuerst, wie in der
-     * Taskliste. Gerade erledigte bleiben eine Stunde sichtbar, damit ein
-     * Klick die Zeile nicht sofort wegreißt.
+     * Offene Tasks laufender Projekte, markierte zuerst. Nur offene: Erledigt
+     * wird per Ajax umgeschaltet, die Zeile bleibt bis zum Neuladen ohnehin
+     * stehen. Gerade erledigte mitzuzeigen schob sie sonst über die
+     * Sortierung nach Änderung an die Spitze und verdrängte die offenen.
      */
     private function nextTasks(): iterable
     {
-        $recently = DateTime::now()->sub(new DateInterval('PT1H'));
-
         return $this->fetchTable('Tasks')->find()
             ->contain(['Services.Projects.Customers', 'TimeTrackings'])
             ->innerJoinWith('Services.Projects', fn($q) => $q->where(['Projects.project_status_id' => self::STATUS_RUNS]))
-            ->where(['OR' => [['Tasks.done' => false], ['Tasks.done_at >' => $recently]]])
+            ->where(['Tasks.done' => false])
             ->orderBy(['Tasks.marked' => 'DESC', 'Tasks.modified' => 'DESC', 'Tasks.id' => 'DESC'])
             ->limit(self::TASK_LIMIT)
             ->all();
