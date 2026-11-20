@@ -34,9 +34,9 @@
 # Im Zweifel vorher ./deploy.sh --dry-run laufen lassen, das listet jede
 # Löschung auf, ohne etwas anzufassen.
 #
-# Das SFTP-Passwort wird beim ersten Aufruf des Tages abgefragt und
-# bis Tagesende im macOS-Schlüsselbund gemerkt. Vergessen mit:
-#   security delete-generic-password -s ido-shaack-deploy
+# Die Verbindung läuft über den SSH-Alias ghv.shaack.com aus ~/.ssh/config
+# und dessen Schlüssel, ohne Passwort. Der Public Key ist im Plesk
+# „SSH Keys Manager“ hinterlegt.
 #
 set -euo pipefail
 
@@ -51,7 +51,7 @@ for arg in "$@"; do
 done
 
 # ---- Zugang ------------------------------------------------------
-FTP_HOST="shaack.com"
+SSH_HOST="ghv.shaack.com"   # Alias in ~/.ssh/config, Anmeldung per Schlüssel
 FTP_USER="hosting113435"
 
 # Zielverzeichnis auf dem Server — das lokale web/ entspricht dem
@@ -76,37 +76,19 @@ if ! command -v composer >/dev/null 2>&1; then
   exit 1
 fi
 
-# ---- Passwort: einmal pro Tag abfragen, dazwischen aus dem
-#      macOS-Schlüsselbund holen ----------------------------------
-# Das Passwort liegt verschlüsselt im Schlüsselbund (kein Klartext
-# auf der Platte). Die Datei merkt sich nur das Datum der letzten
-# Eingabe — ist es nicht von heute, wird neu gefragt.
-KEYCHAIN_SERVICE="ido-shaack-deploy"
-STAMP_FILE="${HOME}/.ido-deploy-passdate"
-TODAY="$(date +%Y-%m-%d)"
-
-LFTP_PASSWORD=""
-if [ "$(cat "$STAMP_FILE" 2>/dev/null)" = "$TODAY" ]; then
-  LFTP_PASSWORD="$(security find-generic-password -s "$KEYCHAIN_SERVICE" -a "$FTP_USER" -w 2>/dev/null || true)"
+# ---- Zugang prüfen ----------------------------------------------
+# Einmal per SSH anmelden, bevor gebaut wird. BatchMode verhindert, dass
+# ssh doch nach einem Passwort fragt, wenn der Schlüssel nicht greift.
+if ! ssh -o BatchMode=yes -o ConnectTimeout=10 "$SSH_HOST" true 2>/dev/null; then
+  echo "Fehler: keine Anmeldung per Schlüssel an ${SSH_HOST} möglich." >&2
+  echo "Prüfen mit:  ssh ${SSH_HOST}" >&2
+  exit 1
 fi
-
-if [ -z "$LFTP_PASSWORD" ]; then
-  read -rsp "Passwort für ${FTP_USER}: " LFTP_PASSWORD
-  echo
-  if security add-generic-password -U -s "$KEYCHAIN_SERVICE" -a "$FTP_USER" \
-       -w "$LFTP_PASSWORD" 2>/dev/null; then
-    echo "$TODAY" > "$STAMP_FILE"
-    echo "Passwort für heute gemerkt (macOS-Schlüsselbund)."
-  fi
-else
-  echo "Passwort aus dem Schlüsselbund (heute schon eingegeben)."
-fi
-export LFTP_PASSWORD
 
 # ---- Bestätigung -------------------------------------------------
 echo
 echo "Quelle : ${LOCAL_DIR}/  (vendor/ wird vorher ohne Dev-Pakete gebaut)"
-echo "Ziel   : ${FTP_USER}@${FTP_HOST}:${REMOTE_DIR}"
+echo "Ziel   : ${FTP_USER}@${SSH_HOST}:${REMOTE_DIR}"
 echo "Ausgenommen: config/app_local.php, config/.env, logs/, tmp/, db-backups/, .DS_Store"
 echo "Löschen: JA (--delete) — was lokal fehlt, verschwindet auch auf dem Server."
 if [ "$DRY_RUN" = true ]; then
@@ -145,7 +127,9 @@ echo "› vendor/ wird ohne Dev-Pakete gebaut …"
 # config/bootstrap.php hängt allein an deren Existenz. Für den Test wird
 # deshalb eine angelegt, falls lokal keine da ist, sonst liefe genau der
 # Codepfad nicht an, der den Ausfall verursacht hat.
-if command -v podman >/dev/null 2>&1 && podman ps --format '{{.Names}}' 2>/dev/null | grep -qx "$SMOKE_CONTAINER"; then
+# grep ohne -q: mit -q bricht grep beim ersten Treffer ab, podman bekommt
+# SIGPIPE, und unter pipefail gilt der Container dann als nicht laufend.
+if command -v podman >/dev/null 2>&1 && podman ps --format '{{.Names}}' 2>/dev/null | grep -x "$SMOKE_CONTAINER" >/dev/null; then
   if [ ! -f "${LOCAL_DIR}/config/.env" ]; then
     cp "${LOCAL_DIR}/config/.env.example" "${LOCAL_DIR}/config/.env"
     TEMP_ENV=true
@@ -179,7 +163,10 @@ fi
 
 # ---- Upload ------------------------------------------------------
 echo "$([ "$DRY_RUN" = true ] && echo '› Dry-Run läuft …' || echo '› Upload läuft …')"
-lftp -u "$FTP_USER" --env-password "sftp://$FTP_HOST" <<EOF
+# "user," mit leerem Passwort, damit lftp nicht fragt. ssh löst den Alias
+# auf und meldet sich mit dem Schlüssel an.
+lftp -u "$FTP_USER," "sftp://$SSH_HOST" <<EOF
+set sftp:connect-program "ssh -a -x -o BatchMode=yes"
 set sftp:auto-confirm yes
 set net:timeout 20
 set net:max-retries 3
