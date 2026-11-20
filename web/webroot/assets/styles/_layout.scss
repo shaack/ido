@@ -19,29 +19,31 @@ body.app {
     }
 }
 
-// Logo: die drei Buchstaben in ihren Farben, sie tragen die Palette
+// Logo: einfarbig in der Textfarbe, das o ist eine Stoppuhr
 .app-logo {
+    display: inline-flex;
+    align-items: baseline;
     font-family: $font-family-display;
-    font-size: 1.75rem;
-    font-weight: 700;
-    letter-spacing: -0.02em;
+    font-size: 2rem;
+    font-weight: 800;
+    letter-spacing: -0.045em;
     line-height: 1;
+    color: var(--ido-ink);
     text-decoration: none;
 
     &:hover {
+        color: var(--ido-ink);
         text-decoration: none;
     }
 
-    .char-1 {
-        color: var(--ido-green);
-    }
-
-    .char-2 {
-        color: var(--ido-amber);
-    }
-
+    // Die Stoppuhr sitzt auf der Grundlinie, der Ring hat die Höhe der
+    // Kleinbuchstaben, die Krone ragt darüber hinaus
     .char-3 {
-        color: var(--ido-blue);
+        width: 0.62em;
+        height: 0.775em;
+        margin-left: 0.045em;
+        fill: currentColor;
+        transform: translateY(0.035em);
     }
 }
 

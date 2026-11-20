@@ -126,7 +126,8 @@ Styles are SCSS on Bootstrap 5.3 in `webroot/assets/styles/`, compiled by hand a
 its mtime as version, so a deploy is never hidden by the cache. Do not recompile `print.css`
 without checking invoices and offers.
 
-- Colours come from the logo and carry meaning: green for running work and tracked time, amber
+- The logo is monochrome in the text colour, its "o" is a stopwatch (`element/logo.php`, also
+  `webroot/favicon.svg`). The palette comes from the former three-colour logo and carries meaning: green for running work and tracked time, amber
   for marked or waiting, blue for actions and links. They are CSS variables `--ido-*` in
   `_theme.scss`, defined for light and dark (`data-bs-theme`, set by bootstrap-auto-dark-mode).
   Use the variables in templates, not Bootstrap colour classes.

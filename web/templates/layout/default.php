@@ -61,6 +61,7 @@ $tabs = [$navigation[''][0], $navigation[''][1], $navigation[''][2], $navigation
     <meta name="theme-color" content="#EDF0F3" media="(prefers-color-scheme: light)">
     <meta name="theme-color" content="#15191F" media="(prefers-color-scheme: dark)">
     <title><?= $this->fetch('title') ?> · Ido</title>
+    <link rel="icon" href="/favicon.svg" type="image/svg+xml">
     <?= $this->Html->meta('icon') ?>
     <link rel="preload" href="/assets/fonts/public-sans-latin-wght-normal.woff2" as="font" type="font/woff2" crossorigin>
     <link rel="preload" href="/assets/fonts/bricolage-grotesque-latin-wght-normal.woff2" as="font" type="font/woff2" crossorigin>
@@ -92,7 +93,7 @@ $tabs = [$navigation[''][0], $navigation[''][1], $navigation[''][2], $navigation
 <?php if (!$this->get('hideNavigation')) : ?>
     <aside class="app-sidebar offcanvas-lg offcanvas-start" tabindex="-1" id="app-nav" aria-label="<?= __('Navigation') ?>">
         <div class="app-sidebar-head">
-            <a class="app-logo" href="/" aria-label="Ido"><span class="char-1">I</span><span class="char-2">d</span><span class="char-3">o</span></a>
+            <?= $this->element('logo') ?>
             <button type="button" class="btn app-icon-btn d-lg-none" data-bs-dismiss="offcanvas" data-bs-target="#app-nav"
                     aria-label="<?= __('Close menu') ?>"><?= $this->element('icon', ['name' => 'close']) ?></button>
         </div>
@@ -126,7 +127,7 @@ $tabs = [$navigation[''][0], $navigation[''][1], $navigation[''][2], $navigation
 <div class="app-main">
     <?php if (!$this->get('hideNavigation')) : ?>
         <header class="app-mobilebar d-lg-none">
-            <a class="app-logo" href="/" aria-label="Ido"><span class="char-1">I</span><span class="char-2">d</span><span class="char-3">o</span></a>
+            <?= $this->element('logo') ?>
             <span class="app-mobilebar-today"><?= $this->Effort->hours($navTodayHours) ?> h <?= __('today') ?></span>
         </header>
     <?php endif; ?>

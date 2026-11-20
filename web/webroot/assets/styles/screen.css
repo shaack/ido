@@ -12471,24 +12471,26 @@ body.app {
 }
 
 .app-logo {
+  display: inline-flex;
+  align-items: baseline;
   font-family: "Bricolage Grotesque", "Public Sans", system-ui, sans-serif;
-  font-size: 1.75rem;
-  font-weight: 700;
-  letter-spacing: -0.02em;
+  font-size: 2rem;
+  font-weight: 800;
+  letter-spacing: -0.045em;
   line-height: 1;
+  color: var(--ido-ink);
   text-decoration: none;
 }
 .app-logo:hover {
+  color: var(--ido-ink);
   text-decoration: none;
 }
-.app-logo .char-1 {
-  color: var(--ido-green);
-}
-.app-logo .char-2 {
-  color: var(--ido-amber);
-}
 .app-logo .char-3 {
-  color: var(--ido-blue);
+  width: 0.62em;
+  height: 0.775em;
+  margin-left: 0.045em;
+  fill: currentColor;
+  transform: translateY(0.035em);
 }
 
 .app-sidebar {

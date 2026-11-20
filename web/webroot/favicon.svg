@@ -1,0 +1,13 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32">
+    <!-- Die Stoppuhr aus dem Logo, siehe templates/element/logo.php -->
+    <style>
+        .ido { fill: #17202B; stroke: #17202B; }
+        @media (prefers-color-scheme: dark) { .ido { fill: #E3E7EC; stroke: #E3E7EC; } }
+    </style>
+    <g class="ido">
+        <rect x="12" y="0.5" width="8" height="4" rx="1.5" stroke="none"/>
+        <rect x="14.75" y="3" width="2.5" height="4" stroke="none"/>
+        <circle cx="16" cy="19" r="10.5" fill="none" stroke-width="5"/>
+        <path d="M16 19V12.5" fill="none" stroke-width="3" stroke-linecap="round"/>
+    </g>
+</svg>
