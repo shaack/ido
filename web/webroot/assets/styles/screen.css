@@ -12599,7 +12599,7 @@ body.app {
 }
 
 .app-sidebar-today-hours {
-  font-family: "Bricolage Grotesque", "Public Sans", system-ui, sans-serif;
+  font-family: "Public Sans", system-ui, -apple-system, "Segoe UI", sans-serif;
   font-weight: 600;
 }
 
@@ -12851,7 +12851,7 @@ body.app {
 }
 
 .dash-today-number {
-  font-family: "Bricolage Grotesque", "Public Sans", system-ui, sans-serif;
+  font-family: "Public Sans", system-ui, -apple-system, "Segoe UI", sans-serif;
   font-size: clamp(3rem, 6vw, 4.5rem);
   font-weight: 650;
   line-height: 0.9;
@@ -13064,7 +13064,7 @@ body.app {
 
 .money-amount {
   display: block;
-  font-family: "Bricolage Grotesque", "Public Sans", system-ui, sans-serif;
+  font-family: "Public Sans", system-ui, -apple-system, "Segoe UI", sans-serif;
   font-size: 1.625rem;
   font-weight: 650;
   line-height: 1.2;
@@ -13205,7 +13205,7 @@ main form .stopwatch-display input#stopwatch {
   background: none;
   box-shadow: none;
   color: var(--ido-ink);
-  font-family: "Bricolage Grotesque", "Public Sans", system-ui, sans-serif;
+  font-family: "Public Sans", system-ui, -apple-system, "Segoe UI", sans-serif;
   font-size: clamp(3.5rem, 8vw, 5.5rem);
   font-weight: 650;
   letter-spacing: -0.03em;
@@ -13259,7 +13259,7 @@ main form .stopwatch-display input#stopwatch:focus-visible {
 }
 .track-figures dd {
   margin: 0;
-  font-family: "Bricolage Grotesque", "Public Sans", system-ui, sans-serif;
+  font-family: "Public Sans", system-ui, -apple-system, "Segoe UI", sans-serif;
   font-size: 1.25rem;
   font-weight: 650;
 }

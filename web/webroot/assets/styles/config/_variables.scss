@@ -1,7 +1,9 @@
-// Schrift: Bricolage Grotesque für Logo, Titel und große Zahlen, Public Sans
-// mit Tabellenziffern für alles andere. Beide liegen in assets/fonts.
+// Schrift: Bricolage Grotesque für Logo und Titel, Public Sans mit
+// Tabellenziffern für alles andere, auch für große Zahlen. Die Ziffern von
+// Bricolage wirken groß zu eigenwillig. Beide liegen in assets/fonts.
 $font-family-display: "Bricolage Grotesque", "Public Sans", system-ui, sans-serif;
 $font-family-sans-serif: "Public Sans", system-ui, -apple-system, "Segoe UI", sans-serif;
+$font-family-figures: $font-family-sans-serif;
 $font-size-base: 0.9375rem;
 $line-height-base: 1.5;
 $headings-font-family: $font-family-display;
