@@ -110,13 +110,20 @@ class AppController extends Controller
             return;
         }
         $tasks = $this->fetchTable('Tasks');
-        // Wie die Taskliste: offene Tasks in laufenden Projekten (Status 15)
-        $this->set('navOpenTasks', $tasks->find()
-            ->innerJoinWith('Services.Projects', fn($q) => $q->where(['Projects.project_status_id' => 15]))
-            ->where(['Tasks.done' => false])
-            ->count());
+        $this->set('navOpenTasks', $this->openTaskCount());
         $this->set('navTodayHours', (float)$tasks->TimeTrackings->find()
             ->where(['created >=' => Date::now()])
             ->all()->sumOf('duration'));
+    }
+
+    /**
+     * Offene Tasks wie in der Taskliste: nur die laufender Projekte (Status 15).
+     */
+    protected function openTaskCount(): int
+    {
+        return $this->fetchTable('Tasks')->find()
+            ->innerJoinWith('Services.Projects', fn($q) => $q->where(['Projects.project_status_id' => 15]))
+            ->where(['Tasks.done' => false])
+            ->count();
     }
 }

@@ -18,9 +18,19 @@ class ProjectStatusesController extends AppController
      */
     public function index()
     {
-        $projectStatuses = $this->paginate($this->ProjectStatuses);
+        // Elf Status, keine Seiten nötig. Die Id ist zugleich die Reihenfolge
+        // im Ablauf eines Projekts.
+        $projectStatuses = $this->ProjectStatuses->find()
+            ->orderBy(['ProjectStatuses.id' => 'ASC'])
+            ->all();
+        $projectCounts = $this->fetchTable('Projects')->find()
+            ->select(['project_status_id', 'count' => $this->fetchTable('Projects')->find()->func()->count('*')])
+            ->groupBy(['project_status_id'])
+            ->all()
+            ->combine('project_status_id', 'count')
+            ->toArray();
 
-        $this->set(compact('projectStatuses'));
+        $this->set(compact('projectStatuses', 'projectCounts'));
     }
 
     /**

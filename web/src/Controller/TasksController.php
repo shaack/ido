@@ -158,22 +158,40 @@ class TasksController extends AppController
 
     public function done($id)
     {
-        $done = $this->request->getQuery("done", null);
         $task = $this->Tasks->get($id);
-        $task->done = $done;
+        $task->done = (bool)$this->request->getQuery("done", 0);
         $task->done_at = DateTime::now();
         $this->Tasks->save($task);
-        // Zurück dorthin, wo geklickt wurde, also auch aufs Dashboard.
-        $this->redirect($this->referer(["action" => "index"], true));
+
+        return $this->toggled($task);
     }
 
     public function marked($id)
     {
-        $marked = $this->request->getQuery("marked", 0);
         $task = $this->Tasks->get($id);
-        $task->marked = $marked;
+        $task->marked = (bool)$this->request->getQuery("marked", 0);
         $this->Tasks->save($task);
-        $this->redirect($this->referer(["action" => "index"], true));
+
+        return $this->toggled($task);
+    }
+
+    /**
+     * Antwort auf done() und marked(). Per Ajax (task-toggle.js) der neue
+     * Stand als JSON, damit die Seite nicht neu lädt, sonst zurück dorthin,
+     * wo geklickt wurde, also auch aufs Dashboard.
+     */
+    private function toggled(\App\Model\Entity\Task $task): ?\Cake\Http\Response
+    {
+        if ($this->request->is('ajax')) {
+            return $this->response->withType('application/json')->withStringBody((string)json_encode([
+                'id' => $task->id,
+                'done' => (bool)$task->done,
+                'marked' => (bool)$task->marked,
+                'openTasks' => $this->openTaskCount(),
+            ]));
+        }
+
+        return $this->redirect($this->referer(["action" => "index"], true));
     }
 
     /**

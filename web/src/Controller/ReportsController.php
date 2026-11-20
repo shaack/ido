@@ -161,55 +161,6 @@ class ReportsController extends AppController
     }
 
     /**
-     * Effektiver Stundensatz pro Kunde.
-     *
-     * Abgerechneter Betrag geteilt durch die tatsächlich erfassten Stunden. Die
-     * Rechnung läuft über die Entity-Methoden (costs()/effortTracked()), damit
-     * Viertelstunden-Rundung und Festpreise genauso einfliessen wie in der
-     * echten Rechnung. Interne Kunden werden nicht abgerechnet und bleiben
-     * darum aussen vor.
-     *
-     * @return void
-     */
-    public function effectiveRate(): void
-    {
-        $projects = $this->fetchTable('Projects')->find()
-            ->contain(['Customers', 'Services.Tasks.TimeTrackings'])
-            ->all();
-
-        $byCustomer = [];
-        foreach ($projects as $project) {
-            $customer = $project->customer;
-            if ($customer && $customer->internal) {
-                continue;
-            }
-            $hours = $project->effortTracked();
-            if ($hours <= 0) {
-                continue;
-            }
-            $key = $customer ? $customer->id : 0;
-            if (!isset($byCustomer[$key])) {
-                $byCustomer[$key] = [
-                    'name' => $customer ? ($customer->shortcut ?: $customer->name) : '—',
-                    'costs' => 0.0,
-                    'hours' => 0.0,
-                ];
-            }
-            $byCustomer[$key]['costs'] += $project->costs();
-            $byCustomer[$key]['hours'] += $hours;
-        }
-
-        $customers = [];
-        foreach ($byCustomer as $c) {
-            $c['rate'] = $c['hours'] > 0 ? $c['costs'] / $c['hours'] : 0.0;
-            $customers[] = $c;
-        }
-        usort($customers, fn($a, $b) => $b['rate'] <=> $a['rate']);
-
-        $this->set(compact('customers'));
-    }
-
-    /**
      * Umsatz (netto) pro Monat, gruppiert nach Rechnungsdatum.
      *
      * Nur berechnete Projekte (invoice_date gesetzt). Der Betrag kommt aus

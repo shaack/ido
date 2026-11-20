@@ -12060,6 +12060,13 @@ main .btn-group-vertical > .btn-group:not(:first-child) > .button {
   src: url("../fonts/bricolage-grotesque-latin-wght-normal.woff2") format("woff2");
 }
 @font-face {
+  font-family: "Ido Logo";
+  font-style: normal;
+  font-weight: 200 900;
+  font-display: block;
+  src: url("../fonts/unbounded-logo.woff2") format("woff2");
+}
+@font-face {
   font-family: "Public Sans";
   font-style: normal;
   font-weight: 100 900;
@@ -12473,10 +12480,10 @@ body.app {
 .app-logo {
   display: inline-flex;
   align-items: baseline;
-  font-family: "Bricolage Grotesque", "Public Sans", system-ui, sans-serif;
-  font-size: 2rem;
-  font-weight: 800;
-  letter-spacing: -0.045em;
+  font-family: "Ido Logo", "Bricolage Grotesque", "Public Sans", system-ui, sans-serif;
+  font-size: 1.625rem;
+  font-weight: 900;
+  letter-spacing: -0.02em;
   line-height: 1;
   color: var(--ido-ink);
   text-decoration: none;
@@ -13264,6 +13271,112 @@ main form .stopwatch-display input#stopwatch:focus-visible {
   font-family: "Public Sans", system-ui, -apple-system, "Segoe UI", sans-serif;
   font-size: 1.25rem;
   font-weight: 650;
+}
+
+.page-intro {
+  max-width: 40rem;
+  margin: -0.75rem 0 2rem;
+  color: var(--ido-muted);
+}
+
+.status-flow {
+  max-width: 52rem;
+}
+
+.status-phase + .status-phase {
+  margin-top: 1.75rem;
+}
+
+.status-phase-label {
+  margin: 0 0 0.25rem;
+  color: var(--ido-muted);
+  font-family: "Public Sans", system-ui, -apple-system, "Segoe UI", sans-serif;
+  font-size: 0.875rem;
+  font-weight: 600;
+  letter-spacing: 0;
+}
+
+.status-list {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+  border-top: 1px solid var(--ido-line);
+}
+
+.status-row {
+  display: grid;
+  grid-template-columns: auto 2.25rem minmax(0, 1fr) auto auto;
+  align-items: center;
+  gap: 0.75rem;
+  padding: 0.625rem 0.25rem;
+  border-bottom: 1px solid var(--ido-line);
+}
+@media (max-width: 767.98px) {
+  .status-row {
+    grid-template-columns: auto 2.25rem minmax(0, 1fr) auto;
+  }
+  .status-row .status-actions {
+    grid-column: 3/-1;
+  }
+}
+
+.status-dot {
+  width: 0.625rem;
+  height: 0.625rem;
+  border-radius: 50%;
+  background: var(--ido-muted);
+}
+.status-dot.tone-blue {
+  background: var(--ido-blue);
+}
+.status-dot.tone-green {
+  background: var(--ido-green);
+}
+.status-dot.tone-amber {
+  background: var(--ido-amber);
+}
+.status-dot.tone-red {
+  background: var(--ido-red);
+}
+.status-dot.tone-muted {
+  background: transparent;
+  box-shadow: inset 0 0 0 2px var(--ido-muted);
+}
+
+.status-number {
+  color: var(--ido-muted);
+  font-size: 0.875rem;
+}
+
+main a.status-name {
+  color: var(--ido-ink);
+  font-weight: 500;
+}
+
+.status-count {
+  color: var(--ido-muted);
+  font-size: 0.875rem;
+  white-space: nowrap;
+}
+.status-count a {
+  color: inherit;
+}
+
+.status-actions {
+  display: flex;
+  gap: 1rem;
+  min-width: 6rem;
+  justify-content: flex-end;
+  font-size: 0.875rem;
+}
+.status-actions a {
+  color: var(--ido-muted);
+}
+.status-actions a.text-danger {
+  color: var(--ido-muted) !important;
+}
+.status-actions a.text-danger:hover, .status-actions a.text-danger:focus-visible {
+  color: var(--ido-red) !important;
 }
 
 /*# sourceMappingURL=screen.css.map */

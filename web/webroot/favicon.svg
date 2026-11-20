@@ -5,9 +5,9 @@
         @media (prefers-color-scheme: dark) { .ido { fill: #E3E7EC; stroke: #E3E7EC; } }
     </style>
     <g class="ido">
-        <rect x="12" y="0.5" width="8" height="4" rx="1.5" stroke="none"/>
-        <rect x="14.75" y="3" width="2.5" height="4" stroke="none"/>
-        <circle cx="16" cy="19" r="10.5" fill="none" stroke-width="5"/>
-        <path d="M16 19V12.5" fill="none" stroke-width="3" stroke-linecap="round"/>
+        <rect x="10.5" y="0" width="11" height="5.5" rx="2" stroke="none"/>
+        <rect x="14" y="4" width="4" height="4.5" stroke="none"/>
+        <circle cx="16" cy="19.5" r="9.5" fill="none" stroke-width="7"/>
+        <path d="M16 19.5V14.5" fill="none" stroke-width="3.5" stroke-linecap="round"/>
     </g>
 </svg>

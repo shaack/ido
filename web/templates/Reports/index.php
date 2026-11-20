@@ -17,7 +17,6 @@ $this->assign('title', 'Reports');
     <h5 class="mt-4 text-muted"><?= __('Geld') ?></h5>
     <ul>
         <li><?= $this->Html->link(__('Umsatz pro Monat'), ['action' => 'revenuePerMonth']) ?></li>
-        <li><?= $this->Html->link(__('Effektiver Stundensatz pro Kunde'), ['action' => 'effectiveRate']) ?></li>
         <li><?= $this->Html->link(__('Offene Forderungen'), ['action' => 'receivables']) ?></li>
     </ul>
 </div>

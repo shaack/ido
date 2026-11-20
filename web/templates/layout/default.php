@@ -84,6 +84,7 @@ $tabs = [$navigation[''][0], $navigation[''][1], $navigation[''][2], $navigation
     <script src="/node_modules/bootstrap-auto-dark-mode/src/bootstrap-auto-dark-mode.js"></script>
     <script src="/node_modules/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
     <script src="/node_modules/bootstrap-show-toast/src/bootstrap-show-toast.js"></script>
+    <script src="/assets/scripts/task-toggle.js?v=<?= @filemtime(WWW_ROOT . 'assets/scripts/task-toggle.js') ?>" defer></script>
 
     <?= $this->fetch('meta') ?>
     <?= $this->fetch('css') ?>
