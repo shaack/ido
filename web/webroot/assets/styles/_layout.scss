@@ -1,0 +1,282 @@
+// Das App-Gerüst: Seitenleiste auf dem Grund, der Inhalt auf einem Blatt.
+// Unter lg wird die Seitenleiste zum Offcanvas, unten erscheint eine
+// Tab-Leiste und oben eine schmale Leiste mit Logo.
+
+$sidebar-width: 15rem;
+$tabbar-height: 4rem;
+
+body.app {
+    min-height: 100vh;
+    background: var(--ido-paper);
+    color: var(--ido-ink);
+
+    @include media-breakpoint-up(lg) {
+        display: grid;
+        grid-template-columns: $sidebar-width minmax(0, 1fr);
+        &.app-bare {
+            grid-template-columns: minmax(0, 1fr);
+        }
+    }
+}
+
+// Logo: die drei Buchstaben in ihren Farben, sie tragen die Palette
+.app-logo {
+    font-family: $font-family-display;
+    font-size: 1.75rem;
+    font-weight: 700;
+    letter-spacing: -0.02em;
+    line-height: 1;
+    text-decoration: none;
+
+    &:hover {
+        text-decoration: none;
+    }
+
+    .char-1 {
+        color: var(--ido-green);
+    }
+
+    .char-2 {
+        color: var(--ido-amber);
+    }
+
+    .char-3 {
+        color: var(--ido-blue);
+    }
+}
+
+// Seitenleiste
+.app-sidebar {
+    display: flex;
+
+    // Bootstrap fokussiert das Offcanvas beim Öffnen, der Rahmen gehört an
+    // die Einträge, nicht an die ganze Leiste
+    &:focus-visible {
+        outline: none;
+    }
+
+    flex-direction: column;
+    padding: 1.25rem 0.75rem 1rem;
+
+    @include media-breakpoint-up(lg) {
+        position: sticky;
+        top: 0;
+        height: 100vh;
+        overflow-y: auto;
+    }
+
+    @include media-breakpoint-down(lg) {
+        --bs-offcanvas-width: 17rem;
+        background: var(--ido-paper);
+    }
+}
+
+.app-sidebar-head {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 0 0.75rem 1.5rem;
+}
+
+.app-nav {
+    flex: 1;
+}
+
+.app-nav-group + .app-nav-group {
+    margin-top: 1.25rem;
+}
+
+.app-nav-label {
+    padding: 0 0.75rem 0.375rem;
+    font-size: 0.8125rem;
+    font-weight: 500;
+    color: var(--ido-muted);
+}
+
+.app-nav-item {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    padding: 0.4375rem 0.75rem;
+    border-radius: $border-radius;
+    color: var(--ido-ink);
+    font-weight: 450;
+    text-decoration: none;
+
+    .icon {
+        flex: none;
+        color: var(--ido-muted);
+    }
+
+    &:hover {
+        text-decoration: none;
+        background: var(--ido-tint);
+    }
+
+    &.active {
+        background: var(--ido-surface);
+        font-weight: 600;
+        box-shadow: 0 0 0 1px var(--ido-line);
+
+        .icon {
+            color: var(--ido-blue);
+        }
+    }
+}
+
+.app-nav-badge {
+    margin-left: auto;
+    min-width: 1.5rem;
+    padding: 0 0.375rem;
+    border-radius: 1rem;
+    background: var(--ido-line);
+    color: var(--ido-ink);
+    font-size: 0.75rem;
+    font-weight: 600;
+    line-height: 1.25rem;
+    text-align: center;
+}
+
+// Heute erfasste Zeit, unten in der Seitenleiste auf jeder Seite
+.app-sidebar-today {
+    display: grid;
+    grid-template-columns: 1fr auto;
+    gap: 0.375rem 0.5rem;
+    margin: 1.5rem 0.75rem 0;
+    padding-top: 1rem;
+    border-top: 1px solid var(--ido-line);
+    color: var(--ido-ink);
+    text-decoration: none;
+
+    &:hover {
+        text-decoration: none;
+    }
+
+    .ruler {
+        grid-column: 1 / -1;
+    }
+}
+
+.app-sidebar-today-label {
+    color: var(--ido-muted);
+    font-size: 0.8125rem;
+}
+
+.app-sidebar-today-hours {
+    font-family: $font-family-display;
+    font-weight: 600;
+}
+
+.app-icon-btn {
+    display: inline-flex;
+    padding: 0.375rem;
+    color: var(--ido-muted);
+}
+
+// Hauptbereich und Blatt
+.app-main {
+    min-width: 0;
+
+    @include media-breakpoint-up(lg) {
+        padding: 0.75rem 0.75rem 0.75rem 0;
+    }
+}
+
+.app-sheet {
+    min-height: 100vh;
+    padding: 1.25rem 1rem calc(#{$tabbar-height} + 2rem + env(safe-area-inset-bottom));
+    background: var(--ido-surface);
+
+    @include media-breakpoint-up(lg) {
+        min-height: calc(100vh - 1.5rem);
+        padding: 2rem 2.5rem 4rem;
+        border-radius: $ido-radius-sheet;
+        box-shadow: 0 0 0 1px var(--ido-line);
+    }
+}
+
+.app-bare .app-sheet {
+    padding-bottom: 2rem;
+}
+
+.app-breadcrumb {
+    margin-bottom: 1rem;
+    font-size: 0.875rem;
+
+    .breadcrumb-item a {
+        color: var(--ido-muted);
+
+        &:hover {
+            color: var(--ido-blue);
+        }
+    }
+}
+
+// Handy: Leiste oben, Tab-Leiste unten
+.app-mobilebar {
+    position: sticky;
+    top: 0;
+    z-index: 1020;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 0.625rem 1rem;
+    padding-top: calc(0.625rem + env(safe-area-inset-top));
+    background: var(--ido-paper);
+    border-bottom: 1px solid var(--ido-line);
+
+    .app-logo {
+        font-size: 1.5rem;
+    }
+}
+
+.app-mobilebar-today {
+    color: var(--ido-muted);
+    font-size: 0.875rem;
+}
+
+.app-tabbar {
+    position: fixed;
+    inset: auto 0 0 0;
+    z-index: 1030;
+    display: grid;
+    grid-template-columns: repeat(5, 1fr);
+    height: calc(#{$tabbar-height} + env(safe-area-inset-bottom));
+    padding-bottom: env(safe-area-inset-bottom);
+    background: var(--ido-paper);
+    border-top: 1px solid var(--ido-line);
+}
+
+.app-tab {
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 0.125rem;
+    border: 0;
+    background: none;
+    color: var(--ido-muted);
+    font-size: 0.6875rem;
+    font-weight: 500;
+    text-decoration: none;
+
+    &:hover {
+        text-decoration: none;
+    }
+
+    &.active {
+        color: var(--ido-blue);
+    }
+
+    .app-nav-badge {
+        position: absolute;
+        top: 0.5rem;
+        left: calc(50% + 0.375rem);
+        min-width: 1.125rem;
+        line-height: 1rem;
+        font-size: 0.625rem;
+        background: var(--ido-blue);
+        color: var(--ido-surface);
+    }
+}

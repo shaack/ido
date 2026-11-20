@@ -19,7 +19,6 @@
 // @import "fonts"; // load additional web fonts
 @import "utils"; // my own utils, small helper classes, mixins
 @import "main"; // globals and bootstrap things, that can not be handled via configuration
-@import "header"; // css for the navigation and header
 @import "footer"; // css for the page footer
 @import "blocks"; // one scss file for every "block" (aka section or module) in your layout or CMS
 

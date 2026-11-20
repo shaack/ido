@@ -17,10 +17,11 @@
 @import "../../node_modules/bootstrap/scss/bootstrap.scss";
 
 // 5. Add additional custom code here
-// @import "fonts"; // load additional web fonts
+@import "theme"; // fonts, colour tokens for light and dark
 @import "utils"; // my own utils, small helper classes, mixins
 @import "main"; // globals and bootstrap things, that can not be handled via configuration
-@import "header"; // css for the navigation and header
+@import "layout"; // app shell: sidebar, sheet, mobile tab bar
 @import "footer"; // css for the page footer
 @import "blocks"; // one scss file for every "block" (aka section or module) in your layout or CMS
+@import "dashboard"; // ruler, page head, dashboard
 

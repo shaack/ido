@@ -1,0 +1,112 @@
+// Schriften, selbst gehostet (SIL Open Font License)
+@font-face {
+    font-family: "Bricolage Grotesque";
+    font-style: normal;
+    font-weight: 200 800;
+    font-display: swap;
+    src: url("../fonts/bricolage-grotesque-latin-wght-normal.woff2") format("woff2");
+}
+
+@font-face {
+    font-family: "Public Sans";
+    font-style: normal;
+    font-weight: 100 900;
+    font-display: swap;
+    src: url("../fonts/public-sans-latin-wght-normal.woff2") format("woff2");
+}
+
+@font-face {
+    font-family: "Public Sans";
+    font-style: italic;
+    font-weight: 100 900;
+    font-display: swap;
+    src: url("../fonts/public-sans-latin-wght-italic.woff2") format("woff2");
+}
+
+// Die Farben als CSS-Variablen, damit Hell und Dunkel ohne doppelte Regeln
+// auskommen. bootstrap-auto-dark-mode setzt data-bs-theme am html-Element.
+:root, [data-bs-theme="light"] {
+    --ido-paper: #{$ido-paper};
+    --ido-surface: #{$ido-surface};
+    --ido-ink: #{$ido-ink};
+    --ido-muted: #{$ido-muted};
+    --ido-line: #{$ido-line};
+    --ido-blue: #{$ido-blue};
+    --ido-green: #{$ido-green};
+    --ido-amber: #{$ido-amber};
+    --ido-amber-text: #{$ido-amber-text};
+    --ido-red: #{$ido-red};
+    --ido-tint: #{rgba($ido-blue, 0.07)};
+    --ido-green-tint: #{rgba($ido-green, 0.14)};
+    --ido-amber-tint: #{rgba($ido-amber, 0.14)};
+    --bs-body-bg: var(--ido-paper);
+    --bs-emphasis-color: var(--ido-ink);
+    --bs-secondary-color: var(--ido-muted);
+    --bs-tertiary-bg: var(--ido-paper);
+}
+
+[data-bs-theme="dark"] {
+    --ido-paper: #{$ido-paper-dark};
+    --ido-surface: #{$ido-surface-dark};
+    --ido-ink: #{$ido-ink-dark};
+    --ido-muted: #{$ido-muted-dark};
+    --ido-line: #{$ido-line-dark};
+    --ido-blue: #{$ido-blue-dark};
+    --ido-green: #{$ido-green-dark};
+    --ido-amber: #{$ido-amber-dark};
+    --ido-amber-text: #{$ido-amber-text-dark};
+    --ido-red: #{$ido-red-dark};
+    --ido-tint: #{rgba($ido-blue-dark, 0.09)};
+    --ido-green-tint: #{rgba($ido-green-dark, 0.16)};
+    --ido-amber-tint: #{rgba($ido-amber-dark, 0.16)};
+    --bs-body-bg: var(--ido-paper);
+    --bs-body-color: var(--ido-ink);
+    --bs-emphasis-color: var(--ido-ink);
+    --bs-secondary-color: var(--ido-muted);
+    --bs-border-color: var(--ido-line);
+    --bs-tertiary-bg: var(--ido-paper);
+    --bs-primary: #{$ido-blue-dark};
+    --bs-primary-rgb: #{red($ido-blue-dark)}, #{green($ido-blue-dark)}, #{blue($ido-blue-dark)};
+    --bs-success-rgb: #{red($ido-green-dark)}, #{green($ido-green-dark)}, #{blue($ido-green-dark)};
+    --bs-warning-rgb: #{red($ido-amber-dark)}, #{green($ido-amber-dark)}, #{blue($ido-amber-dark)};
+    --bs-danger-rgb: #{red($ido-red-dark)}, #{green($ido-red-dark)}, #{blue($ido-red-dark)};
+    --bs-info-rgb: #{red($ido-blue-dark)}, #{green($ido-blue-dark)}, #{blue($ido-blue-dark)};
+
+    .btn-primary {
+        --bs-btn-bg: #{$ido-blue-dark};
+        --bs-btn-border-color: #{$ido-blue-dark};
+        --bs-btn-color: #{$ido-paper-dark};
+        --bs-btn-hover-bg: #{lighten($ido-blue-dark, 6%)};
+        --bs-btn-hover-border-color: #{lighten($ido-blue-dark, 6%)};
+        --bs-btn-hover-color: #{$ido-paper-dark};
+        --bs-btn-active-bg: #{lighten($ido-blue-dark, 10%)};
+        --bs-btn-active-color: #{$ido-paper-dark};
+    }
+}
+
+body {
+    font-variant-numeric: tabular-nums;
+    -webkit-font-smoothing: antialiased;
+}
+
+h1, h2, h3, h4, h5, h6, .display-font {
+    font-family: $font-family-display;
+    font-optical-sizing: auto;
+    letter-spacing: -0.01em;
+}
+
+.text-amber {
+    color: var(--ido-amber-text) !important;
+}
+
+:focus-visible {
+    outline: 2px solid var(--ido-blue);
+    outline-offset: 2px;
+}
+
+@media (prefers-reduced-motion: reduce) {
+    *, *::before, *::after {
+        transition: none !important;
+        animation: none !important;
+    }
+}

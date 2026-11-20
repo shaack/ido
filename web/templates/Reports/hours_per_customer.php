@@ -60,7 +60,7 @@ $internalParam = $includeInternal ? '1' : '0';
                         <td><?= h($c['name']) ?></td>
                         <td class="text-end"><?= $this->Effort->hours($c['hours']) ?></td>
                         <td>
-                            <div style="background:var(--bs-primary); height:12px; border-radius:2px;
+                            <div style="background:var(--ido-green); height:12px; border-radius:2px;
                                         width:<?= round(max(0, $pct), 1) ?>%"></div>
                         </td>
                     </tr>

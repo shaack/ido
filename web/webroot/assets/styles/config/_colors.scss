@@ -1,0 +1,37 @@
+// Die Palette kommt aus dem Logo: I grün, d amber, o blau. Jede Farbe hat
+// eine feste Bedeutung, damit Farbe Information trägt:
+//   grün  laufende Projekte, erfasste Zeit, erledigt
+//   amber markiert, fällig, wartet auf etwas
+//   blau  Aktionen und Links
+// Dazu ein kühles Grau für Grund, Fläche, Linien und Text.
+
+// hell
+$ido-paper: #EDF0F3;
+$ido-surface: #FFFFFF;
+$ido-ink: #17202B;
+$ido-muted: #5F6C7B;
+$ido-line: #DCE1E7;
+$ido-blue: #2361D8;
+$ido-green: #12875A;
+$ido-amber: #C98306;
+$ido-amber-text: #8F5D00; // amber als Schrift, auf Weiß sonst zu blass
+$ido-red: #C8372D;
+
+// dunkel
+$ido-paper-dark: #15191F;
+$ido-surface-dark: #1D222A;
+$ido-ink-dark: #E3E7EC;
+$ido-muted-dark: #8C96A3;
+$ido-line-dark: #2C333D;
+$ido-blue-dark: #7AA5FF;
+$ido-green-dark: #45C892;
+$ido-amber-dark: #F0B43C;
+$ido-amber-text-dark: #F0B43C;
+$ido-red-dark: #FF7A6E;
+
+// Bootstrap
+$primary: $ido-blue;
+$success: $ido-green;
+$warning: $ido-amber;
+$danger: $ido-red;
+$info: $ido-blue;

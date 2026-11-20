@@ -4,55 +4,28 @@
  * @var iterable<\App\Model\Entity\Task> $tasks
  */
 
-function doneClass($doneTime)
-{
-    $doneTodayClass = "text-muted opacity-50";
-    if ($doneTime > 0) {
-        $doneTodayClass = "text-muted";
-        if ($doneTime >= 3 && $doneTime < 4) {
-            $doneTodayClass = "text-success";
-        } else if ($doneTime >= 4) {
-            $doneTodayClass = "text-info";
-        }
-    }
-    return $doneTodayClass;
-}
-
+$projectOptions = $this->get('projectOptions') ?? [];
+$projectId = $this->get('projectId');
 ?>
 <div class="tasks index content">
-    <div class="row d-flex align-items-baseline mb-2">
-        <div class="col"><h3 class="m-0"><?= __('Tasks') ?></h3></div>
-        <?php
-        $doneToday = floatval($this->get('doneToday'));
-        $done1 = $this->get('done1');
-        $done2 = $this->get('done2');
-        $done3 = $this->get('done3');
-        ?>
-        <div class="col-auto"><span class="text-muted">today's hrs:</span> <span
-                class="<?= doneClass($doneToday) ?>"><?= $this->Number->format($doneToday, ["places" => 2]) ?></span>
-        </div>
-        <div class="col-auto text-muted">
-            <span class="me-2 <?= doneClass($done1) ?>"><?= $this->Number->format($done1, ["places" => 2]) ?></span>
-            <span class="me-2 <?= doneClass($done2) ?>"><?= $this->Number->format($done2, ["places" => 2]) ?></span>
-            <span class="<?= doneClass($done3) ?>"><?= $this->Number->format($done3, ["places" => 2]) ?></span>
-        </div>
-        <div class="col-auto">
-            <?php
-            $projectOptions = $this->get('projectOptions') ?? [];
-            $projectId = $this->get('projectId');
-            ?>
+    <header class="page-head">
+        <h1 class="page-title"><?= __('Tasks') ?></h1>
+        <div class="page-actions">
             <form method="get" action="/tasks" class="m-0">
-                <select name="project_id" class="form-select form-select-sm" onchange="this.form.submit()">
-                    <option value=""><?= __('Alle Projekte') ?></option>
+                <select name="project_id" class="form-select" onchange="this.form.submit()" aria-label="<?= __('Filter by project') ?>">
+                    <option value=""><?= __('All running projects') ?></option>
                     <?php foreach ($projectOptions as $id => $label): ?>
                         <option value="<?= $id ?>" <?= (int)$projectId === (int)$id ? 'selected' : '' ?>><?= h($label) ?></option>
                     <?php endforeach; ?>
                 </select>
             </form>
+            <?= $this->Html->link(
+                $this->element('icon', ['name' => 'plus']) . '<span>' . __('New task') . '</span>',
+                ['action' => 'add'],
+                ['class' => 'btn btn-primary btn-icon', 'escape' => false]
+            ) ?>
         </div>
-        <div
-            class="col-auto text-end"><?= $this->Html->link(__('New Task'), ['action' => 'add'], ['class' => 'btn btn-primary btn-sm float-right']) ?></div>
-    </div>
+    </header>
     <div class="table-responsive">
         <table>
             <thead>
@@ -90,7 +63,7 @@ function doneClass($doneTime)
                     </td>
                     <td><a class="no-line-through"
                            href="/tasks/marked/<?= $task->id ?>?marked=<?= $task->marked ? "0" : "1" ?>"><?= $task->marked ? '<i class="fa-solid fa-flag"></i>' : '<i class="fa-regular fa-flag"></i>' ?></a>
-                    <td><?= $this->Html->link($customer->shortcut, ['controller' => 'Customers', 'action' => 'view', $customer->id], ['style' => 'color: ' . $customer->color]) ?></td>
+                    <td><?= $this->Html->link($customer->shortcut, ['controller' => 'Customers', 'action' => 'view', $customer->id], ['class' => 'customer-tag', 'style' => '--customer: ' . ($customer->color ?: 'currentColor')]) ?></td>
                     <td><?= $this->Html->link($this->Text->truncate($task->service->smartName, 45), ['controller' => 'Services', 'action' => 'view', $task->service->id],
                             ['class' => $task->service->name ? '' : 'fst-italic']) ?></td>
                     <td><?= $this->Html->link($this->Text->truncate($task->service->project->name, 40), ['controller' => 'Projects', 'action' => 'view', $task->service->project->id]) ?></td>

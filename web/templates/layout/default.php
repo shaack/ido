@@ -1,35 +1,75 @@
 <?php
 /**
- * CakePHP(tm) : Rapid Development Framework (https://cakephp.org)
- * Copyright (c) Cake Software Foundation, Inc. (https://cakefoundation.org)
+ * Das App-Gerüst: Seitenleiste mit gruppierter Navigation, das Blatt mit dem
+ * Inhalt, auf schmalen Bildschirmen statt der Seitenleiste eine Tab-Leiste
+ * unten. Die Seitenleiste ist dort ein Offcanvas hinter "Menu".
  *
- * Licensed under The MIT License
- * For full copyright and license information, please see the LICENSE.txt
- * Redistributions of files must retain the above copyright notice.
+ * Die Zahlen in der Navigation (offene Tasks, heute erfasste Stunden) setzt
+ * AppController::beforeRender().
  *
- * @copyright     Copyright (c) Cake Software Foundation, Inc. (https://cakefoundation.org)
- * @link          https://cakephp.org CakePHP(tm) Project
- * @since         0.10.0
- * @license       https://opensource.org/licenses/mit-license.php MIT License
  * @var \App\View\AppView $this
  */
 
-$controller = $this->request->getParam('controller')
+$controller = $this->request->getParam('controller');
+$action = $this->request->getParam('action');
+$navOpenTasks = $this->get('navOpenTasks');
+$navTodayHours = (float)$this->get('navTodayHours', 0);
+
+// Ein Eintrag gilt als aktiv, wenn Controller und, falls angegeben, die
+// Action passen. Offene Forderungen ist ein Report, steht aber eigenständig
+// in der Navigation, deshalb nimmt "Reports" diese Action aus.
+$isActive = function (array $item) use ($controller, $action): bool {
+    if ($item['controller'] !== $controller) {
+        return false;
+    }
+    if (isset($item['action'])) {
+        return $item['action'] === $action;
+    }
+
+    return !in_array($action, $item['notActions'] ?? [], true);
+};
+
+$navigation = [
+    '' => [
+        ['label' => __('Today'), 'icon' => 'today', 'url' => '/', 'controller' => 'Dashboard'],
+        ['label' => __('Tasks'), 'icon' => 'tasks', 'url' => '/tasks', 'controller' => 'Tasks', 'badge' => $navOpenTasks],
+        ['label' => __('Time'), 'icon' => 'time', 'url' => '/time-trackings', 'controller' => 'TimeTrackings'],
+    ],
+    __('Clients') => [
+        ['label' => __('Customers'), 'icon' => 'customers', 'url' => '/customers?current=1', 'controller' => 'Customers'],
+        ['label' => __('Projects'), 'icon' => 'projects', 'url' => '/projects?current=1', 'controller' => 'Projects'],
+        ['label' => __('Services'), 'icon' => 'services', 'url' => '/services', 'controller' => 'Services'],
+    ],
+    __('Insights') => [
+        ['label' => __('Reports'), 'icon' => 'reports', 'url' => '/reports', 'controller' => 'Reports', 'notActions' => ['receivables']],
+        ['label' => __('Receivables'), 'icon' => 'receivables', 'url' => '/reports/receivables', 'controller' => 'Reports', 'action' => 'receivables'],
+    ],
+    __('Settings') => [
+        ['label' => __('Project statuses'), 'icon' => 'statuses', 'url' => '/project-statuses', 'controller' => 'ProjectStatuses'],
+        ['label' => __('Backups'), 'icon' => 'backups', 'url' => '/backups', 'controller' => 'Backups'],
+    ],
+];
+
+// Die Tab-Leiste auf dem Handy: das Tägliche, der Rest steckt im Menü.
+$tabs = [$navigation[''][0], $navigation[''][1], $navigation[''][2], $navigation[__('Clients')][1]];
 ?>
 <!DOCTYPE html>
-<html lang="en" data-bs-theme="auto">
+<html lang="de" data-bs-theme="auto">
 <head>
     <?= $this->Html->charset() ?>
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>
-        <?= $this->fetch('title') ?>
-    </title>
+    <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+    <meta name="theme-color" content="#EDF0F3" media="(prefers-color-scheme: light)">
+    <meta name="theme-color" content="#15191F" media="(prefers-color-scheme: dark)">
+    <title><?= $this->fetch('title') ?> · Ido</title>
     <?= $this->Html->meta('icon') ?>
+    <link rel="preload" href="/assets/fonts/public-sans-latin-wght-normal.woff2" as="font" type="font/woff2" crossorigin>
+    <link rel="preload" href="/assets/fonts/bricolage-grotesque-latin-wght-normal.woff2" as="font" type="font/woff2" crossorigin>
     <link href="/assets/fontawesome-subset/css/fontawesome.min.css" rel="stylesheet">
     <link href="/assets/fontawesome-subset/css/solid.min.css" rel="stylesheet">
     <link href="/assets/fontawesome-subset/css/regular.min.css" rel="stylesheet">
 
-    <link href="/assets/styles/screen.css" rel="stylesheet">
+    <?php // Änderungsdatum als Version, damit nach einem Deploy kein alter Stand im Cache hängt ?>
+    <link href="/assets/styles/screen.css?v=<?= @filemtime(WWW_ROOT . 'assets/styles/screen.css') ?>" rel="stylesheet">
 
     <script type="importmap">
         {
@@ -48,107 +88,118 @@ $controller = $this->request->getParam('controller')
     <?= $this->fetch('css') ?>
     <?= $this->fetch('script') ?>
 </head>
-<body>
-<header>
-    <?php if (!$this->get('hideNavigation')) : ?>
-        <nav class="navbar navbar-expand-sm">
-            <div class="container-fluid">
-                <a class="navbar-brand" href="<?= $this->Url->build('/tasks') ?>"><span class="char-1">I</span><span
-                        class="char-2">d</span><span class="char-3">o</span></a>
-                <button class="navbar-toggler" type="button" data-bs-toggle="collapse"
-                        data-bs-target="#navbarSupportedContent"
-                        aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
-                    <span class="navbar-toggler-icon"></span>
-                </button>
-                <div class="collapse navbar-collapse" id="navbarSupportedContent">
-                    <ul class="navbar-nav ms-auto mb-lg-0">
-                        <li class="nav-item">
-                            <a class="nav-link <?= $controller != "Customers" ?: "active" ?>"
-                               href="/customers?current=1">Customers</a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link <?= $controller != "Projects" ?: "active" ?>" href="/projects?current=1">Projects</a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link <?= $controller != "Services" ?: "active" ?>"
-                               href="/services">Services</a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link <?= $controller != "Tasks" ?: "active" ?>" href="/tasks">Tasks</a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link <?= $controller != "TimeTrackings" ?: "active" ?>"
-                               href="/time-trackings">Time Trackings</a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link <?= $controller != "Reports" ?: "active" ?>"
-                               href="/reports">Reports</a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link <?= $controller != "Backups" ?: "active" ?>"
-                               href="/backups">Backups</a>
-                        </li>
-                    </ul>
-                </div>
-            </div>
-        </nav>
-    <?php else: ?>
-        <div class="mb-2"></div>
-    <?php endif ?>
-    <div class="container-fluid">
-        <div class="breadcrumb">
-            <?php
-            /** @noinspection PhpUndefinedVariableInspection */
-            if (@$timeTracking && $timeTracking->task) {
-                $task = $timeTracking->task;
-                $service = $task->service;
-                $project = $service->project;
-                $customer = $project->customer;
-            } else if (@$task && $task->service) {
-                $service = $task->service;
-                $project = $service->project;
-                $customer = $project->customer;
-            } else if (@$service && $service->project) {
-                $project = $service->project;
-                $customer = $project->customer;
-            } else if (@$project && $project->customer) {
-                $customer = $project->customer;
-            }
-            // Auf den Anlege-Formularen liegt eine leere Entity vor. Die ist
-            // truthy, hat aber weder Name noch Id, und CakePHP 5 lässt kein
-            // null mehr als Linktext zu. Deshalb wird auf die Id geprüft.
-            if (@$customer && $customer->id) {
-                echo $this->Html->link((string)$customer->shortcut, ['controller' => 'Customers', 'action' => 'view', $customer->id],
-                    ["class" => "breadcrumb-item text-decoration-none"]);
-            }
-            if (@$project && $project->id) {
-                echo $this->Html->link((string)$project->name, ['controller' => 'Projects', 'action' => 'view', $project->id],
-                    ["class" => "breadcrumb-item text-decoration-none"]);
-            }
-            if (@$service && $service->id) {
-                echo $this->Html->link($service->name ?: "[Service]", ['controller' => 'Services', 'action' => 'view', $service->id],
-                    ["class" => "breadcrumb-item text-decoration-none"]);
-            }
-            if (@$task && $task->id) {
-                echo $this->Html->link($task->name ?: "[Task]", ['controller' => 'Tasks', 'action' => 'view', $task->id],
-                    ["class" => "breadcrumb-item text-decoration-none"]);
-            }
-            if (@$timeTracking && $timeTracking->id) {
-                echo $this->Html->link("[Tracking]", ['controller' => 'TimeTrackings', 'action' => 'view', $timeTracking->id],
-                    ["class" => "breadcrumb-item text-decoration-none"]);
-            }
-            ?>
+<body class="app<?= $this->get('hideNavigation') ? ' app-bare' : '' ?>">
+<?php if (!$this->get('hideNavigation')) : ?>
+    <aside class="app-sidebar offcanvas-lg offcanvas-start" tabindex="-1" id="app-nav" aria-label="<?= __('Navigation') ?>">
+        <div class="app-sidebar-head">
+            <a class="app-logo" href="/" aria-label="Ido"><span class="char-1">I</span><span class="char-2">d</span><span class="char-3">o</span></a>
+            <button type="button" class="btn app-icon-btn d-lg-none" data-bs-dismiss="offcanvas" data-bs-target="#app-nav"
+                    aria-label="<?= __('Close menu') ?>"><?= $this->element('icon', ['name' => 'close']) ?></button>
         </div>
-    </div>
-</header>
-<main class="main">
-    <div class="container-fluid">
+        <nav class="app-nav">
+            <?php foreach ($navigation as $group => $items) : ?>
+                <div class="app-nav-group">
+                    <?php if ($group !== '') : ?>
+                        <div class="app-nav-label"><?= h($group) ?></div>
+                    <?php endif; ?>
+                    <?php foreach ($items as $item) : $active = $isActive($item) ?>
+                        <a class="app-nav-item<?= $active ? ' active' : '' ?>" href="<?= h($item['url']) ?>"
+                            <?= $active ? 'aria-current="page"' : '' ?>>
+                            <?= $this->element('icon', ['name' => $item['icon']]) ?>
+                            <span><?= h($item['label']) ?></span>
+                            <?php if (!empty($item['badge'])) : ?>
+                                <span class="app-nav-badge"><?= (int)$item['badge'] ?></span>
+                            <?php endif; ?>
+                        </a>
+                    <?php endforeach; ?>
+                </div>
+            <?php endforeach; ?>
+        </nav>
+        <a class="app-sidebar-today" href="/">
+            <span class="app-sidebar-today-label"><?= __('Today') ?></span>
+            <span class="app-sidebar-today-hours"><?= $this->Effort->hours($navTodayHours) ?> h</span>
+            <?= $this->element('ruler', ['hours' => $navTodayHours, 'small' => true]) ?>
+        </a>
+    </aside>
+<?php endif; ?>
+
+<div class="app-main">
+    <?php if (!$this->get('hideNavigation')) : ?>
+        <header class="app-mobilebar d-lg-none">
+            <a class="app-logo" href="/" aria-label="Ido"><span class="char-1">I</span><span class="char-2">d</span><span class="char-3">o</span></a>
+            <span class="app-mobilebar-today"><?= $this->Effort->hours($navTodayHours) ?> h <?= __('today') ?></span>
+        </header>
+    <?php endif; ?>
+    <main class="app-sheet main">
+        <?php
+        /** @noinspection PhpUndefinedVariableInspection */
+        if (@$timeTracking && $timeTracking->task) {
+            $task = $timeTracking->task;
+            $service = $task->service;
+            $project = $service->project;
+            $customer = $project->customer;
+        } else if (@$task && $task->service) {
+            $service = $task->service;
+            $project = $service->project;
+            $customer = $project->customer;
+        } else if (@$service && $service->project) {
+            $project = $service->project;
+            $customer = $project->customer;
+        } else if (@$project && $project->customer) {
+            $customer = $project->customer;
+        }
+        // Auf den Anlege-Formularen liegt eine leere Entity vor. Die ist
+        // truthy, hat aber weder Name noch Id, und CakePHP 5 lässt kein
+        // null mehr als Linktext zu. Deshalb wird auf die Id geprüft.
+        $crumbs = [];
+        if (@$customer && $customer->id) {
+            $crumbs[] = $this->Html->link((string)$customer->shortcut, ['controller' => 'Customers', 'action' => 'view', $customer->id]);
+        }
+        if (@$project && $project->id) {
+            $crumbs[] = $this->Html->link((string)$project->name, ['controller' => 'Projects', 'action' => 'view', $project->id]);
+        }
+        if (@$service && $service->id) {
+            $crumbs[] = $this->Html->link($service->name ?: "[Service]", ['controller' => 'Services', 'action' => 'view', $service->id]);
+        }
+        if (@$task && $task->id) {
+            $crumbs[] = $this->Html->link($task->name ?: "[Task]", ['controller' => 'Tasks', 'action' => 'view', $task->id]);
+        }
+        if (@$timeTracking && $timeTracking->id) {
+            $crumbs[] = $this->Html->link("[Tracking]", ['controller' => 'TimeTrackings', 'action' => 'view', $timeTracking->id]);
+        }
+        ?>
+        <?php if ($crumbs) : ?>
+            <nav class="app-breadcrumb" aria-label="<?= __('Breadcrumb') ?>">
+                <ol class="breadcrumb">
+                    <?php foreach ($crumbs as $crumb) : ?>
+                        <li class="breadcrumb-item"><?= $crumb ?></li>
+                    <?php endforeach; ?>
+                </ol>
+            </nav>
+        <?php endif; ?>
         <?= $this->Flash->render() ?>
         <?= $this->fetch('content') ?>
-    </div>
-</main>
-<footer>
-</footer>
+    </main>
+</div>
+
+<?php if (!$this->get('hideNavigation')) : ?>
+    <nav class="app-tabbar d-lg-none" aria-label="<?= __('Quick navigation') ?>">
+        <?php foreach ($tabs as $item) : $active = $isActive($item) ?>
+            <a class="app-tab<?= $active ? ' active' : '' ?>" href="<?= h($item['url']) ?>" <?= $active ? 'aria-current="page"' : '' ?>>
+                <?= $this->element('icon', ['name' => $item['icon']]) ?>
+                <span><?= h($item['label']) ?></span>
+                <?php if (!empty($item['badge'])) : ?>
+                    <span class="app-nav-badge"><?= (int)$item['badge'] ?></span>
+                <?php endif; ?>
+            </a>
+        <?php endforeach; ?>
+        <button type="button" class="app-tab" data-bs-toggle="offcanvas" data-bs-target="#app-nav" aria-controls="app-nav">
+            <?= $this->element('icon', ['name' => 'menu']) ?>
+            <span><?= __('Menu') ?></span>
+        </button>
+    </nav>
+<?php endif; ?>
+
 <script type="module">
     import {MdEditor} from "cm-md-editor/src/MdEditor.js";
 

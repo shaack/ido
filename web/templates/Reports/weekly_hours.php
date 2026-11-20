@@ -74,7 +74,7 @@ foreach ($weeks as $i => $w) {
             <?= __('Summe') ?> <?= $this->Effort->hours($totalHours) ?> h &middot;
             <?= __('Durchschnitt') ?> <?= $this->Effort->hours($averageHours) ?> h/<?= __('Woche') ?>
             &middot;
-            <span style="color:var(--bs-orange)">&#9473;</span>
+            <span style="color:var(--ido-amber)">&#9473;</span>
             <?= __('gleitender Mittelwert') ?> (<?= $avgWindow ?> <?= __('Wochen') ?>)
         </p>
 
@@ -102,14 +102,14 @@ foreach ($weeks as $i => $w) {
                     $y = $baseline - $barH; ?>
                     <rect x="<?= round($x, 1) ?>" y="<?= round($y, 1) ?>"
                           width="<?= $barW ?>" height="<?= round($barH, 1) ?>"
-                          fill="var(--bs-primary)">
+                          fill="var(--ido-green)">
                         <title><?= h($w['label']) ?>: <?= $this->Effort->hours($w['hours']) ?> h</title>
                     </rect>
                 <?php endforeach; ?>
 
                 <?php // Mittelwertkurve (gleitender Mittelwert) über den Balken ?>
                 <polyline points="<?= implode(' ', $avgPoints) ?>"
-                          fill="none" stroke="var(--bs-orange)" stroke-width="2"
+                          fill="none" stroke="var(--ido-amber)" stroke-width="2"
                           stroke-linejoin="round" stroke-linecap="round"/>
 
                 <?php // X-Beschriftung, gedreht ?>

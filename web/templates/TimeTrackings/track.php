@@ -8,74 +8,49 @@
 
 $this->assign('title', $this->Text->truncate($timeTracking->task->smartName, 20));
 $customer = $timeTracking->task->service->project->customer;
-
-function doneClass($doneTime)
-{
-    $doneTodayClass = "text-muted opacity-50";
-    if ($doneTime > 0) {
-        $doneTodayClass = "text-muted";
-        if ($doneTime >=3 && $doneTime < 4) {
-            $doneTodayClass = "text-success";
-        } else  if ($doneTime >= 4) {
-            $doneTodayClass = "text-info";
-        }
-    }
-    return $doneTodayClass;
-}
-
+$project = $timeTracking->task->service->project;
 ?>
-<div class="row">
-    <div class="col">
-        <h2 class="mb-3">
-            <i class="fa-solid fa-stopwatch"></i>️ <?= $timeTracking->task->name ?: "<i>" . $timeTracking->task->smartName . "</i>" ?>
-        </h2>
+<header class="page-head">
+    <div>
+        <p class="track-context">
+            <?php if ($customer) : ?>
+                <span class="customer-tag" style="--customer: <?= h($customer->color ?: 'currentColor') ?>"><?= h($customer->shortcut) ?></span>
+            <?php endif; ?>
+            <?= h($project->name) ?>
+        </p>
+        <h1 class="page-title"><?= $timeTracking->task->name ? h($timeTracking->task->name) : '<i>' . h($timeTracking->task->smartName) . '</i>' ?></h1>
     </div>
-    <!--
-    <div class="col-auto"><?= $this->Form->postLink(
-            __('Delete'),
-            ['action' => 'delete', $timeTracking->id],
-            ['confirm' => __('Are you sure you want to delete #{0}?', $timeTracking->id), 'class' => 'text-danger']
-        ) ?></div>-->
-</div>
-<div class="timeTrackings form content">
+</header>
+<div class="timeTrackings form content track">
     <?= $this->Form->create($timeTracking, ["id" => "time-tracking-form"]) ?>
     <fieldset>
-        <div class="stopwatch mb-3">
-            <div class="input-group mb-3" style="max-width: 380px">
-                <input id="stopwatch" type="text" class="form-control text-end" placeholder="" name="stopwatch"
-                       value="0"/>
-                <button type="button" id="btn-start" class="btn btn-success">start
-                </button>
-                <button type="button" class="btn btn-warning btn-pause" id="btn-pause">
-                    pause
-                </button>
-                <button type="button" class="btn btn-danger btn-reset" id="btn-reset">reset
-                </button>
-                <button type="button" class="btn btn-outline-secondary btn-modify" id="btn-minus">-5
-                </button>
-                <button type="button" class="btn btn-outline-secondary btn-modify" id="btn-plus">+5
-                </button>
+        <div class="stopwatch">
+            <label class="stopwatch-display" for="stopwatch">
+                <input id="stopwatch" type="text" name="stopwatch" value="0" inputmode="decimal" autocomplete="off"/>
+                <span><?= __('minutes') ?></span>
+            </label>
+            <div class="stopwatch-buttons">
+                <button type="button" id="btn-start" class="btn btn-success btn-lg"><?= __('Start') ?></button>
+                <button type="button" class="btn btn-outline-warning btn-lg btn-pause" id="btn-pause"><?= __('Pause') ?></button>
+                <button type="button" class="btn btn-outline-secondary btn-modify" id="btn-minus" aria-label="<?= __('5 minutes less') ?>">−5</button>
+                <button type="button" class="btn btn-outline-secondary btn-modify" id="btn-plus" aria-label="<?= __('5 minutes more') ?>">+5</button>
+                <button type="button" class="btn btn-link btn-reset" id="btn-reset"><?= __('Reset') ?></button>
             </div>
-            <div class="progress mb-2">
-                <div id="progress-bar" class="progress-bar bg-secondary" role="progressbar" aria-label="Basic example"
-                     style=""></div>
+            <div class="progress" role="presentation" title="<?= __('Fills every 30 minutes') ?>">
+                <div id="progress-bar" class="progress-bar bg-secondary" style=""></div>
             </div>
         </div>
-        <div class="row">
-            <div class="col"><?= $this->Form->control('duration') ?></div>
-            <div class="col-auto" style="margin-top: 1.9rem">
-                <span class="<?= doneClass($doneToday) ?> me-2">
-                Day <?= $this->Number->format($doneToday, ["places" => 2]) ?></span>
-                Task <?= $this->Number->format($doneTask, ["places" => 2]) ?>
-            </div>
+        <div class="track-booking">
+            <div class="track-duration"><?= $this->Form->control('duration', ['label' => __('Booked on this entry, hours')]) ?></div>
+            <dl class="track-figures">
+                <div><dt><?= __('Today') ?></dt><dd><?= $this->Effort->hours((float)$doneToday) ?> h</dd></div>
+                <div><dt><?= __('This task') ?></dt><dd><?= $this->Effort->hours((float)$doneTask) ?> h</dd></div>
+            </dl>
         </div>
     </fieldset>
-    <div class="mb-3">
-        <!-- <button class="btn btn-secondary">Submit</button> -->
-        <button class="btn btn-primary" onclick="window.stopAndAdd(); return false;">
-            Add Stopwatch and Submit
-        </button>
-    </div>
+    <button class="btn btn-primary btn-lg" onclick="window.stopAndAdd(); return false;">
+        <?= __('Add stopwatch time and save') ?>
+    </button>
     <?= $this->Form->end() ?>
 </div>
 <script type="module">

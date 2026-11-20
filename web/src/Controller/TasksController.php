@@ -3,7 +3,6 @@ declare(strict_types=1);
 
 namespace App\Controller;
 
-use Cake\I18n\Date;
 use Cake\I18n\DateTime;
 use DateInterval;
 
@@ -80,24 +79,7 @@ class TasksController extends AppController
             ->where($conditions);
         $tasks = $this->paginate($query);
 
-        $oneDayInterval = new DateInterval("P1D");
-
-        $day = Date::now();
-        $dayBefore = $day->add($oneDayInterval);
-
-        // time trackings today
-        $doneToday = $this->Tasks->TimeTrackings->find()->where(["created >" => $day])->all()->sumOf('duration');
-        $day = $day->sub($oneDayInterval);
-        $dayBefore = $dayBefore->sub($oneDayInterval);
-        $done1 = $this->Tasks->TimeTrackings->find()->where(["created >" => $day])->where(["created <" => $dayBefore])->all()->sumOf('duration');
-        $day = $day->sub($oneDayInterval);
-        $dayBefore = $dayBefore->sub($oneDayInterval);
-        $done2 = $this->Tasks->TimeTrackings->find()->where(["created >" => $day])->where(["created <" => $dayBefore])->all()->sumOf('duration');
-        $day = $day->sub($oneDayInterval);
-        $dayBefore = $dayBefore->sub($oneDayInterval);
-        $done3 = $this->Tasks->TimeTrackings->find()->where(["created >" => $day])->where(["created <" => $dayBefore])->all()->sumOf('duration');
-
-        $this->set(compact('tasks', 'doneToday', 'done1', 'done2', 'done3', 'projectOptions', 'projectId'));
+        $this->set(compact('tasks', 'projectOptions', 'projectId'));
     }
 
     /**
@@ -181,7 +163,8 @@ class TasksController extends AppController
         $task->done = $done;
         $task->done_at = DateTime::now();
         $this->Tasks->save($task);
-        $this->redirect(["action" => "index"]);
+        // Zurück dorthin, wo geklickt wurde, also auch aufs Dashboard.
+        $this->redirect($this->referer(["action" => "index"], true));
     }
 
     public function marked($id)
@@ -190,7 +173,7 @@ class TasksController extends AppController
         $task = $this->Tasks->get($id);
         $task->marked = $marked;
         $this->Tasks->save($task);
-        $this->redirect(["action" => "index"]);
+        $this->redirect($this->referer(["action" => "index"], true));
     }
 
     /**

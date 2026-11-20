@@ -72,7 +72,7 @@ $baseline = $padTop + $plotH;
                 $y = $baseline - $barH; ?>
                 <rect x="<?= round($x, 1) ?>" y="<?= round($y, 1) ?>"
                       width="<?= $barW ?>" height="<?= round($barH, 1) ?>"
-                      fill="var(--bs-<?= $d['weekend'] ? 'secondary' : 'primary' ?>)" rx="2">
+                      fill="var(--<?= $d['weekend'] ? 'ido-muted' : 'ido-green' ?>)" rx="2">
                     <title><?= h($d['name']) ?>: <?= $this->Effort->hours($d['hours']) ?> h</title>
                 </rect>
                 <text x="<?= round($cx, 1) ?>" y="<?= round($y - 6, 1) ?>"

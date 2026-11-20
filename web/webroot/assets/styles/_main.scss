@@ -1,108 +1,289 @@
-main {
-    margin-bottom: 10rem;
+// Inhalt der Seiten. Die meisten Templates sind gebackenes CakePHP-Markup
+// (h3 als Titel, aside.column .actions als Aktionslinks, nackte Tabellen und
+// Formulare). Die Regeln hier geben diesem Markup das Aussehen der App,
+// ohne jedes Template anzufassen.
 
+main {
     a {
         text-decoration: none;
+
+        &:hover {
+            text-decoration: underline;
+        }
     }
 
+    // Seitentitel und Abschnitte im gebackenen Markup
+    .content > h3:first-child,
+    .content > .row h3,
+    .view.content > h3 {
+        margin: 0 0 1.25rem;
+        font-size: clamp(1.5rem, 1.5vw + 1rem, 2rem);
+        font-weight: 650;
+    }
+
+    h4 {
+        margin: 2rem 0 0.75rem;
+        font-size: 1.1875rem;
+    }
+
+    h3, h4 {
+        overflow-wrap: anywhere;
+    }
+
+    // Aktionslinks der View- und Formularseiten als Werkzeugleiste
+    > .row:has(> aside.column) {
+        display: block;
+        margin: 0;
+
+        > * {
+            width: auto;
+            padding: 0;
+        }
+    }
+
+    aside.column .actions,
+    .side-nav {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 0.5rem;
+        margin-bottom: 1.75rem;
+
+        a {
+            display: inline-flex;
+            align-items: center;
+            margin: 0;
+            padding: 0.3125rem 0.75rem;
+            border: 1px solid var(--ido-line);
+            border-radius: $border-radius;
+            color: var(--ido-ink);
+            font-size: 0.875rem;
+            font-weight: 500;
+
+            &:hover {
+                background: var(--ido-tint);
+                text-decoration: none;
+            }
+
+            // postLink: Löschen und andere Aktionen mit Rückfrage
+            &[onclick] {
+                color: var(--ido-red);
+            }
+        }
+
+        .heading {
+            display: none;
+        }
+    }
+
+    .related {
+        margin-top: 2.5rem;
+
+        > h4 {
+            display: inline-block;
+            margin: 0 1rem 0.75rem 0;
+        }
+
+        > .actions {
+            display: inline-flex;
+            gap: 1rem;
+            margin: 0;
+
+            a {
+                margin: 0;
+                font-size: 0.875rem;
+                font-weight: 500;
+
+                &::before {
+                    content: "+ ";
+                }
+            }
+        }
+    }
+
+    .actions {
+        margin-bottom: 1.5rem;
+
+        a {
+            margin-right: 1.5rem;
+
+            &:last-child {
+                margin-right: 0;
+            }
+        }
+    }
+
+    // Tabellen
     table {
         @extend .table;
+        margin-bottom: 1.5rem;
+
+        > thead > tr > th {
+            border-bottom: 1px solid var(--ido-line);
+            color: var(--ido-muted);
+            font-size: 0.8125rem;
+            font-weight: 600;
+            white-space: nowrap;
+
+            a {
+                color: inherit;
+
+                &.asc::after {
+                    content: " ↑";
+                }
+
+                &.desc::after {
+                    content: " ↓";
+                }
+            }
+        }
+
+        > tbody > tr {
+            > td, > th {
+                border-color: var(--ido-line);
+                vertical-align: middle;
+            }
+
+            &:hover > * {
+                background-color: var(--ido-tint);
+            }
+        }
+
+        tfoot td, tfoot th {
+            border-bottom: 0;
+            font-weight: 650;
+        }
 
         tbody {
             tr {
                 &.task-marked {
                     a {
-                        color: $info;
+                        color: var(--ido-amber-text);
                     }
                 }
+
                 &.done-true {
                     a {
                         opacity: 0.5;
                         text-decoration: line-through;
+
                         &.no-line-through {
                             text-decoration: none;
                         }
                     }
                 }
+
                 &.text-muted {
                     a {
-                        color: $text-muted;
+                        color: var(--ido-muted);
                     }
                 }
+
                 td {
+                    // Projektstatus: grün läuft, amber wartet auf Geld oder
+                    // Rechnung, rot gemahnt, grau beendet oder zurückgestellt
                     &.project-status-15 a {
-                        color: $success;
+                        color: var(--ido-green);
                     }
 
-                    &.project-status-20 a {
-                        color: $teal;
-                    }
-
-                    &.project-status-25 a {
-                        color: $cyan;
+                    &.project-status-20 a, &.project-status-25 a {
+                        color: var(--ido-amber-text);
                     }
 
                     &.project-status-30 a {
-                        color: $danger;
+                        color: var(--ido-red);
                     }
 
-                    &.project-status-35 a {
-                        color: $gray-600;
+                    &.project-status-5 a, &.project-status-10 a {
+                        color: var(--ido-blue);
                     }
 
+                    &.project-status-35 a,
                     &.project-status-40 a, &.project-status-45 a, &.project-status-50 a, &.project-status-55 a {
-                        color: $gray-500;
+                        color: var(--ido-muted);
                     }
-                    &.actions a {
-                        color: $gray-500;
+
+                    &.actions {
+                        white-space: nowrap;
+
+                        a {
+                            margin-right: 0.75rem;
+                            color: var(--ido-muted);
+                            font-size: 0.875rem;
+
+                            &:hover {
+                                color: var(--ido-blue);
+                            }
+
+                            &[onclick]:hover {
+                                color: var(--ido-red);
+                            }
+                        }
                     }
                 }
             }
         }
+
+        // Schlüssel-Wert-Tabelle der View-Seiten
         &.data {
-            border: none;
-            max-width: 12cm;
+            max-width: 40rem;
+
+            > tbody > tr:hover > * {
+                background: none;
+            }
+
             th, td {
-                padding: 0 0 0.3rem;
-                border: none;
+                padding: 0.5rem 0;
+                border-bottom: 1px solid var(--ido-line);
             }
+
             th {
+                padding-right: 1.5rem;
+                color: var(--ido-muted);
+                font-weight: 500;
                 white-space: nowrap;
-                padding-right: 1rem;
             }
+
             td {
-                font-family: $font-family-monospace;
                 width: 100%;
             }
         }
+
         &.sum {
-            border: none;
             th, td {
                 padding-top: 0;
                 border: none;
-                b {
-
-                }
-            }
-            th {
             }
         }
+
         a {
             display: block;
+
             &.hover-bg {
-                border-radius: 4px;
-                padding: 0 4px;
+                padding: 0.125rem 0.5rem;
+                border-radius: 2rem;
+
                 &:hover {
-                    background-color: $primary;
-                    color: $white;
+                    background-color: var(--ido-green);
+                    color: var(--ido-surface);
+                    text-decoration: none;
+
                     * {
-                        color: $white;
+                        color: var(--ido-surface);
                     }
                 }
             }
         }
-        .actions a {
+
+        .actions a, .customer-tag {
             display: inline;
+        }
+    }
+
+    .table-responsive {
+        margin-bottom: 1.5rem;
+
+        > table {
+            margin-bottom: 0;
         }
     }
 
@@ -121,15 +302,35 @@ main {
         }
     }
 
+    .paginator {
+        color: var(--ido-muted);
+        font-size: 0.875rem;
+    }
+
+    // Formulare
     form {
-        margin-bottom: 4rem;
-        max-width: 920px;
+        max-width: 46rem;
+        margin-bottom: 3rem;
+
+        legend {
+            margin-bottom: 1.25rem;
+            font-family: $font-family-display;
+            font-size: 1.5rem;
+            font-weight: 650;
+        }
 
         .input {
-            margin-bottom: 0.5rem;
+            margin-bottom: 1rem;
         }
+
+        label {
+            margin-bottom: 0.3125rem;
+            font-size: 0.875rem;
+            font-weight: 500;
+        }
+
         input[type='text'], input[type='number'], input[type='datetime-local'], input[type='date'],
-        input[type='tel'], input[type='email'],
+        input[type='tel'], input[type='email'], input[type='url'], input[type='password'],
         textarea {
             @extend .form-control;
         }
@@ -141,13 +342,13 @@ main {
         button[type='submit'] {
             @extend .btn;
             @extend .btn-primary;
-            padding-left: 3rem;
-            padding-right: 3rem;
+            padding-left: 2rem;
+            padding-right: 2rem;
         }
 
         div.checkbox {
             @extend .form-check;
-            margin-bottom: 0.5rem;
+            margin-bottom: 0.75rem;
 
             input {
                 @extend .form-check-input;
@@ -155,20 +356,44 @@ main {
 
             label {
                 @extend .form-check-label;
+                margin-bottom: 0;
             }
         }
 
         fieldset {
-            margin-bottom: 1rem;
+            margin-bottom: 1.5rem;
+        }
+
+        .error-message {
+            margin-top: 0.25rem;
+            color: var(--ido-red);
+            font-size: 0.875rem;
         }
     }
 
+    // Bootstrap-Felder im Inhalt etwas ruhiger
+    .form-control, .form-select {
+        border-color: var(--ido-line);
+        background-color: var(--ido-surface);
+    }
+
+    // Flash-Meldungen
     .message {
         @extend .alert;
+        border: 0;
+        border-left: 3px solid var(--ido-blue);
+        background: var(--ido-tint);
+        color: var(--ido-ink);
         cursor: pointer;
 
         &.success {
-            @extend .alert-success;
+            border-left-color: var(--ido-green);
+            background: var(--ido-green-tint);
+        }
+
+        &.error {
+            border-left-color: var(--ido-red);
+            background: color-mix(in srgb, var(--ido-red) 12%, transparent);
         }
 
         &.hidden {
@@ -176,39 +401,29 @@ main {
         }
     }
 
-    .actions {
-        margin-bottom: 2rem;
-
-        a {
-            margin-right: 2rem;
-            text-decoration: none;
-
-            &:last-child {
-                margin-right: 0;
-            }
-        }
-    }
-
     .view.content {
         .row {
             margin-bottom: 1rem;
         }
-        .actions {
-            margin-bottom: 1rem;
-        }
+
         .text {
-            padding: 0.5rem;
+            padding: 0.75rem 0;
+
             strong {
                 display: block;
                 margin-bottom: 0.5rem;
+                color: var(--ido-muted);
+                font-size: 0.875rem;
+                font-weight: 500;
             }
+
             blockquote {
                 margin-bottom: 1rem;
             }
         }
     }
+
     .code {
         font-family: $font-family-monospace;
     }
 }
-

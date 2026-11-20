@@ -19,6 +19,7 @@ namespace App\Controller;
 use App\Backup\DatabaseBackup;
 use Cake\Controller\Controller;
 use Cake\Event\EventInterface;
+use Cake\I18n\Date;
 use Cake\Http\Exception\NotFoundException;
 use Cake\Log\Log;
 use Throwable;
@@ -91,5 +92,31 @@ class AppController extends Controller
         if (in_array($action, self::REQUIRES_ID, true) && !$this->request->getParam('pass')) {
             throw new NotFoundException();
         }
+    }
+
+    /**
+     * Die Zahlen der Navigation: offene Tasks und heute erfasste Stunden. Nur
+     * für Seiten im Standard-Layout, nicht für AJAX, Druck oder Downloads.
+     */
+    public function beforeRender(EventInterface $event)
+    {
+        parent::beforeRender($event);
+
+        $builder = $this->viewBuilder();
+        if ($builder->getLayout() !== null && $builder->getLayout() !== 'default') {
+            return;
+        }
+        if ($this->request->is('ajax')) {
+            return;
+        }
+        $tasks = $this->fetchTable('Tasks');
+        // Wie die Taskliste: offene Tasks in laufenden Projekten (Status 15)
+        $this->set('navOpenTasks', $tasks->find()
+            ->innerJoinWith('Services.Projects', fn($q) => $q->where(['Projects.project_status_id' => 15]))
+            ->where(['Tasks.done' => false])
+            ->count());
+        $this->set('navTodayHours', (float)$tasks->TimeTrackings->find()
+            ->where(['created >=' => Date::now()])
+            ->all()->sumOf('duration'));
     }
 }

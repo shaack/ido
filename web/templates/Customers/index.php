@@ -35,7 +35,7 @@
             <tbody>
             <?php foreach ($customers as $customer): ?>
                 <tr>
-                    <td><?= $this->Html->link($customer->shortcut, ['controller' => 'Customers', 'action' => 'view', $customer->id], ['style' => 'color: ' . $customer->color]) ?></td>
+                    <td><?= $this->Html->link($customer->shortcut, ['controller' => 'Customers', 'action' => 'view', $customer->id], ['class' => 'customer-tag', 'style' => '--customer: ' . ($customer->color ?: 'currentColor')]) ?></td>
                     <td><?= $this->Html->link($this->Text->truncate($customer->name, 64), ['action' => 'view', $customer->id]) ?></td>
                     <td><a href="mailto:<?= $customer->invoice_email ?>"><?= $customer->invoice_email ?></a></td>
                     <td class="actions">

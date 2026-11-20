@@ -113,6 +113,31 @@ Routing is default `DashedRoute` fallbacks, no custom routes.
 - The global `h()`, `env()`, `__()` moved into namespaces. `composer.json` autoloads CakePHP's
   `functions_global.php` files to keep the 574 existing call sites working.
 
+## Design and layout
+
+The app shell lives in `templates/layout/default.php`: a sidebar with grouped navigation, the content
+on a "sheet", and below `lg` a bottom tab bar with the sidebar as an offcanvas. `/` is the dashboard
+(`DashboardController`). `AppController::beforeRender()` sets the two numbers of the navigation:
+open tasks (same rule as the task list, open tasks in projects with status 15) and hours tracked
+today.
+
+Styles are SCSS on Bootstrap 5.3 in `webroot/assets/styles/`, compiled by hand and committed:
+`cd web/webroot/assets/styles && sass --quiet screen.scss screen.css`. The layout links it with
+its mtime as version, so a deploy is never hidden by the cache. Do not recompile `print.css`
+without checking invoices and offers.
+
+- Colours come from the logo and carry meaning: green for running work and tracked time, amber
+  for marked or waiting, blue for actions and links. They are CSS variables `--ido-*` in
+  `_theme.scss`, defined for light and dark (`data-bs-theme`, set by bootstrap-auto-dark-mode).
+  Use the variables in templates, not Bootstrap colour classes.
+- Type: Bricolage Grotesque for logo, titles and large figures, Public Sans with tabular figures
+  for everything else, self-hosted in `webroot/assets/fonts/`.
+- Most templates are baked CakePHP markup. `_main.scss` styles that markup globally (`h3` as page
+  title, `aside.column .actions` as toolbar, bare tables and forms). New or reworked pages use
+  `.page-head`, `.page-title` and `.page-actions` instead.
+- Elements: `icon` (inline SVG stroke icons, the Font Awesome subset has only six glyphs) and
+  `ruler`, the quarter-hour ruler for tracked hours.
+
 ## MCP endpoint
 
 `/mcp` serves the Model Context Protocol for agents like Claude Code (`src/Mcp/`, modelled on the
