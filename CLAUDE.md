@@ -113,6 +113,41 @@ Routing is default `DashedRoute` fallbacks, no custom routes.
 - The global `h()`, `env()`, `__()` moved into namespaces. `composer.json` autoloads CakePHP's
   `functions_global.php` files to keep the 574 existing call sites working.
 
+## MCP endpoint
+
+`/mcp` serves the Model Context Protocol for agents like Claude Code (`src/Mcp/`, modelled on the
+MCP AddOn of Reboot CMS). `McpMiddleware` sits before routing and CSRF and answers stateless
+JSON-RPC over POST. `Tools` reads customers, projects, tasks and time trackings and creates services,
+tasks and time trackings. Nothing can be deleted. Effort and amounts come from the entity methods,
+so they match the invoice.
+
+Auth is a token in the header `X-Ido-Token`, checked against `Mcp.tokenHash` (SHA-256) in
+`config/app_local.php`. Without that key the endpoint answers 404. Locally the token is
+`ido-dev-token`. On the server the Plesk basic auth stays in front, so the client sends
+`Authorization: Basic …` plus `X-Ido-Token`. `app_local.php` is excluded from the deploy, the server
+hash is maintained there by hand.
+
+## Database backups
+
+`App\Backup\DatabaseBackup` writes gzipped SQL dumps to `web/db-backups/` (gitignored, excluded
+from the deploy, locked with a `.htaccess`). The directory must not be called `backups/`, that
+collides with the route `/backups` and Apache answers 403. The dump is built in PHP, not with
+mysqldump, because the SSH console on Plesk only has PHP 7.2. It reads all tables in one consistent
+snapshot, one statement per line, and works with `gunzip -c … | mysql` as well. Floats are written
+with `var_export()`: PDO returns doubles as PHP floats, and `(string)` cuts them to 14 digits.
+
+Backups happen automatically, there is no cron: once a day on the first request (`AppController`)
+and before every MCP write tool, at most once an hour. If that backup fails, the write is refused.
+By hand via the page `/backups` (create, download), `bin/cake backup` and the MCP tools
+`list_backups` and `create_backup`. Retention: everything from the last 7 days, then the newest per
+day up to 90 days, then the newest per month.
+
+Restoring is console only, never web or MCP. Locally `bin/cake backup --restore <name>`, which backs
+up the current state first. On the server the SSH console has no PHP 8.4, so there it is
+`gunzip -c db-backups/<name> | mysql -u <user> -p <database>` with the credentials from the server's
+`config/app_local.php`, after taking a fresh backup on `/backups`.
+`./pull-backups.sh` copies the server's backups to `~/Shared/Work/Projects/Ido/backups/` over SSH.
+
 ## Dead columns kept for their data
 
 These are gone from the code but still in the database, so historic values survive. Do not

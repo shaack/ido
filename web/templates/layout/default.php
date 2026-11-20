@@ -84,6 +84,10 @@ $controller = $this->request->getParam('controller')
                             <a class="nav-link <?= $controller != "Reports" ?: "active" ?>"
                                href="/reports">Reports</a>
                         </li>
+                        <li class="nav-item">
+                            <a class="nav-link <?= $controller != "Backups" ?: "active" ?>"
+                               href="/backups">Backups</a>
+                        </li>
                     </ul>
                 </div>
             </div>

@@ -25,6 +25,7 @@
 #   - config/app_local.php   Produktiv-DB-Zugang + Security-Salt
 #   - config/.env            serverseitige Umgebung
 #   - logs/, tmp/            Laufzeitdaten
+#   - db-backups/            Sicherungen der Datenbank, siehe DatabaseBackup
 #   - .DS_Store
 #
 # Der Upload läuft mit --delete. Dateien, die es lokal nicht mehr gibt,
@@ -106,7 +107,7 @@ export LFTP_PASSWORD
 echo
 echo "Quelle : ${LOCAL_DIR}/  (vendor/ wird vorher ohne Dev-Pakete gebaut)"
 echo "Ziel   : ${FTP_USER}@${FTP_HOST}:${REMOTE_DIR}"
-echo "Ausgenommen: config/app_local.php, config/.env, logs/, tmp/, .DS_Store"
+echo "Ausgenommen: config/app_local.php, config/.env, logs/, tmp/, db-backups/, .DS_Store"
 echo "Löschen: JA (--delete) — was lokal fehlt, verschwindet auch auf dem Server."
 if [ "$DRY_RUN" = true ]; then
   echo "Modus  : DRY-RUN, es wird NICHTS übertragen und NICHTS gelöscht."
@@ -182,7 +183,7 @@ lftp -u "$FTP_USER" --env-password "sftp://$FTP_HOST" <<EOF
 set sftp:auto-confirm yes
 set net:timeout 20
 set net:max-retries 3
-mirror --reverse --verbose --delete ${DRY_FLAG} --parallel=4 --exclude ^config/app_local\.php\$ --exclude ^config/\.env\$ --exclude ^logs/ --exclude ^tmp/ --exclude \.DS_Store ${LOCAL_DIR}/ ${REMOTE_DIR}
+mirror --reverse --verbose --delete ${DRY_FLAG} --parallel=4 --exclude ^config/app_local\.php\$ --exclude ^config/\.env\$ --exclude ^logs/ --exclude ^tmp/ --exclude ^db-backups/ --exclude \.DS_Store ${LOCAL_DIR}/ ${REMOTE_DIR}
 bye
 EOF
 

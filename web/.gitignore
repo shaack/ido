@@ -4,6 +4,7 @@
 /config/.env
 /logs/*
 /tmp/*
+/db-backups/
 /vendor/*
 
 # OS generated files #

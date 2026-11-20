@@ -16,6 +16,7 @@ declare(strict_types=1);
  */
 namespace App;
 
+use App\Mcp\McpMiddleware;
 use Cake\Core\Configure;
 use Cake\Core\ContainerInterface;
 use Cake\Datasource\FactoryLocator;
@@ -89,6 +90,10 @@ class Application extends BaseApplication
             ->add(new AssetMiddleware([
                 'cacheTime' => Configure::read('Asset.cacheTime'),
             ]))
+
+            // Der MCP-Endpunkt für Agenten, vor Routing und CSRF-Schutz, siehe
+            // App\Mcp\McpMiddleware.
+            ->add(new McpMiddleware())
 
             // Add routing middleware.
             // If you have a large number of routes connected, turning on routes

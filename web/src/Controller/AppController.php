@@ -16,9 +16,12 @@ declare(strict_types=1);
  */
 namespace App\Controller;
 
+use App\Backup\DatabaseBackup;
 use Cake\Controller\Controller;
 use Cake\Event\EventInterface;
 use Cake\Http\Exception\NotFoundException;
+use Cake\Log\Log;
+use Throwable;
 
 /**
  * Application Controller
@@ -75,6 +78,14 @@ class AppController extends Controller
     public function beforeFilter(EventInterface $event)
     {
         parent::beforeFilter($event);
+
+        // Tägliche Sicherung beim ersten Aufruf des Tages, siehe DatabaseBackup.
+        // Ein Fehler dabei darf die App nicht blockieren, er landet im Log.
+        try {
+            (new DatabaseBackup())->ensureRecent(86400, 'daily');
+        } catch (Throwable $e) {
+            Log::error('Daily backup failed: ' . $e->getMessage());
+        }
 
         $action = $this->request->getParam('action');
         if (in_array($action, self::REQUIRES_ID, true) && !$this->request->getParam('pass')) {
