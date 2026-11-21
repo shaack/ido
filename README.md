@@ -2,7 +2,7 @@
 
 Project management, todos, time tracking and billing for the self-employed.
 
-ido is the tool I use in my daily work to manage customers, plan projects, track my time and write offers and invoices from it. More about it on the product page: [shaack.com/de/products/ido](https://shaack.com/de/products/ido)
+ido is the tool I use in my daily work to manage customers, plan projects, track my time and write offers and invoices from it. More about it on the product page: [shaack.com/de/products/ido](https://shaack.com/products/ido)
 
 ## What it does
 
