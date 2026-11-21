@@ -12,14 +12,15 @@ $this->assign('title', 'Umsatz pro Monat');
 // Diagramm ohne horizontales Scrollen in die Seite passt. Monate sind
 // seltener als Wochen, deshalb etwas breiter als dort (2/1).
 $plotH = 300;
-$barW = 4;
-$gap = 2;
-$step = $barW + $gap;
 $padLeft = 64;     // Platz für die Euro-Beschriftung
 $padTop = 16;
 $padBottom = 64;
 
 $count = count($months);
+// Bei wenigen Monaten werden die Balken breiter, damit das Diagramm rund
+// 1000px breit bleibt und nicht zu einem Streifen schrumpft.
+$step = max(6, (int)floor(1000 / max(1, $count)));
+$barW = max(4, (int)round($step * 0.7));
 $maxRevenue = 0.0;
 foreach ($months as $m) {
     $maxRevenue = max($maxRevenue, $m['revenue']);

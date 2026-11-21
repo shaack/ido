@@ -13,14 +13,15 @@ $this->assign('title', 'Arbeitszeit pro Woche');
 // damit kein zusätzliches Chart-Paket nötig ist und der Report auch im
 // Druck-Layout funktioniert.
 $plotH = 300;      // Höhe der Zeichenfläche
-$barW = 2;         // Balkenbreite
-$gap = 1;          // Abstand zwischen zwei Balken
-$step = $barW + $gap; // Abstand Balkenmitte zu Balkenmitte
 $padLeft = 48;     // Platz für die Y-Beschriftung
 $padTop = 16;
 $padBottom = 64;   // Platz für die gedrehte X-Beschriftung
 
 $count = count($weeks);
+// Balken 2px mit 1px Abstand. Bei wenigen Wochen werden sie breiter, damit das
+// Diagramm rund 1000px breit bleibt und nicht zu einem Streifen schrumpft.
+$step = max(3, (int)floor(1000 / max(1, $count))); // Abstand Balkenmitte zu Balkenmitte
+$barW = max(2, (int)round($step * 0.7));            // Balkenbreite
 $maxHours = 0.0;
 foreach ($weeks as $w) {
     $maxHours = max($maxHours, $w['hours']);
