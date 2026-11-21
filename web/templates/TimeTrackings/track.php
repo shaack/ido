@@ -13,9 +13,7 @@ $project = $timeTracking->task->service->project;
 <header class="page-head">
     <div>
         <p class="track-context">
-            <?php if ($customer) : ?>
-                <span class="customer-tag" style="--customer: <?= h($customer->color ?: 'currentColor') ?>"><?= h($customer->shortcut) ?></span>
-            <?php endif; ?>
+            <?= $this->element('customer_tag', ['customer' => $customer]) ?>
             <?= h($project->name) ?>
         </p>
         <h1 class="page-title"><?= $timeTracking->task->name ? h($timeTracking->task->name) : '<i>' . h($timeTracking->task->smartName) . '</i>' ?></h1>

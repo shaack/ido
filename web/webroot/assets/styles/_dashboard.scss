@@ -132,6 +132,12 @@
     vertical-align: 0.0625rem;
 }
 
+// Die Pill ist immer ein Link auf den Kunden, siehe element/customer_tag.php
+main a.customer-tag:hover, main a.customer-tag:focus-visible {
+    background: color-mix(in srgb, var(--customer) 28%, transparent);
+    text-decoration: none;
+}
+
 // Heute
 .dash-today {
     display: grid;

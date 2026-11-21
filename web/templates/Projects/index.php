@@ -26,7 +26,7 @@
                 <tr>
                     <td><?= $this->Html->link($project->name, ['action' => 'view', $project->id]) ?></td>
                     <?php $customer = $project->customer ?>
-                    <td><?php if ($customer): ?><?= $this->Html->link($customer->shortcut, ['controller' => 'Customers', 'action' => 'view', $customer->id], ['class' => 'customer-tag', 'style' => '--customer: ' . ($customer->color ?: 'currentColor')]) ?><?php endif ?></td>
+                    <td><?= $this->element('customer_tag', ['customer' => $customer]) ?></td>
                     <td><?= h($project->invoice_number) ?></td>
                     <td class="project-status-<?= $project->project_status->id ?>">
                         <?= $this->Html->link($project->project_status->name, ['controller' => 'ProjectStatuses', 'action' => 'view', $project->project_status->id]) ?>

@@ -88,9 +88,7 @@ $toInvoiceCount = count($toInvoice->toList());
                                     <?= $this->Html->link($task->smartName, ['controller' => 'Tasks', 'action' => 'view', $task->id],
                                         ['class' => 'task-name' . ($task->name ? '' : ' fst-italic')]) ?>
                                     <span class="task-meta">
-                                        <?php if ($customer) : ?>
-                                            <span class="customer-tag" style="--customer: <?= h($customer->color ?: 'currentColor') ?>"><?= h($customer->shortcut) ?></span>
-                                        <?php endif; ?>
+                                        <?= $this->element('customer_tag', ['customer' => $customer]) ?>
                                         <?= $project ? h($project->name) : '' ?>
                                     </span>
                                 </div>
@@ -126,9 +124,7 @@ $toInvoiceCount = count($toInvoice->toList());
                             <tr>
                                 <td class="text-nowrap text-body-secondary"><?= h($tracking->created->i18nFormat('EEEEEE d.M. HH:mm')) ?></td>
                                 <td class="w-100">
-                                    <?php if ($customer) : ?>
-                                        <span class="customer-tag" style="--customer: <?= h($customer->color ?: 'currentColor') ?>"><?= h($customer->shortcut) ?></span>
-                                    <?php endif; ?>
+                                    <?= $this->element('customer_tag', ['customer' => $customer]) ?>
                                     <?= $this->Html->link($task->smartName, ['controller' => 'Tasks', 'action' => 'view', $task->id]) ?>
                                 </td>
                                 <td class="text-end text-nowrap"><?= $this->Effort->hours($tracking->duration) ?> h</td>
@@ -192,9 +188,7 @@ $toInvoiceCount = count($toInvoice->toList());
                         ?>
                         <li class="project-row">
                             <div class="project-row-head">
-                                <?php if ($project->customer) : ?>
-                                    <span class="customer-tag" style="--customer: <?= h($project->customer->color ?: 'currentColor') ?>"><?= h($project->customer->shortcut) ?></span>
-                                <?php endif; ?>
+                                <?= $this->element('customer_tag', ['customer' => $project->customer]) ?>
                                 <?= $this->Html->link($project->name, ['controller' => 'Projects', 'action' => 'view', $project->id], ['class' => 'project-name']) ?>
                             </div>
                             <?php if ($share !== null) : ?>

@@ -12835,6 +12835,11 @@ body.app {
   vertical-align: 0.0625rem;
 }
 
+main a.customer-tag:hover, main a.customer-tag:focus-visible {
+  background: color-mix(in srgb, var(--customer) 28%, transparent);
+  text-decoration: none;
+}
+
 .dash-today {
   display: grid;
   gap: 1.5rem 3rem;
