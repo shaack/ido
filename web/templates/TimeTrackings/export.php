@@ -65,7 +65,7 @@ $this->start('css');
     </div>
 
     <?php if (!empty($project->services)) : ?>
-        <h4 class="mt-5"><?= __('Abrechnung') ?></h4>
+        <h4 class="mt-4"><?= __('Abrechnung') ?></h4>
         <p>Nach Zeit abgerechnete Leistungen werden je Leistung kaufmännisch auf Viertelstunden
             gerundet.</p>
         <div class="table-responsive">
