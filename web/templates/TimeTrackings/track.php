@@ -68,9 +68,19 @@ $project = $timeTracking->task->service->project;
     const title = document.title
     let additionalMinutes = 0
 
+    // Zuletzt geschriebene Werte. Jeder Schreibzugriff auf Titel, Feld oder
+    // Balken kostet Layout und Zeichnen, also nur schreiben, was sich ändert.
+    let shownMinutes = null
+    let shownWidth = null
+
     function updateTimerOutput() {
         const minutesExpired = stopwatch.secondsExpired() / 60 + additionalMinutes
-        document.title = title + " ⏱️ " + (Math.round(minutesExpired * 100) / 100).toFixed(2)
+        const minutesText = (Math.round(minutesExpired * 100) / 100).toFixed(2)
+        if (minutesText !== shownMinutes) {
+            shownMinutes = minutesText
+            document.title = title + " ⏱️ " + minutesText
+            stopwatchOutput.value = minutesText
+        }
 
         // Nur wenn die Uhr läuft. Sonst meldete auch der +5-Knopf eine "laufende"
         // Erfassung, sobald man sich damit über eine Schwelle hochklickt.
@@ -93,7 +103,12 @@ $project = $timeTracking->task->service->project;
         // beginnt bei jeder Benachrichtigung von vorn. Die Farbe zeigt, in
         // welchem Abschnitt man ist.
         const minutesInBlock = ((minutesExpired % notifyEveryMinutes) + notifyEveryMinutes) % notifyEveryMinutes
-        progressBar.style.width = (minutesInBlock / notifyEveryMinutes * 100) + "%"
+        // Auf ein Zehntelprozent gerundet, das sind knapp zwei Sekunden.
+        const width = (Math.round(minutesInBlock / notifyEveryMinutes * 1000) / 10) + "%"
+        if (width !== shownWidth) {
+            shownWidth = width
+            progressBar.style.width = width
+        }
         if (stopwatch.running()) {
             progressBar.classList.remove("bg-primary", "bg-success", "bg-warning")
             if (minutesExpired < notifyEveryMinutes) {
@@ -104,19 +119,25 @@ $project = $timeTracking->task->service->project;
                 progressBar.classList.add("bg-warning")
             }
         }
-
-        stopwatchOutput.value = (Math.round(minutesExpired * 100) / 100).toFixed(2)
     }
 
     window.stopwatch = new Stopwatch({
+        // Einmal pro Sekunde statt zehnmal. Die Anzeige hat eine Auflösung von
+        // 0,01 Minuten, also 0,6 Sekunden, schneller zu ticken zeigt nichts
+        // Neues und hält nur die CPU wach. Die Zeit selbst misst die Stoppuhr
+        // über die Uhrzeit, sie wird dadurch nicht ungenauer.
+        tickResolution: 1000,
         onTimeChanged: () => {
             updateTimerOutput()
         },
         onStateChanged: (running) => {
             if (running) {
                 if (!progressBar.classList.contains("progress-bar-striped")) {
+                    // Gestreift, aber ohne progress-bar-animated. Die Animation
+                    // verschiebt das Streifenmuster endlos und zwingt den
+                    // Browser, den Balken mit jedem Frame neu zu zeichnen, so
+                    // lange die Erfassung läuft. Das war der größte Verbraucher.
                     progressBar.classList.add("progress-bar-striped")
-                    progressBar.classList.add("progress-bar-animated")
                     progressBar.classList.remove("bg-secondary")
                     // Die Farbe setzt updateTimerOutput passend zum laufenden
                     // 30-Minuten-Abschnitt. Hier stand sie doppelt, mit den alten
