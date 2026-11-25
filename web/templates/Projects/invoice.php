@@ -15,6 +15,18 @@ $fileName = $project->invoice_date->i18nFormat('yyyy-MM-dd') .
     " " . ($lang == "de" ? "Rechnung" : "Invoice") . " " . $project->invoice_number . " " . $project->customer->shortcut . " " . $project->name;
 $this->assign('title', $fileName);
 ?>
+<?php $this->start('css') ?>
+<style>
+    @page {
+        margin: 2cm 1cm 1cm 1.5cm;
+    }
+    @media screen {
+        body {
+            padding-top: 2rem;
+        }
+    }
+</style>
+<?php $this->end() ?>
 
 <div>
     <address class="font-monospace mb-5 small">
