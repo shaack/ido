@@ -39,12 +39,8 @@ $this->assign('title', h($project->name));
                                 $effortSum += $service->effort();
                                 $tasksCount = $service->countTasks();
                                 $tasksDoneCount = $tasksCount["count"] - $tasksCount["todo"];
-                                $trClass = "";
-                                if ($tasksCount["count"] == 0) {
-                                    $trClass = "";
-                                } else {
-                                    $trClass = $tasksCount["count"] - $tasksDoneCount > 0 ? '' : 'opacity-75 text-muted';
-                                }
+                                // Muted, sobald nichts mehr offen ist, auch bei Services ganz ohne Tasks
+                                $trClass = $tasksCount["todo"] > 0 ? '' : 'opacity-75 text-muted';
                                 ?>
                                 <tr class="<?= $trClass ?>">
                                     <td><?= $this->Html->link($service->name, ['controller' => 'Services', 'action' => 'view', $service->id]) ?></td>

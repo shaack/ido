@@ -18,7 +18,7 @@ $this->assign('title', $fileName);
 <?php $this->start('css') ?>
 <style>
     @page {
-        margin: 2cm 1cm 1cm 1.5cm;
+        margin: 1.5cm 1cm 1cm 1.5cm;
     }
     @media screen {
         body {
