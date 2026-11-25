@@ -199,7 +199,25 @@ $project = $timeTracking->task->service->project;
         window.stopwatch.start()
     }
 
+    // Warnung beim Verlassen oder Neuladen der Seite, solange auf der Stoppuhr
+    // Zeit steht, die noch nicht gespeichert ist. Ob die Uhr läuft oder pausiert,
+    // spielt keine Rolle, verloren ginge die Zeit in beiden Fällen. Den Text des
+    // Dialogs legt der Browser fest, eigene Texte zeigen Browser nicht mehr an.
+    let saving = false
+    form.addEventListener("submit", () => {
+        saving = true
+    })
+    window.addEventListener("beforeunload", (event) => {
+        const unsavedMinutes = stopwatch.secondsExpired() / 60 + additionalMinutes
+        if (!saving && Math.round(unsavedMinutes * 100) !== 0) {
+            event.preventDefault()
+            event.returnValue = ""
+        }
+    })
+
     window.stopAndAdd = () => {
+        // form.submit() löst kein submit-Ereignis aus, also hier markieren.
+        saving = true
         if (!durationInput.value) {
             durationInput.value = 0
         }

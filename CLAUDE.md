@@ -21,8 +21,8 @@ From the repo root:
 
 This brings up two containers (`compose/docker-compose.yml`):
 - **web** — `php:8.4-apache` (see `compose/php.Dockerfile`), mounts `../web` to `/var/www/html`.
-  Reachable at http://localhost:8080 and https://localhost:8443.
-- **db** — `mysql:8.0`, database `main`, root password `d3v_p455`, port 3306. Data persists in
+  Reachable at http://localhost:21001 and https://localhost:22001 (host ports from `compose/.env`, see `~/Shared/Work/PORTS.md`).
+- **db** — `mysql:8.0`, database `main`, root password `d3v_p455`, host port 23001. Data persists in
   `compose/volumes/data/`, which is **gitignored** — the dev DB is local only and is not backed up
   by the repo.
 
