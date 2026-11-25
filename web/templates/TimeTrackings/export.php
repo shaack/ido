@@ -27,7 +27,7 @@ $this->start('css');
         <?php if ($shortcut): ?>
             <?= h($shortcut) ?> -
         <?php endif; ?>
-        <?= h($project->name) ?>
+        <?= $this->Html->link($project->name, ['controller' => 'Projects', 'action' => 'view', $project->id]) ?>
     </h3>
     <p>Stefan Haack</p>
     <div class="table-responsive">
@@ -37,7 +37,6 @@ $this->start('css');
                     <th><?= __('Created') ?></th>
                     <th><?= __('Task') ?></th>
                     <th><?= __('Service') ?></th>
-                    <th><?= __('Project') ?></th>
                     <th class="text-end"><?= __('Duration') ?></th>
                 </tr>
             </thead>
@@ -46,20 +45,18 @@ $this->start('css');
                     if(!$timeTracking->duration) {
                         continue;
                     }
-                    $customer = $timeTracking->task->service->project->customer;
                     ?>
                 <tr>
                     <td><?= $this->Html->link($timeTracking->created, ['action' => 'track', $timeTracking->id]) ?></td>
                     <td class="<?= $timeTracking->task->name ? "" : "fst-italic" ?>"><?= $timeTracking->hasValue('task') ? $this->Html->link($timeTracking->task->name ?: 'Diverses', ['controller' => 'Tasks', 'action' => 'view', $timeTracking->task->id]) : '' ?></td>
                     <td><?= $this->Html->link($timeTracking->task->service->name, ['controller' => 'Services', 'action' => 'view', $timeTracking->task->service->id]) ?></td>
-                    <td><?= $this->Html->link($timeTracking->task->service->project->name, ['controller' => 'Projects', 'action' => 'view', $timeTracking->task->service->project->id]) ?></td>
                     <td class="text-end"><?= $this->Effort->hours($timeTracking->duration) ?></td>
                 </tr>
                 <?php endforeach; ?>
 
                 <?php if (isset($totalDuration) && $totalDuration !== null): ?>
                 <tr>
-                    <td colspan="4" class="text-end"><strong><?= __('Erfasst') ?></strong></td>
+                    <td colspan="3" class="text-end"><strong><?= __('Erfasst') ?></strong></td>
                     <td class="text-end"><strong><?= $this->Effort->hours($totalDuration) ?></strong></td>
                 </tr>
                 <?php endif; ?>

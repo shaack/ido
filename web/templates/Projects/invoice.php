@@ -18,7 +18,7 @@ $this->assign('title', $fileName);
 <?php $this->start('css') ?>
 <style>
     @page {
-        margin: 1.5cm 1cm 1cm 1.5cm;
+        margin: 1.5cm 1cm 1cm 1cm;
     }
     @media screen {
         body {
@@ -171,6 +171,6 @@ $this->assign('title', $fileName);
     </tr>
 </table>
 <p>
-    <?= ($lang == "de" ? "Viele Grüße" : "Kind regards,") ?><br/>
+    <?= ($lang == "de" ? "Beste Grüße" : "Kind regards,") ?><br/>
     <?= Configure::read('Company.name') ?>
 </p>
